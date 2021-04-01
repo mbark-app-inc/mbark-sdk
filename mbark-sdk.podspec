@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.license                = { :type => "Commercial", :text => "Copyright 2021 mbark" }
   spec.author                 = "mbark"
 
-  spec.source                 = { :git => "https://github.com/mbark-app-inc/#{spec.version}/mbark-sdk.git", :tag => "#{spec.version}" }
+  spec.source                 = { :git => "https://github.com/mbark-app-inc/mbark-sdk.git", :tag => "#{spec.version}" }
 
   spec.vendored_frameworks    = "Mbark.xcframework"
   spec.platform               = :ios
