@@ -1,11 +1,11 @@
-framework module mbark {
-  umbrella header "mbark.h"
+framework module Mbark {
+  umbrella header "Mbark.h"
 
   export *
   module * { export * }
 }
 
-module mbark.Swift {
-    header "mbark-Swift.h"
+module Mbark.Swift {
+    header "Mbark-Swift.h"
     requires objc
 }
