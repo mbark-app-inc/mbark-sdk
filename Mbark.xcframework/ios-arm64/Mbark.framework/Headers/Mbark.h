@@ -6,6 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTCall.h>
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#include <ifaddrs.h>
 
 //! Project version number for mbark.
 FOUNDATION_EXPORT double mbarkVersionNumber;
