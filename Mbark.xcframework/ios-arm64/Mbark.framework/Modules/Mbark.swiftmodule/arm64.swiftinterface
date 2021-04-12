@@ -10,20 +10,6 @@ import Security
 import Swift
 import SystemConfiguration
 import UIKit
-extension Persistence {
-  public static var totalCapacity: Swift.Int? {
-    get
-  }
-  public static var availableCapacity: Swift.Int? {
-    get
-  }
-  public static var availableCapacityForImportantUsage: Swift.Int? {
-    get
-  }
-  public static var availableCapacityForOpportunisticUsage: Swift.Int? {
-    get
-  }
-}
 public enum MbarkEventType : Swift.String {
   case accept
   case background
@@ -39,67 +25,12 @@ public enum MbarkEventType : Swift.String {
   }
   public init?(rawValue: Swift.String)
 }
-extension Persistence {
-  public enum ErrorCode : Swift.Int {
-    case noFileFound
-    case serialization
-    case deserialization
-    case invalidFileName
-    case couldNotAccessTemporaryDirectory
-    case couldNotAccessUserDomainMask
-    case couldNotAccessSharedContainer
-    public typealias RawValue = Swift.Int
-    public init?(rawValue: Swift.Int)
-    public var rawValue: Swift.Int {
-      get
-    }
-  }
-  public static let errorDomain: Swift.String
-}
-@_hasMissingDesignatedInitializers public class Persistence {
-  public enum Directory : Swift.Equatable {
-    case documents
-    case caches
-    case applicationSupport
-    case temporary
-    case sharedContainer(appGroupName: Swift.String)
-    public var pathDescription: Swift.String {
-      get
-    }
-    public static func == (lhs: Mbark.Persistence.Directory, rhs: Mbark.Persistence.Directory) -> Swift.Bool
-  }
-  @objc deinit
-}
-extension Persistence {
-  public static func url(for path: Swift.String?, in directory: Mbark.Persistence.Directory) throws -> Foundation.URL
-  public static func clear(_ directory: Mbark.Persistence.Directory) throws
-  public static func remove(_ path: Swift.String, from directory: Mbark.Persistence.Directory) throws
-  public static func remove(_ url: Foundation.URL) throws
-  public static func exists(_ path: Swift.String, in directory: Mbark.Persistence.Directory) -> Swift.Bool
-  public static func exists(_ url: Foundation.URL) -> Swift.Bool
-  public static func doNotBackup(_ path: Swift.String, in directory: Mbark.Persistence.Directory) throws
-  public static func doNotBackup(_ url: Foundation.URL) throws
-  public static func backup(_ path: Swift.String, in directory: Mbark.Persistence.Directory) throws
-  public static func backup(_ url: Foundation.URL) throws
-  public static func move(_ path: Swift.String, in directory: Mbark.Persistence.Directory, to newDirectory: Mbark.Persistence.Directory) throws
-  public static func move(_ originalURL: Foundation.URL, to newURL: Foundation.URL) throws
-  public static func rename(_ path: Swift.String, in directory: Mbark.Persistence.Directory, to newPath: Swift.String) throws
-  public static func isFolder(_ url: Foundation.URL) -> Swift.Bool
-}
-public struct IPAddress {
-}
 @_hasMissingDesignatedInitializers public class MbarkInstance : Swift.CustomDebugStringConvertible {
   public var debugDescription: Swift.String {
     get
   }
   @objc deinit
   public func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
-}
-extension Persistence {
-  public static func save<T>(_ value: T, to directory: Mbark.Persistence.Directory, as path: Swift.String, encoder: Foundation.JSONEncoder = JSONEncoder()) throws where T : Swift.Encodable
-  public static func append<T>(_ value: T, to path: Swift.String, in directory: Mbark.Persistence.Directory, decoder: Foundation.JSONDecoder = JSONDecoder(), encoder: Foundation.JSONEncoder = JSONEncoder()) throws where T : Swift.Decodable, T : Swift.Encodable
-  public static func append<T>(_ value: [T], to path: Swift.String, in directory: Mbark.Persistence.Directory, decoder: Foundation.JSONDecoder = JSONDecoder(), encoder: Foundation.JSONEncoder = JSONEncoder()) throws where T : Swift.Decodable, T : Swift.Encodable
-  public static func retrieve<T>(_ path: Swift.String, from directory: Mbark.Persistence.Directory, as type: T.Type, decoder: Foundation.JSONDecoder = JSONDecoder()) throws -> T where T : Swift.Decodable
 }
 @_hasMissingDesignatedInitializers public class Mbark {
   @discardableResult
@@ -117,6 +48,3 @@ public enum MbarkConstants {
 extension Mbark.MbarkEventType : Swift.Equatable {}
 extension Mbark.MbarkEventType : Swift.Hashable {}
 extension Mbark.MbarkEventType : Swift.RawRepresentable {}
-extension Mbark.Persistence.ErrorCode : Swift.Equatable {}
-extension Mbark.Persistence.ErrorCode : Swift.Hashable {}
-extension Mbark.Persistence.ErrorCode : Swift.RawRepresentable {}

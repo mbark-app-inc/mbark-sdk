@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                   = "mbark-sdk"
-  spec.version                = "0.0.5"
+  spec.version                = "0.0.6"
   spec.summary                = "App Onboarding Out of the Box."
   spec.description            = "We help teams get the right customers onboarded with a toolset that allows them to experiment with user flows and deploy changes instantly."
   spec.homepage               = "https://www.mbark.co"
