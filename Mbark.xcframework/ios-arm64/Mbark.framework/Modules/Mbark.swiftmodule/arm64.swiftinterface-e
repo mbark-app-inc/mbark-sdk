@@ -1,6 +1,6 @@
 // swift-interface-format-version: 1.0
 // swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
-// swift-module-flags: -target arm64-apple-ios13.1-macabi -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
+// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
 import Combine
 import CoreTelephony
 import Foundation
@@ -30,24 +30,24 @@ public enum MbarkEventType : Swift.String {
     get
   }
   @objc deinit
-  public func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
+  public func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
 }
 @_hasMissingDesignatedInitializers public class Mbark {
   @discardableResult
-  public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
+  public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> Mbark.MbarkInstance?
   @discardableResult
-  public static func initialize(token apiToken: Swift.String, instanceName: Swift.String = UUID().uuidString, mbarkUID: Swift.String, flowName: Swift.String, flowRevision: Swift.Int, selectedLanguage: Swift.String? = nil) -> MbarkInstance
-  public static func getInstance(name: Swift.String) -> MbarkInstance?
-  public static func mainInstance() -> MbarkInstance
+  public static func initialize(token apiToken: Swift.String, instanceName: Swift.String = UUID().uuidString, mbarkUID: Swift.String, flowName: Swift.String, flowRevision: Swift.Int, selectedLanguage: Swift.String? = nil) -> Mbark.MbarkInstance
+  public static func getInstance(name: Swift.String) -> Mbark.MbarkInstance?
+  public static func mainInstance() -> Mbark.MbarkInstance
   public static func setMainInstance(name: Swift.String)
   public static func removeInstance(name: Swift.String)
-  public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
+  public static func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
   @objc deinit
 }
 public enum MbarkConstants {
   public static let flushInterval: Swift.Double
   public static let baseURL: Foundation.URL
 }
-extension MbarkEventType : Swift.Equatable {}
-extension MbarkEventType : Swift.Hashable {}
-extension MbarkEventType : Swift.RawRepresentable {}
+extension Mbark.MbarkEventType : Swift.Equatable {}
+extension Mbark.MbarkEventType : Swift.Hashable {}
+extension Mbark.MbarkEventType : Swift.RawRepresentable {}
