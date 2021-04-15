@@ -2,14 +2,458 @@
 // swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
 // swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
 import Combine
+import CoreGraphics
 import CoreTelephony
+import Dispatch
 import Foundation
 @_exported import Mbark
 import Network
+import ObjectiveC
 import Security
 import Swift
 import SystemConfiguration
 import UIKit
+import os
+import ObjectiveC.runtime
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+extension Publisher {
+  public func toSignal() -> Mbark.Signal<Self.Output, Self.Failure>
+}
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+extension Signal {
+  public struct CombinePublisher : Combine.Publisher {
+    public typealias Output = Element
+    public typealias Failure = Error
+    public func receive<S>(subscriber: S) where Element == S.Input, Error == S.Failure, S : Combine.Subscriber
+  }
+  public func toPublisher() -> Mbark.Signal<Element, Error>.CombinePublisher
+}
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+extension SignalProtocol {
+  public func toPublisher() -> Mbark.Signal<Self.Element, Self.Error>.CombinePublisher
+}
+public struct Deferred<DeferredSignal> : Mbark.SignalProtocol where DeferredSignal : Mbark.SignalProtocol {
+  public init(signalFactory: @escaping () -> DeferredSignal)
+  public typealias Element = DeferredSignal.Element
+  public typealias Error = DeferredSignal.Error
+  public let signalFactory: () -> DeferredSignal
+  public func observe(with observer: @escaping (Mbark.Signal<DeferredSignal.Element, DeferredSignal.Error>.Event) -> Swift.Void) -> Mbark.Disposable
+}
+extension Subscribers {
+  final public class Accumulator<Input, Failure> : Mbark.Subscriber, Mbark.Cancellable where Failure : Swift.Error {
+    public init()
+    final public var values: [Input] {
+      get
+    }
+    final public var isFinished: Swift.Bool {
+      get
+    }
+    final public var isFailure: Swift.Bool {
+      get
+    }
+    final public var error: Failure? {
+      get
+    }
+    final public func receive(subscription: Mbark.Subscription)
+    final public func receive(_ value: Input) -> Mbark.Subscribers.Demand
+    final public func receive(completion: Mbark.Subscribers.Completion<Failure>)
+    final public func cancel()
+    @objc deinit
+  }
+}
+public protocol ReactiveExtensions {
+  associatedtype Base
+  var base: Self.Base { get }
+}
+public struct Reactive<Base> : Mbark.ReactiveExtensions {
+  public let base: Base
+  public init(_ base: Base)
+}
+public protocol ReactiveExtensionsProvider : AnyObject {
+}
+extension ReactiveExtensionsProvider {
+  public static var reactive: Mbark.Reactive<Self>.Type {
+    get
+  }
+  public var reactive: Mbark.Reactive<Self> {
+    get
+  }
+}
+extension NSObject : Mbark.ReactiveExtensionsProvider {
+}
+extension ReactiveExtensions where Self.Base : ObjectiveC.NSObject {
+  public var deallocated: Mbark.SafeSignal<Swift.Void> {
+    get
+  }
+  public var bag: Mbark.DisposeBag {
+    get
+  }
+  public func publisher<Value>(for keyPath: Swift.KeyPath<Self.Base, Value>, options: Foundation.NSKeyValueObservingOptions = [.initial, .new]) -> Mbark.Signal<Value, Swift.Never>
+}
+extension SignalProtocol {
+  public func subscribe<S>(on scheduler: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.Scheduler
+  public func receive<S>(on scheduler: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.Scheduler
+}
+extension SignalProtocol {
+  public func amb<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
+  public func amb<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, O.Error == Swift.Never
+  public func combineLatest<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func combineLatest<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func combineLatest<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, Self.Error> where O : Mbark.SignalProtocol, O.Error == Swift.Never
+  public func combineLatest<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), Self.Error> where O : Mbark.SignalProtocol, O.Error == Swift.Never
+  public func append<O>(_ other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
+  public func append<O>(_ other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, O.Error == Swift.Never
+  public func prepend<O>(_ other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
+  public func prepend<O>(_ other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, O.Error == Swift.Never
+  public func merge<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
+  public func merge<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, O.Error == Swift.Never
+  public func replayLatest<S>(when other: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SignalProtocol, S.Error == Swift.Never
+  public func with<O, U>(latestFrom other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func with<O>(latestFrom other: O) -> Mbark.Signal<(Self.Element, O.Element), Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func with<O, U>(latestFrom other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, Self.Error> where O : Mbark.SignalProtocol, O.Error == Swift.Never
+  public func with<O>(latestFrom other: O) -> Mbark.Signal<(Self.Element, O.Element), Self.Error> where O : Mbark.SignalProtocol, O.Error == Swift.Never
+  public func zip<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func zip<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func zip<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, Self.Error> where O : Mbark.SignalProtocol, O.Error == Swift.Never
+  public func zip<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), Self.Error> where O : Mbark.SignalProtocol, O.Error == Swift.Never
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func amb<O>(with other: O) -> Mbark.Signal<Self.Element, O.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element
+  public func combineLatest<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, O.Error> where O : Mbark.SignalProtocol
+  public func combineLatest<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), O.Error> where O : Mbark.SignalProtocol
+  public func append<O>(_ other: O) -> Mbark.Signal<Self.Element, O.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element
+  public func prepend<O>(_ other: O) -> Mbark.Signal<Self.Element, O.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element
+  public func merge<O>(with other: O) -> Mbark.Signal<Self.Element, O.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element
+  public func with<O, U>(latestFrom other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, O.Error> where O : Mbark.SignalProtocol
+  public func with<O>(latestFrom other: O) -> Mbark.Signal<(Self.Element, O.Element), O.Error> where O : Mbark.SignalProtocol
+  public func zip<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, O.Error> where O : Mbark.SignalProtocol
+  public func zip<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), O.Error> where O : Mbark.SignalProtocol
+}
+public protocol PropertyProtocol {
+  associatedtype ProperyElement
+  var value: Self.ProperyElement { get }
+}
+final public class Property<Value> : Mbark.PropertyProtocol, Mbark.SubjectProtocol, Mbark.BindableProtocol, Mbark.DisposeBagProvider {
+  public init(_ value: Value, subject: Mbark.Subject<Value, Swift.Never> = PassthroughSubject())
+  @objc deinit
+  final public var bag: Mbark.DisposeBag {
+    get
+  }
+  final public var value: Value {
+    get
+    set
+  }
+  final public var readOnlyView: Mbark.AnyProperty<Value> {
+    get
+  }
+  final public func on(_ event: Mbark.Signal<Value, Swift.Never>.Event)
+  final public func observe(with observer: @escaping (Mbark.Signal<Value, Swift.Never>.Event) -> Swift.Void) -> Mbark.Disposable
+  final public func silentUpdate(value: Value)
+  final public func bind(signal: Mbark.Signal<Value, Swift.Never>) -> Mbark.Disposable
+  public typealias Element = Value
+  public typealias Error = Swift.Never
+  public typealias ProperyElement = Value
+}
+final public class AnyProperty<Value> : Mbark.PropertyProtocol, Mbark.SignalProtocol {
+  public init(property: Mbark.Property<Value>)
+  final public var value: Value {
+    get
+  }
+  final public func observe(with observer: @escaping (Mbark.Signal<Value, Swift.Never>.Event) -> Swift.Void) -> Mbark.Disposable
+  @objc deinit
+  public typealias Element = Value
+  public typealias Error = Swift.Never
+  public typealias ProperyElement = Value
+}
+public protocol ObservableObject : AnyObject {
+  associatedtype ObjectWillChangeSignal : Mbark.SignalProtocol = Mbark.Signal<Swift.Void, Swift.Never> where Self.ObjectWillChangeSignal.Error == Swift.Never
+  var objectWillChange: Self.ObjectWillChangeSignal { get }
+}
+extension ObservableObject where Self.ObjectWillChangeSignal == Mbark.Signal<Swift.Void, Swift.Never> {
+  public var objectWillChange: Mbark.Signal<Swift.Void, Swift.Never> {
+    get
+  }
+}
+extension NSLock {
+  convenience public init(name: Swift.String)
+}
+extension NSRecursiveLock {
+  convenience public init(name: Swift.String)
+}
+public struct Empty<Element, Error> : Mbark.SignalProtocol, Swift.Equatable where Error : Swift.Error {
+  public init(completeImmediately: Swift.Bool = true)
+  public init(completeImmediately: Swift.Bool = true, outputType: Element.Type, failureType: Error.Type)
+  public typealias Element = Element
+  public typealias Error = Error
+  public let completeImmediately: Swift.Bool
+  public func observe(with observer: @escaping (Mbark.Signal<Element, Error>.Event) -> Swift.Void) -> Mbark.Disposable
+  public static func == (a: Mbark.Empty<Element, Error>, b: Mbark.Empty<Element, Error>) -> Swift.Bool
+}
+extension SignalProtocol {
+  public func breakpoint(receiveSubscription: (() -> Swift.Bool)? = nil, receiveOutput: ((Self.Element) -> Swift.Bool)? = nil, receiveCompletion: ((Mbark.Subscribers.Completion<Self.Error>) -> Swift.Bool)? = nil) -> Mbark.Signal<Self.Element, Self.Error>
+  public func breakpointOnError() -> Mbark.Signal<Self.Element, Self.Error>
+  public func debug(_ title: Swift.String? = nil, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line) -> Mbark.Signal<Self.Element, Self.Error>
+  public func delay(interval: Swift.Double, on queue: Dispatch.DispatchQueue = DispatchQueue(label: "mbark.delay")) -> Mbark.Signal<Self.Element, Self.Error>
+  public func `repeat`<S>(when other: @escaping (Self.Element) -> S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SignalProtocol, S.Error == Swift.Never
+  public func handleEvents(receiveSubscription: (() -> Swift.Void)? = nil, receiveOutput: ((Self.Element) -> Swift.Void)? = nil, receiveCompletion: ((Mbark.Subscribers.Completion<Self.Error>) -> Swift.Void)? = nil, receiveCancel: (() -> Swift.Void)? = nil) -> Mbark.Signal<Self.Element, Self.Error>
+  public func feedActivity<S>(into listener: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SubjectProtocol, S.Element == Swift.Bool
+  public func feedNext<S>(into listener: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SubjectProtocol, Self.Element == S.Element
+  public func feedNext<S>(into listener: S, when: @escaping (Self.Element) -> Swift.Bool = { _ in true }, map: @escaping (Self.Element) -> S.Element) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SubjectProtocol
+  public func feedError<S>(into listener: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SubjectProtocol, Self.Error == S.Element
+  public func waitAndCollectEvents() -> [Mbark.Signal<Self.Element, Self.Error>.Event]
+  public func waitAndCollectElements() -> [Self.Element]
+}
+@propertyWrapper public struct Published<Value> {
+  public init(wrappedValue: Value)
+  public struct Publisher : Mbark.SignalProtocol {
+    public typealias Element = Value
+    public typealias Error = Swift.Never
+    public func observe(with observer: @escaping (Mbark.Signal<Value, Swift.Never>.Event) -> Swift.Void) -> Mbark.Disposable
+  }
+  public var wrappedValue: Value {
+    get
+    set
+  }
+  public var projectedValue: Mbark.Published<Value>.Publisher {
+    mutating get
+  }
+}
+public protocol SignalProtocol {
+  associatedtype Element
+  associatedtype Error : Swift.Error
+  func observe(with observer: @escaping Mbark.Observer<Self.Element, Self.Error>) -> Mbark.Disposable
+}
+extension SignalProtocol {
+  public func observe<O>(with observer: O) -> Mbark.Disposable where O : Mbark.ObserverProtocol, Self.Element == O.Element, Self.Error == O.Error
+  public func observeNext(with observer: @escaping (Self.Element) -> Swift.Void) -> Mbark.Disposable
+  public func observeFailed(with observer: @escaping (Self.Error) -> Swift.Void) -> Mbark.Disposable
+  public func observeCompleted(with observer: @escaping () -> Swift.Void) -> Mbark.Disposable
+  public func toSignal() -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  public func sink(receiveCompletion: @escaping ((Mbark.Subscribers.Completion<Self.Error>) -> Swift.Void), receiveValue: @escaping ((Self.Element) -> Swift.Void)) -> Mbark.AnyCancellable
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func sink(receiveValue: @escaping ((Self.Element) -> Swift.Void)) -> Mbark.AnyCancellable
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func assign<Root>(to keyPath: Swift.ReferenceWritableKeyPath<Root, Self.Element>, on object: Root) -> Mbark.AnyCancellable
+}
+extension SignalProtocol {
+  public func subscribe<Downstream>(_ subscriber: Downstream) where Downstream : Mbark.Subscriber, Self.Element == Downstream.Input, Self.Error == Downstream.Failure
+}
+public protocol BindableProtocol {
+  associatedtype Element
+  func bind(signal: Mbark.Signal<Self.Element, Swift.Never>) -> Mbark.Disposable
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  @discardableResult
+  public func bind<B>(to bindable: B) -> Mbark.Disposable where B : Mbark.BindableProtocol, Self.Element == B.Element
+  @discardableResult
+  public func bind<B>(to bindable: B) -> Mbark.Disposable where B : Mbark.BindableProtocol, Self.Element == B.Element.Wrapped, B.Element : Mbark.OptionalProtocol
+}
+extension BindableProtocol where Self : Mbark.SignalProtocol, Self.Error == Swift.Never {
+  @discardableResult
+  public func bidirectionalBind<B>(to target: B) -> Mbark.Disposable where B : Mbark.BindableProtocol, B : Mbark.SignalProtocol, Self.Element == B.Element, B.Error == Swift.Never
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  @discardableResult
+  public func bind<Target>(to target: Target, setter: @escaping (Target, Self.Element) -> Swift.Void) -> Mbark.Disposable where Target : Mbark.BindingExecutionContextProvider, Target : Mbark.Deallocatable
+  @discardableResult
+  public func bind<Target>(to target: Target, context: Mbark.ExecutionContext, setter: @escaping (Target, Self.Element) -> Swift.Void) -> Mbark.Disposable where Target : Mbark.Deallocatable
+  @discardableResult
+  public func bind<Target>(to target: Target, keyPath: Swift.ReferenceWritableKeyPath<Target, Self.Element>) -> Mbark.Disposable where Target : Mbark.BindingExecutionContextProvider, Target : Mbark.Deallocatable
+  @discardableResult
+  public func bind<Target>(to target: Target, keyPath: Swift.ReferenceWritableKeyPath<Target, Self.Element>, context: Mbark.ExecutionContext) -> Mbark.Disposable where Target : Mbark.Deallocatable
+}
+extension SignalProtocol where Self.Element == Swift.Void, Self.Error == Swift.Never {
+  @discardableResult
+  public func bind<Target>(to target: Target, setter: @escaping (Target) -> Swift.Void) -> Mbark.Disposable where Target : Mbark.BindingExecutionContextProvider, Target : Mbark.Deallocatable
+  @discardableResult
+  public func bind<Target>(to target: Target, context: Mbark.ExecutionContext, setter: @escaping (Target) -> Swift.Void) -> Mbark.Disposable where Target : Mbark.Deallocatable
+}
+public protocol BindingExecutionContextProvider {
+  var bindingExecutionContext: Mbark.ExecutionContext { get }
+}
+extension SignalProtocol {
+  public func mapToResult() -> Mbark.Signal<Swift.Result<Self.Element, Self.Error>, Swift.Never>
+  public func tryMap<U>(_ transform: @escaping (Self.Element) -> Swift.Result<U, Self.Error>) -> Mbark.Signal<U, Self.Error>
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func tryMap<U, E>(_ transform: @escaping (Self.Element) -> Swift.Result<U, E>) -> Mbark.Signal<U, E> where E : Swift.Error
+}
+extension SignalProtocol where Self.Element : Mbark._ResultProtocol {
+  public func mapValue<NewSuccess>(_ transform: @escaping (Self.Element.Value) -> NewSuccess) -> Mbark.Signal<Swift.Result<NewSuccess, Self.Element.Error>, Self.Error>
+}
+extension SignalProtocol where Self.Element : Mbark._ResultProtocol, Self.Error == Self.Element.Error {
+  public func getValues() -> Mbark.Signal<Self.Element.Value, Self.Error>
+}
+extension SignalProtocol where Self.Element : Mbark._ResultProtocol, Self.Error == Swift.Never {
+  public func getValues() -> Mbark.Signal<Self.Element.Value, Self.Element.Error>
+}
+public protocol _ResultProtocol {
+  associatedtype Value
+  associatedtype Error : Swift.Error
+  var _unbox: Swift.Result<Self.Value, Self.Error> { get }
+}
+extension Result : Mbark._ResultProtocol {
+  public var _unbox: Swift.Result<Success, Failure> {
+    get
+  }
+  public typealias Value = Success
+  public typealias Error = Failure
+}
+extension Signal {
+  public enum Event {
+    case next(Element)
+    case failed(Error)
+    case completed
+  }
+}
+extension Signal.Event {
+  public var isNext: Swift.Bool {
+    get
+  }
+  public var isFailed: Swift.Bool {
+    get
+  }
+  public var isCompleted: Swift.Bool {
+    get
+  }
+  public var isTerminal: Swift.Bool {
+    get
+  }
+  public var element: Element? {
+    get
+  }
+  public var error: Error? {
+    get
+  }
+}
+extension Signal.Event : Swift.Equatable where Element : Swift.Equatable, Error : Swift.Equatable {
+  public static func == (a: Mbark.Signal<Element, Error>.Event, b: Mbark.Signal<Element, Error>.Event) -> Swift.Bool
+}
+public protocol Deallocatable : AnyObject {
+  var deallocated: Mbark.SafeSignal<Swift.Void> { get }
+}
+public protocol DisposeBagProvider : Mbark.Deallocatable {
+  var bag: Mbark.DisposeBag { get }
+}
+extension DisposeBagProvider {
+  public var deallocated: Mbark.SafeSignal<Swift.Void> {
+    get
+  }
+}
+extension NSObject : Mbark.DisposeBagProvider {
+  public var bag: Mbark.DisposeBag {
+    get
+  }
+}
+public protocol LoadingStateProtocol {
+  associatedtype LoadingValue
+  associatedtype LoadingError : Swift.Error
+  var asLoadingState: Mbark.LoadingState<Self.LoadingValue, Self.LoadingError> { get }
+}
+extension LoadingStateProtocol {
+  public var isLoading: Swift.Bool {
+    get
+  }
+  public var value: Self.LoadingValue? {
+    get
+  }
+  public var error: Self.LoadingError? {
+    get
+  }
+}
+public enum LoadingState<LoadingValue, LoadingError> : Mbark.LoadingStateProtocol where LoadingError : Swift.Error {
+  case loading
+  case loaded(LoadingValue)
+  case failed(LoadingError)
+  public var asLoadingState: Mbark.LoadingState<LoadingValue, LoadingError> {
+    get
+  }
+}
+public protocol ObservedLoadingStateProtocol : Mbark.LoadingStateProtocol {
+  var asObservedLoadingState: Mbark.ObservedLoadingState<Self.LoadingValue, Self.LoadingError> { get }
+}
+extension ObservedLoadingStateProtocol {
+  public var isReloading: Swift.Bool {
+    get
+  }
+}
+public enum ObservedLoadingState<LoadingValue, LoadingError> : Mbark.ObservedLoadingStateProtocol where LoadingError : Swift.Error {
+  case loading
+  case reloading
+  case loaded(LoadingValue)
+  case failed(LoadingError)
+  public var asLoadingState: Mbark.LoadingState<LoadingValue, LoadingError> {
+    get
+  }
+  public var asObservedLoadingState: Mbark.ObservedLoadingState<LoadingValue, LoadingError> {
+    get
+  }
+}
+extension LoadingState {
+  public func isSameStateAs<V, E>(_ other: Mbark.LoadingState<V, E>) -> Swift.Bool where E : Swift.Error
+}
+public typealias LoadingSignal<LoadingValue, LoadingError> = Mbark.SafeSignal<Mbark.LoadingState<LoadingValue, LoadingError>> where LoadingError : Swift.Error
+extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol, Self.Error == Swift.Never {
+  public typealias LoadingValue = Self.Element.LoadingValue
+  public typealias LoadingError = Self.Element.LoadingError
+  public static func loading() -> Mbark.LoadingSignal<Self.LoadingValue, Self.LoadingError>
+  public static func loaded(_ value: Self.LoadingValue) -> Mbark.LoadingSignal<Self.LoadingValue, Self.LoadingError>
+  public static func failed(_ error: Self.LoadingError) -> Mbark.LoadingSignal<Self.LoadingValue, Self.LoadingError>
+  public func value() -> Mbark.SafeSignal<Self.LoadingValue>
+  public func mapValue<NewValue>(_ transform: @escaping (Self.LoadingValue) -> NewValue) -> Mbark.LoadingSignal<NewValue, Self.LoadingError>
+  public func mapLoadingError<NewError>(_ transform: @escaping (Self.LoadingError) -> NewError) -> Mbark.LoadingSignal<Self.LoadingValue, NewError> where NewError : Swift.Error
+  public func dematerializeLoadingState() -> Mbark.Signal<Self.LoadingValue, Self.LoadingError>
+  public func liftValue<T>(_ transfrom: @escaping (Mbark.Signal<Self.LoadingValue, Self.LoadingError>) -> Mbark.Signal<T, Self.LoadingError>) -> Mbark.LoadingSignal<T, Self.LoadingError>
+  public func liftValue<T>(_ transfrom: @escaping (Mbark.Signal<Self.LoadingValue, Self.LoadingError>) -> Mbark.LoadingSignal<T, Self.LoadingError>) -> Mbark.LoadingSignal<T, Self.LoadingError>
+  public func flatMapValue<NewValue>(_ strategy: Mbark.FlattenStrategy = .latest, transfrom: @escaping (Self.LoadingValue) -> Mbark.LoadingSignal<NewValue, Self.LoadingError>) -> Mbark.LoadingSignal<NewValue, Self.LoadingError>
+  public func flatMapValue<NewValue>(_ strategy: Mbark.FlattenStrategy = .latest, transfrom: @escaping (Self.LoadingValue) -> Mbark.Signal<NewValue, Self.LoadingError>) -> Mbark.LoadingSignal<NewValue, Self.LoadingError>
+  public func deriveObservedLoadingState(loadsAgainOnFailure: Swift.Bool = true) -> Mbark.Signal<Mbark.ObservedLoadingState<Self.LoadingValue, Self.LoadingError>, Swift.Never>
+}
+extension SignalProtocol {
+  public func toLoadingSignal() -> Mbark.LoadingSignal<Self.Element, Self.Error>
+}
+public protocol LoadingStateListener : AnyObject {
+  func setLoadingState<LoadingValue, LoadingError>(_ state: Mbark.ObservedLoadingState<LoadingValue, LoadingError>) where LoadingError : Swift.Error
+  var loadingStateListenerNeedsWeakReference: Swift.Bool { get }
+}
+extension LoadingStateListener {
+  public var loadingStateListenerNeedsWeakReference: Swift.Bool {
+    get
+  }
+}
+extension SignalProtocol where Self.Element : Mbark.ObservedLoadingStateProtocol, Self.Error == Swift.Never {
+  public func updateLoadingState(of listener: Mbark.BindingExecutionContextProvider & Mbark.LoadingStateListener) -> Mbark.Signal<Mbark.ObservedLoadingState<Self.LoadingValue, Self.LoadingError>, Swift.Never>
+  public func updateLoadingState(of listener: Mbark.LoadingStateListener, context: Mbark.ExecutionContext) -> Mbark.Signal<Mbark.ObservedLoadingState<Self.LoadingValue, Self.LoadingError>, Swift.Never>
+  public func consumeLoadingState(by listener: Mbark.BindingExecutionContextProvider & Mbark.LoadingStateListener) -> Mbark.SafeSignal<Self.LoadingValue>
+  public func consumeLoadingState(by listener: Mbark.LoadingStateListener, context: Mbark.ExecutionContext) -> Mbark.SafeSignal<Self.LoadingValue>
+}
+extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol, Self.Error == Swift.Never {
+  public func updateLoadingState(of listener: Mbark.BindingExecutionContextProvider & Mbark.LoadingStateListener) -> Mbark.LoadingSignal<Self.LoadingValue, Self.LoadingError>
+  public func updateLoadingState(of listener: Mbark.LoadingStateListener, context: Mbark.ExecutionContext) -> Mbark.LoadingSignal<Self.LoadingValue, Self.LoadingError>
+  public func consumeLoadingState(by listener: Mbark.BindingExecutionContextProvider & Mbark.LoadingStateListener) -> Mbark.SafeSignal<Self.LoadingValue>
+  public func consumeLoadingState(by listener: Mbark.LoadingStateListener, context: Mbark.ExecutionContext) -> Mbark.SafeSignal<Self.LoadingValue>
+}
+public enum TimelaneLaneType : Swift.Int, Swift.CaseIterable {
+  case subscription, event
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+  public typealias AllCases = [Mbark.TimelaneLaneType]
+  public static var allCases: [Mbark.TimelaneLaneType] {
+    get
+  }
+}
+extension SignalProtocol {
+  public func laneIfAvailable(_ name: Swift.String, filter: Swift.Set<Mbark.TimelaneLaneType> = Set(TimelaneLaneType.allCases), file: Swift.StaticString = #file, function: Swift.StaticString = #function, line: Swift.UInt = #line) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(OSX 10.14, iOS 12, tvOS 12, watchOS 5, *)
+  public func lane(_ name: Swift.String, filter: Swift.Set<Mbark.TimelaneLaneType> = Set(TimelaneLaneType.allCases), file: Swift.StaticString = #file, function: Swift.StaticString = #function, line: Swift.UInt = #line) -> Mbark.Signal<Self.Element, Self.Error>
+}
 public enum MbarkEventType : Swift.String {
   case accept
   case background
@@ -25,12 +469,698 @@ public enum MbarkEventType : Swift.String {
   }
   public init?(rawValue: Swift.String)
 }
+public protocol Scheduler {
+  func schedule(_ action: @escaping () -> Swift.Void)
+}
+extension ExecutionContext : Mbark.Scheduler {
+  public func schedule(_ action: @escaping () -> Swift.Void)
+}
+extension DispatchQueue : Mbark.Scheduler {
+  public func schedule(_ action: @escaping () -> Swift.Void)
+}
+extension CGSize : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@available(*, deprecated, message: "Event<Element, Error> has been renamed to Signal<Element, Error>.Event")
+public typealias Event<Element, Error> = Mbark.Signal<Element, Error>.Event where Error : Swift.Error
+@available(*, deprecated, renamed: "Never")
+public typealias NoError = Swift.Never
+@available(*, deprecated, renamed: "SafeSignal")
+public typealias Signal1<Element> = Mbark.Signal<Element, Swift.Never>
+@available(*, deprecated, renamed: "SafeObserver")
+public typealias Observer1<Element> = (Mbark.Event<Element, Swift.Never>) -> Swift.Void
+@available(*, deprecated, renamed: "SafePublishSubject")
+public typealias PublishSubject1<Element> = Mbark.PublishSubject<Element, Swift.Never>
+@available(*, deprecated, renamed: "SafeReplaySubject")
+public typealias ReplaySubject1<Element> = Mbark.ReplaySubject<Element, Swift.Never>
+@available(*, deprecated, renamed: "SafeReplayOneSubject")
+public typealias ReplayOneSubject1<Element> = Mbark.ReplayOneSubject<Element, Swift.Never>
+extension SignalProtocol {
+  @available(*, deprecated, renamed: "init(just:)")
+  public static func just(_ element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "init(sequence:)")
+  public static func sequence<S>(_ sequence: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Swift.Sequence, Self.Element == S.Element
+  @available(*, deprecated, message: "Please use Signal(sequence: 0..., interval: N) instead")
+  public static func interval(_ interval: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.reactivekit.interval")) -> Mbark.Signal<Swift.Int, Self.Error>
+  @available(*, deprecated, message: "Please use Signal(just:after:) instead")
+  public static func timer(element: Self.Element, time: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.reactivekit.timer")) -> Mbark.Signal<Self.Element, Self.Error>
+}
+@available(*, deprecated, message: "Please use Signal(flattening: signals, strategy: .merge")
+public func merge<Element, Error>(_ signals: [Mbark.Signal<Element, Error>]) -> Mbark.Signal<Element, Error> where Error : Swift.Error
+@available(*, deprecated, renamed: "Signal(combiningLatest:combine:)")
+public func combineLatest<Element, Result, Error>(_ signals: [Mbark.Signal<Element, Error>], combine: @escaping ([Element]) -> Result) -> Mbark.Signal<Result, Error> where Error : Swift.Error
+extension SignalProtocol where Self.Element : Mbark.OptionalProtocol {
+  @available(*, deprecated, renamed: "replaceNils")
+  public func replaceNil(with replacement: Self.Element.Wrapped) -> Mbark.Signal<Self.Element.Wrapped, Self.Error>
+  @available(*, deprecated, renamed: "ignoreNils")
+  public func ignoreNil() -> Mbark.Signal<Self.Element.Wrapped, Self.Error>
+}
+extension Signal where Error == Swift.Never {
+  @available(*, deprecated, message: "Replace with compactMap { $0.element }`")
+  public func elements<U, E>() -> Mbark.Signal<U, Swift.Never> where Element == Mbark.Signal<U, E>.Event, E : Swift.Error
+  @available(*, deprecated, message: "Replace with compactMap { $0.error }`")
+  public func errors<U, E>() -> Mbark.Signal<E, Swift.Never> where Element == Mbark.Signal<U, E>.Event, E : Swift.Error
+}
+extension SignalProtocol {
+  @available(*, deprecated, renamed: "debounce(interval:queue:)")
+  public func debounce(interval: Swift.Double, on queue: Dispatch.DispatchQueue) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "distinctUntilChanged")
+  public func distinct(areDistinct: @escaping (Self.Element, Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "replaceElements")
+  public func replace<T>(with element: T) -> Mbark.Signal<T, Self.Error>
+}
+extension SignalProtocol where Self.Element : Swift.Equatable {
+  @available(*, deprecated, renamed: "distinctUntilChanged")
+  public func distinct() -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol where Self.Element : Swift.Sequence {
+  @available(*, deprecated, renamed: "flattenElements")
+  public func unwrap() -> Mbark.Signal<Self.Element.Iterator.Element, Self.Error>
+}
+@_inheritsConvenienceInitializers @available(*, deprecated, renamed: "PassthroughSubject")
+final public class PublishSubject<Element, Error> : Mbark.Subject<Element, Error> where Error : Swift.Error {
+  @objc deinit
+  override public init()
+}
+@available(*, deprecated, renamed: "PassthroughSubject")
+public typealias SafePublishSubject<Element> = Mbark.PublishSubject<Element, Swift.Never>
+extension ObserverProtocol {
+  @available(*, deprecated, renamed: "receive(_:)")
+  public func next(_ element: Self.Element)
+  @available(*, deprecated, message: "Please use receive(completion: .failure(error))")
+  public func failed(_ error: Self.Error)
+  @available(*, deprecated, message: "Please use receive(completion: .finished)")
+  public func completed()
+  @available(*, deprecated, renamed: "receive(lastElement:)")
+  public func completed(with element: Self.Element)
+}
+extension ObserverProtocol where Self.Element == Swift.Void {
+  @available(*, deprecated, renamed: "receive")
+  public func next()
+}
+extension SubjectProtocol {
+  @available(*, deprecated, renamed: "send(_:)")
+  public func next(_ element: Self.Element)
+  @available(*, deprecated, message: "Please use send(completion: .failure(error))")
+  public func failed(_ error: Self.Error)
+  @available(*, deprecated, message: "Please use send(completion: .finished)")
+  public func completed()
+  @available(*, deprecated, renamed: "send(lastElement:)")
+  public func completed(with element: Self.Element)
+}
+extension SubjectProtocol where Self.Element == Swift.Void {
+  @available(*, deprecated, renamed: "send")
+  public func next()
+}
+extension Subject {
+  @available(*, deprecated, renamed: "receive(event:)")
+  open func send(_ event: Mbark.Event<Element, Error>)
+}
+extension SignalProtocol {
+  @available(*, deprecated, renamed: "share(limit:)")
+  public func shareReplay(limit: Swift.Int = Int.max) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  @available(*, deprecated, renamed: "subscribe(on:)")
+  public func executeIn(_ context: Mbark.ExecutionContext) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "subscribe(on:)")
+  public func executeOn(_ queue: Dispatch.DispatchQueue) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "receive(on:)")
+  public func observeIn(_ context: Mbark.ExecutionContext) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "receive(on:)")
+  public func observeOn(_ queue: Dispatch.DispatchQueue) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  @available(*, deprecated, message: "Please use `removeDuplicates(by:)` instead, but note that the closure should now return `true` when the element are equal!")
+  public func distinctUntilChanged(_ areDistinct: @escaping (Self.Element, Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "debounce(for:queue:)")
+  public func debounce(interval: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.debounce")) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "output(at:)")
+  public func element(at index: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "dropFirst(_:)")
+  public func skip(first count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "dropLast(_:)")
+  public func skip(last count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "dropFirst(for:)")
+  public func skip(interval: Swift.Double) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "prefix(while:)")
+  public func take(while shouldContinue: @escaping (Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "prefix(untilOutputFrom:)")
+  public func take<S>(until signal: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SignalProtocol
+  @available(*, deprecated, renamed: "prefix(maxLength:)")
+  public func take(first count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "suffix(maxLength:)")
+  public func take(last count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "throttle(for:)")
+  public func throttle(seconds: Swift.Double) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol where Self.Element : Swift.Equatable {
+  @available(*, deprecated, renamed: "removeDuplicates")
+  public func distinctUntilChanged() -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  @available(*, deprecated, renamed: "buffer(size:)")
+  public func buffer(ofSize size: Swift.Int) -> Mbark.Signal<[Self.Element], Self.Error>
+  @available(*, deprecated, renamed: "replaceEmpty(with:)")
+  public func defaultIfEmpty(_ element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "prepend(_:)")
+  public func start(with element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "ignoreOutput")
+  public func ignoreElements() -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "replaceError(with:)")
+  public func recover(with element: Self.Element) -> Mbark.Signal<Self.Element, Swift.Never>
+  @available(*, deprecated, renamed: "retry(_:)")
+  public func retry(times: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  @available(*, deprecated, renamed: "handleEvents(receiveSubscription:receiveOutput:receiveCompletion:receiveCancel:)")
+  public func doOn(next: ((Self.Element) -> Swift.Void)? = nil, start: (() -> Swift.Void)? = nil, failed: ((Self.Error) -> Swift.Void)? = nil, completed: (() -> Swift.Void)? = nil, disposed: (() -> Swift.Void)? = nil) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  @available(*, deprecated, renamed: "append(_:)")
+  public func concat<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
+  @available(*, deprecated, renamed: "append(_:)")
+  public func concat<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, O.Error == Swift.Never
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  @available(*, deprecated, renamed: "append(_:)")
+  public func concat<O>(with other: O) -> Mbark.Signal<Self.Element, O.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element
+}
+extension SignalProtocol {
+  @available(*, deprecated, message: "Please provide `receiveCompletion` argument when observing signals with error type other than `Never`.")
+  public func sink(receiveValue: @escaping ((Self.Element) -> Swift.Void)) -> Mbark.AnyCancellable
+}
+public protocol Subscriber {
+  associatedtype Input
+  associatedtype Failure : Swift.Error
+  func receive(subscription: Mbark.Subscription)
+  func receive(_ input: Self.Input) -> Mbark.Subscribers.Demand
+  func receive(completion: Mbark.Subscribers.Completion<Self.Failure>)
+}
+extension Subscriber where Self.Input == Swift.Void {
+  public func receive() -> Mbark.Subscribers.Demand
+}
+public protocol Cancellable {
+  func cancel()
+}
+public protocol ConnectableSignalProtocol : Mbark.SignalProtocol {
+  func connect() -> Mbark.Disposable
+}
+final public class ConnectableSignal<Source> : Mbark.ConnectableSignalProtocol where Source : Mbark.SignalProtocol {
+  public init(source: Source, subject: Mbark.Subject<Source.Element, Source.Error>)
+  final public func connect() -> Mbark.Disposable
+  final public func observe(with observer: @escaping (Mbark.Signal<Source.Element, Source.Error>.Event) -> Swift.Void) -> Mbark.Disposable
+  @objc deinit
+  public typealias Element = Source.Element
+  public typealias Error = Source.Error
+}
+extension ConnectableSignalProtocol {
+  public func refCount(disconnectCount: Swift.Int = 0) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  public func multicast(_ createSubject: () -> Mbark.Subject<Self.Element, Self.Error>) -> Mbark.ConnectableSignal<Self>
+  public func multicast(subject: Mbark.Subject<Self.Element, Self.Error>) -> Mbark.ConnectableSignal<Self>
+  public func replay(limit: Swift.Int = Int.max) -> Mbark.ConnectableSignal<Self>
+  public func publish() -> Mbark.ConnectableSignal<Self>
+  public func share(limit: Swift.Int = Int.max, keepAlive: Swift.Bool = false) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol {
+  public func replayValues(limit: Swift.Int = Int.max) -> Mbark.ConnectableSignal<Mbark.Signal<Mbark.LoadingState<Self.Element.LoadingValue, Self.Element.LoadingError>, Self.Error>>
+  public func shareReplayValues(limit: Swift.Int = Int.max) -> Mbark.Signal<Mbark.LoadingState<Self.Element.LoadingValue, Self.Element.LoadingError>, Self.Error>
+}
+extension SignalProtocol {
+  public func debounce(for seconds: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.debounce")) -> Mbark.Signal<Self.Element, Self.Error>
+  public func removeDuplicates(by areEqual: @escaping (Self.Element, Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
+  public func output(at index: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  public func filter(_ isIncluded: @escaping (Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
+  public func flatMapFilter(_ strategy: Mbark.FlattenStrategy = .concat, _ isIncluded: @escaping (Self.Element) -> Mbark.SafeSignal<Swift.Bool>) -> Mbark.Signal<Self.Element, Self.Error>
+  public func first() -> Mbark.Signal<Self.Element, Self.Error>
+  public func ignoreOutput() -> Mbark.Signal<Self.Element, Self.Error>
+  public func ignoreTerminal() -> Mbark.Signal<Self.Element, Self.Error>
+  public func last() -> Mbark.Signal<Self.Element, Self.Error>
+  public func pausable<O>(by other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, O.Element == Swift.Bool
+  public func sample(interval: Swift.Double, on queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.sample")) -> Mbark.Signal<Self.Element, Self.Error>
+  public func dropFirst(_ count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  public func dropLast(_ count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  public func dropFirst(for seconds: Swift.Double) -> Mbark.Signal<Self.Element, Self.Error>
+  public func prefix(maxLength: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  public func suffix(maxLength: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
+  public func prefix(while shouldContinue: @escaping (Self.Element) -> Swift.Bool, inclusive: Swift.Bool = false) -> Mbark.Signal<Self.Element, Self.Error>
+  public func prefix<S>(untilOutputFrom signal: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SignalProtocol
+  public func throttle(for seconds: Swift.Double) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol where Self.Element : Swift.Equatable {
+  public func removeDuplicates() -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol {
+  public func compactMap<NewWrapped>(_ transform: @escaping (Self.Element) -> NewWrapped?) -> Mbark.Signal<NewWrapped, Self.Error>
+}
+extension SignalProtocol where Self.Element : Mbark.OptionalProtocol {
+  public func mapWrapped<NewWrapped>(_ transform: @escaping (Self.Element.Wrapped) -> NewWrapped) -> Mbark.Signal<NewWrapped?, Self.Error>
+  public func replaceNils(with replacement: Self.Element.Wrapped) -> Mbark.Signal<Self.Element.Wrapped, Self.Error>
+  public func ignoreNils() -> Mbark.Signal<Self.Element.Wrapped, Self.Error>
+}
+public protocol OptionalProtocol {
+  associatedtype Wrapped
+  var _unbox: Swift.Optional<Self.Wrapped> { get }
+  init(nilLiteral: ())
+  init(_ some: Self.Wrapped)
+}
+extension Optional : Mbark.OptionalProtocol {
+  public var _unbox: Swift.Optional<Wrapped> {
+    get
+  }
+}
+public protocol Disposable : Mbark.Cancellable {
+  func dispose()
+  var isDisposed: Swift.Bool { get }
+}
+extension Disposable {
+  public func cancel()
+}
+public struct NonDisposable : Mbark.Disposable {
+  public static let instance: Mbark.NonDisposable
+  public func dispose()
+  public var isDisposed: Swift.Bool {
+    get
+  }
+}
+final public class SimpleDisposable : Mbark.Disposable {
+  public init(isDisposed: Swift.Bool = false)
+  final public var isDisposed: Swift.Bool {
+    get
+    set
+  }
+  final public func dispose()
+  @objc deinit
+}
+final public class BlockDisposable : Mbark.Disposable {
+  public init(_ handler: @escaping () -> Swift.Void)
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  final public func dispose()
+  @objc deinit
+}
+final public class DeinitDisposable : Mbark.Disposable {
+  public init(disposable: Mbark.Disposable)
+  @objc deinit
+  final public var otherDisposable: Mbark.Disposable? {
+    get
+    set
+  }
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  final public func dispose()
+}
+final public class CompositeDisposable : Mbark.Disposable {
+  public init()
+  public init(_ disposables: [Mbark.Disposable])
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  public static func += (left: Mbark.CompositeDisposable, right: Mbark.Disposable)
+  final public func add(disposable: Mbark.Disposable)
+  final public func dispose()
+  @objc deinit
+}
+final public class SerialDisposable : Mbark.Disposable {
+  public init(otherDisposable: Mbark.Disposable?)
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  final public var otherDisposable: Mbark.Disposable? {
+    get
+    set
+  }
+  final public func dispose()
+  @objc deinit
+}
+public protocol DisposeBagProtocol : Mbark.Disposable {
+  func add(disposable: Mbark.Disposable)
+}
+final public class DisposeBag : Mbark.DisposeBagProtocol {
+  public init()
+  @objc deinit
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  final public var deallocated: Mbark.SafeSignal<Swift.Void> {
+    get
+  }
+  public static func += (left: Mbark.DisposeBag, right: Mbark.Disposable)
+  public static func += (left: Mbark.DisposeBag, right: [Mbark.Disposable])
+  final public func add(disposable: Mbark.Disposable)
+  final public func add(disposables: [Mbark.Disposable])
+  final public func dispose()
+}
+final public class AnyCancellable : Mbark.Disposable {
+  public init(_ handler: @escaping () -> Swift.Void)
+  @objc deinit
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  final public func dispose()
+}
+extension AnyCancellable : Swift.Hashable {
+  public static func == (lhs: Mbark.AnyCancellable, rhs: Mbark.AnyCancellable) -> Swift.Bool
+  final public func hash(into hasher: inout Swift.Hasher)
+  final public var hashValue: Swift.Int {
+    get
+  }
+}
+extension AnyCancellable {
+  convenience public init(_ disposable: Mbark.Disposable)
+  final public func store<C>(in collection: inout C) where C : Swift.RangeReplaceableCollection, C.Element == Mbark.AnyCancellable
+  final public func store(in set: inout Swift.Set<Mbark.AnyCancellable>)
+}
+extension Disposable {
+  public func dispose(in disposeBag: Mbark.DisposeBagProtocol)
+  public func store(in disposeBag: Mbark.DisposeBagProtocol)
+  public func store<C>(in collection: inout C) where C : Swift.RangeReplaceableCollection, C.Element == Mbark.AnyCancellable
+  public func store(in set: inout Swift.Set<Mbark.AnyCancellable>)
+}
+public func combineLatest<A, B, Result>(_ a: A, _ b: B, combine: @escaping (A.Element, B.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, A.Error == B.Error
+public func combineLatest<A, B, C, Result>(_ a: A, _ b: B, _ c: C, combine: @escaping (A.Element, B.Element, C.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error
+public func combineLatest<A, B, C, D, Result>(_ a: A, _ b: B, _ c: C, _ d: D, combine: @escaping (A.Element, B.Element, C.Element, D.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error
+public func combineLatest<A, B, C, D, E, Result>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, combine: @escaping (A.Element, B.Element, C.Element, D.Element, E.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error
+public func combineLatest<A, B, C, D, E, F, Result>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F, combine: @escaping (A.Element, B.Element, C.Element, D.Element, E.Element, F.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error, E.Error == F.Error
+public func combineLatest<A, B>(_ a: A, _ b: B) -> Mbark.Signal<(A.Element, B.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, A.Error == B.Error
+public func combineLatest<A, B, C>(_ a: A, _ b: B, _ c: C) -> Mbark.Signal<(A.Element, B.Element, C.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error
+public func combineLatest<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) -> Mbark.Signal<(A.Element, B.Element, C.Element, D.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error
+public func combineLatest<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) -> Mbark.Signal<(A.Element, B.Element, C.Element, D.Element, E.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error
+public func combineLatest<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) -> Mbark.Signal<(A.Element, B.Element, C.Element, D.Element, E.Element, F.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error, E.Error == F.Error
+public func zip<A, B, Result>(_ a: A, _ b: B, combine: @escaping (A.Element, B.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, A.Error == B.Error
+public func zip<A, B, C, Result>(_ a: A, _ b: B, _ c: C, combine: @escaping (A.Element, B.Element, C.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error
+public func zip<A, B, C, D, Result>(_ a: A, _ b: B, _ c: C, _ d: D, combine: @escaping (A.Element, B.Element, C.Element, D.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error
+public func zip<A, B, C, D, E, Result>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, combine: @escaping (A.Element, B.Element, C.Element, D.Element, E.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error
+public func zip<A, B, C, D, E, F, Result>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F, combine: @escaping (A.Element, B.Element, C.Element, D.Element, E.Element, F.Element) -> Result) -> Mbark.Signal<Result, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error, E.Error == F.Error
+public func zip<A, B>(_ a: A, _ b: B) -> Mbark.Signal<(A.Element, B.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, A.Error == B.Error
+public func zip<A, B, C>(_ a: A, _ b: B, _ c: C) -> Mbark.Signal<(A.Element, B.Element, C.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error
+public func zip<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) -> Mbark.Signal<(A.Element, B.Element, C.Element, D.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error
+public func zip<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) -> Mbark.Signal<(A.Element, B.Element, C.Element, D.Element, E.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error
+public func zip<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) -> Mbark.Signal<(A.Element, B.Element, C.Element, D.Element, E.Element, F.Element), A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Error == B.Error, B.Error == C.Error, C.Error == D.Error, D.Error == E.Error, E.Error == F.Error
+public func merge<A, B>(_ a: A, _ b: B) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error
+public func merge<A, B, C>(_ a: A, _ b: B, _ c: C) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error
+public func merge<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error
+public func merge<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error
+public func merge<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error, E.Element == F.Element, E.Error == F.Error
+public func amb<A, B>(_ a: A, _ b: B) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error
+public func amb<A, B, C>(_ a: A, _ b: B, _ c: C) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error
+public func amb<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error
+public func amb<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error
+public func amb<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error, E.Element == F.Element, E.Error == F.Error
+public struct Signal<Element, Error> : Mbark.SignalProtocol where Error : Swift.Error {
+  public typealias Producer = (Mbark.AtomicObserver<Element, Error>) -> Mbark.Disposable
+  public init(_ producer: @escaping Mbark.Signal<Element, Error>.Producer)
+  public func observe(with observer: @escaping Mbark.Observer<Element, Error>) -> Mbark.Disposable
+}
+public typealias SafeSignal<Element> = Mbark.Signal<Element, Swift.Never>
+extension Signal {
+  public static func completed() -> Mbark.Signal<Element, Error>
+  public static func failed(_ error: Error) -> Mbark.Signal<Element, Error>
+  public static func never() -> Mbark.Signal<Element, Error>
+  public static func withObserver() -> (Mbark.Signal<Element, Error>, Mbark.AnyObserver<Element, Error>)
+}
+extension Signal {
+  public init(just element: Element)
+  public init(just element: Element, after interval: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.just_after"))
+  public init(performing body: @escaping () -> Element)
+  public init(result: Swift.Result<Element, Error>)
+  public init<Other>(deferring makeSignal: @escaping () -> Other) where Element == Other.Element, Error == Other.Error, Other : Mbark.SignalProtocol
+  public init(evaluating body: @escaping () -> Swift.Result<Element, Error>)
+  public init<S>(sequence: S) where Element == S.Element, S : Swift.Sequence
+  public init<S>(sequence: S, interval: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.sequence")) where Element == S.Element, S : Swift.Sequence
+  public init<S>(flattening signals: S, strategy: Mbark.FlattenStrategy) where Element == S.Element.Element, Error == S.Element.Error, S : Swift.Sequence, S.Element : Mbark.SignalProtocol
+  public init<S>(combiningLatest signals: S, combine: @escaping ([S.Element.Element]) -> Element) where Error == S.Element.Error, S : Swift.Collection, S.Element : Mbark.SignalProtocol
+}
+extension Signal where Error == Swift.Error {
+  public init(catching body: @escaping () throws -> Element)
+}
+extension Signal where Error == Swift.Never {
+  public init(takingOver nextObserver: inout @escaping (Element) -> Swift.Void)
+}
+extension Signal where Element == Swift.Void, Error == Swift.Never {
+  public init(takingOver nextObserver: inout @escaping () -> Swift.Void)
+}
+public protocol Subscription : Mbark.Cancellable {
+  func request(_ demand: Mbark.Subscribers.Demand)
+}
+public struct ExecutionContext {
+  public init(_ context: @escaping (@escaping () -> Swift.Void) -> Swift.Void)
+  public static var immediate: Mbark.ExecutionContext {
+    get
+  }
+  public static var immediateOnMain: Mbark.ExecutionContext {
+    get
+  }
+  public static var main: Mbark.ExecutionContext {
+    get
+  }
+  public let context: (@escaping () -> Swift.Void) -> Swift.Void
+  @available(OSX 10.10, *)
+  public static func global(qos: Dispatch.DispatchQoS.QoSClass = .default) -> Mbark.ExecutionContext
+  public static func nonRecursive() -> Mbark.ExecutionContext
+  public func execute(_ block: @escaping () -> Swift.Void)
+}
+extension DispatchQueue {
+  public var context: Mbark.ExecutionContext {
+    get
+  }
+  @available(*, deprecated, message: "Please use asyncAfter(deadline:execute:)")
+  public func after(when interval: Swift.Double, block: @escaping () -> Swift.Void)
+  public func disposableAfter(when interval: Swift.Double, block: @escaping () -> Swift.Void) -> Mbark.Disposable
+}
 @_hasMissingDesignatedInitializers public class MbarkInstance : Swift.CustomDebugStringConvertible {
+  @objc deinit
   public var debugDescription: Swift.String {
     get
   }
-  @objc deinit
   public func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
+}
+public enum Subscribers {
+  public enum Completion<Failure> where Failure : Swift.Error {
+    case finished
+    case failure(Failure)
+  }
+}
+extension SignalProtocol {
+  public func map<U>(_ transform: @escaping (Self.Element) -> U) -> Mbark.Signal<U, Self.Error>
+  public func flatMap<O>(_ strategy: Mbark.FlattenStrategy, _ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func flatMapConcat<O>(_ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func flatMapLatest<O>(_ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func flatMapMerge<O>(_ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Error == O.Error
+  public func flatMapError<S>(_ recover: @escaping (Self.Error) -> S) -> Mbark.Signal<Self.Element, S.Error> where S : Mbark.SignalProtocol, Self.Element == S.Element
+}
+extension SignalProtocol where Self.Error == Swift.Error {
+  public func map<U>(_ transform: @escaping (Self.Element) throws -> U) -> Mbark.Signal<U, Self.Error>
+}
+public enum FlattenStrategy {
+  case concat
+  case latest
+  case merge
+  public static func == (a: Mbark.FlattenStrategy, b: Mbark.FlattenStrategy) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+extension SignalProtocol where Self.Element : Mbark.SignalProtocol, Self.Error == Self.Element.Error {
+  public typealias InnerElement = Self.Element.Element
+  public func flatten(_ strategy: Mbark.FlattenStrategy) -> Mbark.Signal<Self.InnerElement, Self.Error>
+  public func merge() -> Mbark.Signal<Self.InnerElement, Self.Error>
+  public func switchToLatest() -> Mbark.Signal<Self.InnerElement, Self.Error>
+  public func concat() -> Mbark.Signal<Self.InnerElement, Self.Error>
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func flatMap<O>(_ strategy: Mbark.FlattenStrategy, _ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, O.Error> where O : Mbark.SignalProtocol
+  public func flatMapConcat<O>(_ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, O.Error> where O : Mbark.SignalProtocol
+  public func flatMapLatest<O>(_ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, O.Error> where O : Mbark.SignalProtocol
+  public func flatMapMerge<O>(_ transform: @escaping (Self.Element) -> O) -> Mbark.Signal<O.Element, O.Error> where O : Mbark.SignalProtocol
+}
+extension SignalProtocol where Self.Element : Mbark.SignalProtocol, Self.Error == Swift.Never {
+  public func flatten(_ strategy: Mbark.FlattenStrategy) -> Mbark.Signal<Self.Element.Element, Self.Element.Error>
+}
+extension Subscribers {
+  public struct Demand : Swift.Equatable, Swift.Hashable {
+    public let value: Swift.Int
+    public static let unlimited: Mbark.Subscribers.Demand
+    @available(*, unavailable, message: "Not supported yet.")
+    public static func max(_ value: Swift.Int) -> Mbark.Subscribers.Demand
+    public static func == (a: Mbark.Subscribers.Demand, b: Mbark.Subscribers.Demand) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+}
+public typealias CGPoint = CoreGraphics.CGPoint
+public typealias Observer<Element, Error> = (Mbark.Signal<Element, Error>.Event) -> Swift.Void where Error : Swift.Error
+public typealias SafeObserver<Element> = (Mbark.Signal<Element, Swift.Never>.Event) -> Swift.Void
+public protocol ObserverProtocol {
+  associatedtype Element
+  associatedtype Error : Swift.Error
+  func on(_ event: Mbark.Signal<Self.Element, Self.Error>.Event)
+}
+public struct AnyObserver<Element, Error> : Mbark.ObserverProtocol where Error : Swift.Error {
+  public let observer: Mbark.Observer<Element, Error>
+  public init(observer: @escaping Mbark.Observer<Element, Error>)
+  public func on(_ event: Mbark.Signal<Element, Error>.Event)
+}
+final public class AtomicObserver<Element, Error> : Mbark.ObserverProtocol, Mbark.Disposable where Error : Swift.Error {
+  public init(_ observer: @escaping Mbark.Observer<Element, Error>)
+  @available(*, deprecated, message: "Will be remove in favour of `init(_:)`. AtomicObserver is a Disposable itself now.")
+  convenience public init(disposable: Mbark.Disposable, observer: @escaping Mbark.Observer<Element, Error>)
+  final public var isDisposed: Swift.Bool {
+    get
+  }
+  final public func on(_ event: Mbark.Signal<Element, Error>.Event)
+  final public func attach(_ producer: (Mbark.AtomicObserver<Element, Error>) -> Mbark.Disposable)
+  final public func dispose()
+  @objc deinit
+}
+extension ObserverProtocol {
+  public func receive(_ element: Self.Element)
+  public func receive(completion: Mbark.Subscribers.Completion<Self.Error>)
+  public func receive(lastElement element: Self.Element)
+  public func toObserver() -> Mbark.Observer<Self.Element, Self.Error>
+}
+extension ObserverProtocol where Self.Element == Swift.Void {
+  public func receive()
+}
+public class LoadingProperty<LoadingValue, LoadingError> : Mbark.PropertyProtocol, Mbark.SignalProtocol, Mbark.DisposeBagProvider where LoadingError : Swift.Error {
+  public init(_ signalProducer: @escaping () -> Mbark.LoadingSignal<LoadingValue, LoadingError>)
+  public var bag: Mbark.DisposeBag {
+    get
+  }
+  public var loadingState: Mbark.LoadingState<LoadingValue, LoadingError> {
+    get
+  }
+  public var value: LoadingValue? {
+    get
+    set
+  }
+  public func reload(silently: Swift.Bool = true) -> Mbark.LoadingSignal<LoadingValue, LoadingError>
+  public func observe(with observer: @escaping (Mbark.Signal<Mbark.LoadingState<LoadingValue, LoadingError>, Swift.Never>.Event) -> Swift.Void) -> Mbark.Disposable
+  @objc deinit
+  public typealias Element = Mbark.LoadingState<LoadingValue, LoadingError>
+  public typealias Error = Swift.Never
+  public typealias ProperyElement = LoadingValue?
+}
+extension SignalProtocol {
+  public func reloading<LoadingValue>(_ property: Mbark.LoadingProperty<LoadingValue, Self.Error>) -> Mbark.Signal<Self.Element, Self.Error>
+}
+extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol, Self.Error == Swift.Never {
+  public func reloading<V>(_ property: Mbark.LoadingProperty<V, Self.LoadingError>, strategy: Mbark.FlattenStrategy = .latest) -> Mbark.LoadingSignal<Self.LoadingValue, Self.LoadingError>
+}
+extension CGPoint : Swift.AdditiveArithmetic {
+  public static func + (lhs: Mbark.CGPoint, rhs: Mbark.CGPoint) -> Mbark.CGPoint
+  public static func - (lhs: Mbark.CGPoint, rhs: Mbark.CGPoint) -> Mbark.CGPoint
+  public static func += (lhs: inout Mbark.CGPoint, rhs: Mbark.CGPoint)
+  public static func -= (lhs: inout Mbark.CGPoint, rhs: Mbark.CGPoint)
+}
+extension SignalProtocol {
+  public func buffer(size: Swift.Int) -> Mbark.Signal<[Self.Element], Self.Error>
+  public func collect() -> Mbark.Signal<[Self.Element], Self.Error>
+  public func replaceEmpty(with element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
+  public func eraseType() -> Mbark.Signal<Swift.Void, Self.Error>
+  public func pairwise() -> Mbark.Signal<(Self.Element, Self.Element), Self.Error>
+  public func replaceElements<ReplacementElement>(with element: ReplacementElement) -> Mbark.Signal<ReplacementElement, Self.Error>
+  public func reduce<U>(_ initial: U, _ combine: @escaping (U, Self.Element) -> U) -> Mbark.Signal<U, Self.Error>
+  public func scan<U>(_ initial: U, _ combine: @escaping (U, Self.Element) -> U) -> Mbark.Signal<U, Self.Error>
+  public func prepend(_ element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
+  public func append(_ element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
+  public func window(ofSize size: Swift.Int) -> Mbark.Signal<Mbark.Signal<Self.Element, Self.Error>, Self.Error>
+  public func zipPrevious() -> Mbark.Signal<(Self.Element?, Self.Element), Self.Error>
+}
+extension Subscribers {
+  final public class Sink<Input, Failure> : Mbark.Subscriber, Mbark.Cancellable where Failure : Swift.Error {
+    public init(receiveCompletion: @escaping ((Mbark.Subscribers.Completion<Failure>) -> Swift.Void), receiveValue: @escaping ((Input) -> Swift.Void))
+    final public let receiveValue: (Input) -> Swift.Void
+    final public let receiveCompletion: (Mbark.Subscribers.Completion<Failure>) -> Swift.Void
+    final public func receive(subscription: Mbark.Subscription)
+    final public func receive(_ value: Input) -> Mbark.Subscribers.Demand
+    final public func receive(completion: Mbark.Subscribers.Completion<Failure>)
+    final public func cancel()
+    @objc deinit
+  }
+}
+extension SignalProtocol {
+  public func materialize() -> Mbark.Signal<Mbark.Signal<Self.Element, Self.Error>.Event, Swift.Never>
+  public func dematerialize<U, E>() -> Mbark.Signal<U, E> where E == Self.Error, Self.Element == Mbark.Signal<U, E>.Event
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func dematerialize<U, E>() -> Mbark.Signal<U, E> where E : Swift.Error, Self.Element == Mbark.Signal<U, E>.Event
+}
+public protocol SubjectProtocol : Mbark.ObserverProtocol, Mbark.SignalProtocol {
+}
+extension SubjectProtocol {
+  public func send(_ element: Self.Element)
+  public func send(completion: Mbark.Subscribers.Completion<Self.Error>)
+  public func send(lastElement element: Self.Element)
+}
+extension SubjectProtocol where Self.Element == Swift.Void {
+  public func send()
+}
+open class Subject<Element, Error> : Mbark.SubjectProtocol where Error : Swift.Error {
+  public init()
+  open func on(_ event: Mbark.Signal<Element, Error>.Event)
+  open func observe(with observer: @escaping Mbark.Observer<Element, Error>) -> Mbark.Disposable
+  public var isTerminated: Swift.Bool {
+    get
+  }
+  final public let disposeBag: Mbark.DisposeBag
+  @objc deinit
+}
+extension Subject : Mbark.BindableProtocol {
+  public func bind(signal: Mbark.Signal<Element, Swift.Never>) -> Mbark.Disposable
+}
+@_inheritsConvenienceInitializers final public class PassthroughSubject<Element, Error> : Mbark.Subject<Element, Error> where Error : Swift.Error {
+  override public init()
+  override final public func on(_ event: Mbark.Signal<Element, Error>.Event)
+  override final public func observe(with observer: @escaping (Mbark.Signal<Element, Error>.Event) -> Swift.Void) -> Mbark.Disposable
+  @objc deinit
+}
+final public class ReplaySubject<Element, Error> : Mbark.Subject<Element, Error> where Error : Swift.Error {
+  public init(bufferSize: Swift.Int = Int.max)
+  final public let bufferSize: Swift.Int
+  override final public func on(_ event: Mbark.Signal<Element, Error>.Event)
+  override final public func observe(with observer: @escaping (Mbark.Signal<Element, Error>.Event) -> Swift.Void) -> Mbark.Disposable
+  override public init()
+  @objc deinit
+}
+public typealias SafeReplaySubject<Element> = Mbark.ReplaySubject<Element, Swift.Never>
+@_inheritsConvenienceInitializers final public class ReplayOneSubject<Element, Error> : Mbark.Subject<Element, Error> where Error : Swift.Error {
+  override public init()
+  override final public func on(_ event: Mbark.Signal<Element, Error>.Event)
+  override final public func observe(with observer: @escaping (Mbark.Signal<Element, Error>.Event) -> Swift.Void) -> Mbark.Disposable
+  @objc deinit
+}
+public typealias SafeReplayOneSubject<Element> = Mbark.ReplayOneSubject<Element, Swift.Never>
+final public class ReplayLoadingValueSubject<Val, LoadingError, Error> : Mbark.Subject<Mbark.LoadingState<Val, LoadingError>, Error> where LoadingError : Swift.Error, Error : Swift.Error {
+  public init(bufferSize: Swift.Int = Int.max)
+  final public let bufferSize: Swift.Int
+  override final public func on(_ event: Mbark.Signal<Mbark.LoadingState<Val, LoadingError>, Error>.Event)
+  override final public func observe(with observer: @escaping (Mbark.Signal<Mbark.LoadingState<Val, LoadingError>, Error>.Event) -> Swift.Void) -> Mbark.Disposable
+  override public init()
+  @objc deinit
+}
+extension SignalProtocol {
+  public func mapError<F>(_ transform: @escaping (Self.Error) -> F) -> Mbark.Signal<Self.Element, F> where F : Swift.Error
+  public func branchOutError() -> (Mbark.Signal<Self.Element, Swift.Never>, Mbark.Signal<Self.Error, Swift.Never>)
+  public func branchOutError<F>(_ mapError: @escaping (Self.Error) -> F) -> (Mbark.Signal<Self.Element, Swift.Never>, Mbark.Signal<F, Swift.Never>)
+  public func suppressError(logging: Swift.Bool, file: Swift.String = #file, line: Swift.Int = #line) -> Mbark.Signal<Self.Element, Swift.Never>
+  public func suppressAndFeedError<S>(into listener: S, logging: Swift.Bool = true, file: Swift.String = #file, line: Swift.Int = #line) -> Mbark.Signal<Self.Element, Swift.Never> where S : Mbark.SubjectProtocol, Self.Error == S.Element
+  public func replaceError(with element: Self.Element) -> Mbark.Signal<Self.Element, Swift.Never>
+  public func retry(_ times: Swift.Int, if shouldRetry: @escaping (Self.Error) -> Swift.Bool = { _ in true }) -> Mbark.Signal<Self.Element, Self.Error>
+  public func retry<S>(when other: S, if shouldRetry: @escaping (Self.Error) -> Swift.Bool = { _ in true }) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SignalProtocol, S.Error == Swift.Never
+  public func timeout(after interval: Swift.Double, with error: Self.Error, on queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.timeout")) -> Mbark.Signal<Self.Element, Self.Error>
+  public func toErrorSignal() -> Mbark.Signal<Self.Error, Swift.Never>
+}
+extension SignalProtocol where Self.Error == Swift.Never {
+  public func castError<E>() -> Mbark.Signal<Self.Element, E> where E : Swift.Error
 }
 @_hasMissingDesignatedInitializers public class Mbark {
   @discardableResult
@@ -48,6 +1178,18 @@ public enum MbarkConstants {
   public static let flushInterval: Swift.Double
   public static let baseURL: Foundation.URL
 }
+extension SignalProtocol {
+  public func flatMap<NewElement>(_ transform: @escaping (Self.Element) -> [NewElement]) -> Mbark.Signal<NewElement, Self.Error>
+}
+extension SignalProtocol where Self.Element : Swift.Sequence {
+  public func mapElement<NewElement>(_ transform: @escaping (Self.Element.Iterator.Element) -> NewElement) -> Mbark.Signal<[NewElement], Self.Error>
+  public func flattenElements() -> Mbark.Signal<Self.Element.Iterator.Element, Self.Error>
+}
+extension Mbark.TimelaneLaneType : Swift.Equatable {}
+extension Mbark.TimelaneLaneType : Swift.Hashable {}
+extension Mbark.TimelaneLaneType : Swift.RawRepresentable {}
 extension Mbark.MbarkEventType : Swift.Equatable {}
 extension Mbark.MbarkEventType : Swift.Hashable {}
 extension Mbark.MbarkEventType : Swift.RawRepresentable {}
+extension Mbark.FlattenStrategy : Swift.Equatable {}
+extension Mbark.FlattenStrategy : Swift.Hashable {}
