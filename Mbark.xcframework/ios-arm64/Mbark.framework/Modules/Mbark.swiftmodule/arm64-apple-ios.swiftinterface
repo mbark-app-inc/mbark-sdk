@@ -165,6 +165,11 @@ final public class AnyProperty<Value> : PropertyProtocol, SignalProtocol {
   public typealias Error = Swift.Never
   public typealias ProperyElement = Value
 }
+public struct MbarkEventData : Swift.Codable {
+  public init(name: Swift.String, value: Swift.String)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
 public protocol ObservableObject : AnyObject {
   associatedtype ObjectWillChangeSignal : SignalProtocol = Signal<Swift.Void, Swift.Never> where Self.ObjectWillChangeSignal.Error == Swift.Never
   var objectWillChange: Self.ObjectWillChangeSignal { get }
@@ -216,6 +221,12 @@ extension SignalProtocol {
   }
   public var projectedValue: Published<Value>.Publisher {
     mutating get
+  }
+}
+extension CGSize : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
   }
 }
 public protocol SignalProtocol {
@@ -457,12 +468,15 @@ extension SignalProtocol {
 public enum MbarkEventType : Swift.String {
   case accept
   case background
+  case flowStart
+  case flowEnd
   case input
   case longPress
   case reject
   case swipeLeft
   case swipeRight
   case tap
+  case view
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -477,12 +491,6 @@ extension ExecutionContext : Scheduler {
 }
 extension DispatchQueue : Scheduler {
   public func schedule(_ action: @escaping () -> Swift.Void)
-}
-extension CGSize : Swift.Hashable {
-  public func hash(into hasher: inout Swift.Hasher)
-  public var hashValue: Swift.Int {
-    get
-  }
 }
 @available(*, deprecated, message: "Event<Element, Error> has been renamed to Signal<Element, Error>.Event")
 public typealias Event<Element, Error> = Signal<Element, Error>.Event where Error : Swift.Error
@@ -938,7 +946,7 @@ extension DispatchQueue {
   public var debugDescription: Swift.String {
     get
   }
-  public func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
+  public func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
 }
 public enum Subscribers {
   public enum Completion<Failure> where Failure : Swift.Error {
@@ -1166,12 +1174,12 @@ extension SignalProtocol where Self.Error == Swift.Never {
   @discardableResult
   public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
   @discardableResult
-  public static func initialize(token apiToken: Swift.String, instanceName: Swift.String = UUID().uuidString, mbarkUID: Swift.String, flowName: Swift.String, flowRevision: Swift.Int, selectedLanguage: Swift.String? = nil) -> MbarkInstance
+  public static func initialize(token apiToken: Swift.String, instanceName: Swift.String = UUID().uuidString, mbarkUID: Swift.String, flow: Swift.String, flowRevision: Swift.Int, selectedLanguage: Swift.String? = nil) -> MbarkInstance
   public static func getInstance(name: Swift.String) -> MbarkInstance?
   public static func mainInstance() -> MbarkInstance
   public static func setMainInstance(name: Swift.String)
   public static func removeInstance(name: Swift.String)
-  public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil)
+  public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
   @objc deinit
 }
 public enum MbarkConstants {
