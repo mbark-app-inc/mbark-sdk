@@ -907,12 +907,6 @@ extension Signal {
 extension Signal where Error == Swift.Error {
   public init(catching body: @escaping () throws -> Element)
 }
-extension Signal where Error == Swift.Never {
-  public init(takingOver nextObserver: inout @escaping (Element) -> Swift.Void)
-}
-extension Signal where Element == Swift.Void, Error == Swift.Never {
-  public init(takingOver nextObserver: inout @escaping () -> Swift.Void)
-}
 public protocol Subscription : Cancellable {
   func request(_ demand: Subscribers.Demand)
 }
