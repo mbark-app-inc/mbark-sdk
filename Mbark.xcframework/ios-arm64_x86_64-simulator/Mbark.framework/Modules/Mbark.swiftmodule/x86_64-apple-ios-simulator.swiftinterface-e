@@ -231,6 +231,9 @@ extension SignalProtocol {
     mutating get
   }
 }
+extension UITextView {
+  public func setMbarkId(_ id: Swift.String?)
+}
 extension UILabel {
   public func setMbarkId(_ id: Swift.String?)
 }
@@ -922,6 +925,9 @@ public func amb<A, B, C>(_ a: A, _ b: B, _ c: C) -> Mbark.Signal<A.Element, A.Er
 public func amb<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error
 public func amb<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error
 public func amb<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) -> Mbark.Signal<A.Element, A.Error> where A : Mbark.SignalProtocol, B : Mbark.SignalProtocol, C : Mbark.SignalProtocol, D : Mbark.SignalProtocol, E : Mbark.SignalProtocol, F : Mbark.SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error, E.Element == F.Element, E.Error == F.Error
+extension UITextField {
+  public func setMbarkId(_ id: Swift.String?)
+}
 public struct Signal<Element, Error> : Mbark.SignalProtocol where Error : Swift.Error {
   public typealias Producer = (Mbark.AtomicObserver<Element, Error>) -> Mbark.Disposable
   public init(_ producer: @escaping Mbark.Signal<Element, Error>.Producer)

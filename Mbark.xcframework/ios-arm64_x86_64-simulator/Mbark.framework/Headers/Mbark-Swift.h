@@ -240,6 +240,8 @@ SWIFT_CLASS("_TtC5Mbark10AspectInfo")
 
 
 
+
+
 #if __has_attribute(external_source_symbol)
 # pragma clang attribute pop
 #endif
@@ -461,6 +463,8 @@ SWIFT_CLASS("_TtC5Mbark10AspectInfo")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
+
 
 
 
