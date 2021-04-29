@@ -103,7 +103,7 @@ Mbark.initialize()
 It is important that this call be made as soon as possible in the lifecycle of your application to ensure we can configure your complete onboarding flow. 
 
 #### Marking the start of your onboarding flow
-We're ready to mark the start of your onboarding flow. Tell mbark to start tracking the flow in the `viewDidLoad` method of the first `UIViewController` in your onboarding. Like so:
+We're ready to mark the start of your onboarding flow. Tell mbark to start tracking the flow in the `viewDidLoad()` method of the first `UIViewController` in your onboarding. Like so:
 
 ```swift
 override func viewDidLoad() {
@@ -131,3 +131,28 @@ Prefer a more traditional events tracking interface? Use mbark's explicit tracki
   Mbark.trackTap(step: "welcome", component: "sign_up", data: MbarkEventData(name: "carousel_index", value: carousel.currentIndex))
 }
 ```
+Continue through your onboarding flow marking important steps and components with either assigned mbark IDs or tracking calls.
+
+#### Marking the end of your onboarding flow
+Make sure to track the end of your onboarding flow by calling `Mbark.trackFlowEnd()`. You have the option to add this call in the `viewDidLoad()` method of your landing screen `UIViewController`. Flow end events will only be tracked during active onboarding sessions.
+
+```swift
+override func viewDidLoad() {
+  super.viewDidLoad()
+  Mbark.trackFlowEnd()
+ }
+```
+
+##### A note on ensuring an onboarding session ends
+
+`Mbark.trackFlowEnd()` is used to track onboarding abandonment. This is the number of users who never complete onboarding. To correctly track this it is critical that all onboarding paths end with a call to `Mbark.trackFlowEnd()` eventually. 
+
+### Build and Run Your Application
+Alright, you’re ready to build and run your application! If you encounter any errors, please get in touch with the mbark team. We can help you out.
+
+### Trigger onboarding session uploads
+The mbark SDK is designed to efficiently manage and upload all onboarding analytics. Short collections of events are packaged up and sent to the mbark dashboard every few minutes. If a user backgrounds the app during onboarding, mbark will immediately upload any queued events. A local copy of events are also persisted to the device. In the event of an app crash, the event flow can be recreated and added to when the user relaunches and resumes onboarding.
+
+To trigger an early session upload, simply send your application to the background and then foreground it again. Typically the SDK will be given sufficient time to upload the session when it is backgrounded.
+
+Congratulations! At this point you’ve completed a basic integration of the mbark SDK. mbark is already collecting interesting data from your application. You can view this data by browsing the mbark dashboard online.
