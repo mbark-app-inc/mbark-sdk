@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   spec.name                   = "Mbark"
   spec.version                = "0.0.16"
   spec.summary                = "App Onboarding Out of the Box."
-  spec.description            = "We help teams get the right customers onboarded with a toolset that allows them to experiment with user flows and deploy changes instantly."
+  spec.description            = "Drag-and-Drop Flow Builder\nCompose your onboarding with an intuitive web dashboard. Customize the screens using your brand's unique design library.\n\nEasy Experimentation\nConduct tests with the flows you create. Find the flow that optimizes for key metrics like conversion, retention, and engagement.\n\nBuilt-in Funnel Analytics\nEvery flow you build ships with straightforward analytics by default. Measure the effectiveness of your onboarding at a glance."
   spec.homepage               = "https://www.mbark.co"
   spec.license                = { :type => "Commercial", :text => "Copyright 2021 mbark" }
   spec.author                 = "mbark"
