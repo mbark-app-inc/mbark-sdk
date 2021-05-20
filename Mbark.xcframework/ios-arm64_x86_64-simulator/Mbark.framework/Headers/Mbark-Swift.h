@@ -190,7 +190,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
-@import ObjectiveC;
+@import UIKit;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -209,10 +209,17 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 
-SWIFT_CLASS("_TtC5Mbark10AspectInfo")
-@interface AspectInfo : NSObject
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+
+
+@class NSCoder;
+@class NSBundle;
+
+SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
+@interface MbarkViewController : UIViewController
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
+- (void)viewDidLoad;
+- (void)viewDidLayoutSubviews;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
 
@@ -224,6 +231,19 @@ SWIFT_CLASS("_TtC5Mbark10AspectInfo")
 
 
 
+
+
+
+
+
+
+
+@class UIImage;
+
+@interface UIImageView (SWIFT_EXTENSION(Mbark))
+/// Displays an image.
+- (void)mbark_displayWithImage:(UIImage * _Nullable)image;
+@end
 
 
 
@@ -439,7 +459,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
-@import ObjectiveC;
+@import UIKit;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -458,10 +478,17 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 
-SWIFT_CLASS("_TtC5Mbark10AspectInfo")
-@interface AspectInfo : NSObject
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+
+
+@class NSCoder;
+@class NSBundle;
+
+SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
+@interface MbarkViewController : UIViewController
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
+- (void)viewDidLoad;
+- (void)viewDidLayoutSubviews;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
 
@@ -473,6 +500,19 @@ SWIFT_CLASS("_TtC5Mbark10AspectInfo")
 
 
 
+
+
+
+
+
+
+
+@class UIImage;
+
+@interface UIImageView (SWIFT_EXTENSION(Mbark))
+/// Displays an image.
+- (void)mbark_displayWithImage:(UIImage * _Nullable)image;
+@end
 
 
 

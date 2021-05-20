@@ -2,17 +2,24 @@
 // swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
 // swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
 import Combine
+import CommonCrypto
 import CoreGraphics
+import CoreImage
 import CoreTelephony
 import Dispatch
 import Foundation
+import ImageIO
+import MachO
 @_exported import Mbark
 import Network
 import ObjectiveC
 import Security
 import Swift
 import SystemConfiguration
+import UIKit.UIColor
+import UIKit.UIImage
 import UIKit
+import MachO.dyld
 import os
 import ObjectiveC.runtime
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -98,6 +105,25 @@ extension UIResponder {
 extension SignalProtocol {
   public func subscribe<S>(on scheduler: S) -> Signal<Self.Element, Self.Error> where S : Scheduler
   public func receive<S>(on scheduler: S) -> Signal<Self.Element, Self.Error> where S : Scheduler
+}
+extension UITextField {
+  public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
+}
+public class MbarkActionHandler {
+  public init(id: Swift.String, handler: @escaping () -> Swift.Void)
+  @objc deinit
+}
+extension MbarkActionHandler : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension MbarkActionHandler : Swift.Equatable {
+  public static func == (lhs: MbarkActionHandler, rhs: MbarkActionHandler) -> Swift.Bool
+}
+extension UITextView {
+  public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
 extension SignalProtocol {
   public func amb<O>(with other: O) -> Signal<Self.Element, Self.Error> where O : SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
@@ -190,6 +216,17 @@ extension NSLock {
 extension NSRecursiveLock {
   convenience public init(name: Swift.String)
 }
+@objc @_hasMissingDesignatedInitializers public class MbarkViewController : UIKit.UIViewController {
+  public var actionHandlers: Swift.Set<MbarkActionHandler> {
+    get
+  }
+  @objc override dynamic public func viewDidLoad()
+  @objc override dynamic public func viewDidLayoutSubviews()
+  public func addActionHandler(_ actionHandler: MbarkActionHandler)
+  public func removeActionHandler(forId id: Swift.String)
+  @objc deinit
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+}
 public struct Empty<Element, Error> : SignalProtocol, Swift.Equatable where Error : Swift.Error {
   public init(completeImmediately: Swift.Bool = true)
   public init(completeImmediately: Swift.Bool = true, outputType: Element.Type, failureType: Error.Type)
@@ -200,7 +237,7 @@ public struct Empty<Element, Error> : SignalProtocol, Swift.Equatable where Erro
   public static func == (a: Empty<Element, Error>, b: Empty<Element, Error>) -> Swift.Bool
 }
 extension UIImageView {
-  public func setMbarkId(_ id: Swift.String?)
+  public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
 extension SignalProtocol {
   public func breakpoint(receiveSubscription: (() -> Swift.Bool)? = nil, receiveOutput: ((Self.Element) -> Swift.Bool)? = nil, receiveCompletion: ((Subscribers.Completion<Self.Error>) -> Swift.Bool)? = nil) -> Signal<Self.Element, Self.Error>
@@ -231,11 +268,8 @@ extension SignalProtocol {
     mutating get
   }
 }
-extension UITextView {
-  public func setMbarkId(_ id: Swift.String?)
-}
 extension UILabel {
-  public func setMbarkId(_ id: Swift.String?)
+  public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
 extension CGSize : Swift.Hashable {
   public func hash(into hasher: inout Swift.Hasher)
@@ -327,6 +361,9 @@ extension Result : _ResultProtocol {
   }
   public typealias Value = Success
   public typealias Error = Failure
+}
+extension UIImageView {
+  @objc dynamic open func mbark_display(image: UIKit.UIImage?)
 }
 extension Signal {
   public enum Event {
@@ -468,26 +505,6 @@ public class Configurator {
   public func configure(_ id: Swift.String? = nil)
   @objc deinit
 }
-public enum AspectStrategy {
-  case after
-  case instead
-  case before
-  public static func == (a: AspectStrategy, b: AspectStrategy) -> Swift.Bool
-  public var hashValue: Swift.Int {
-    get
-  }
-  public func hash(into hasher: inout Swift.Hasher)
-}
-@objc @_hasMissingDesignatedInitializers public class AspectInfo : ObjectiveC.NSObject {
-  @objc deinit
-  @objc override dynamic public init()
-}
-extension NSObject {
-  public func hook(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: Swift.AnyObject) throws -> AspectToken
-}
-extension NSObject {
-  public class func hook(selector: ObjectiveC.Selector, strategy: AspectStrategy, block: Swift.AnyObject) throws -> AspectToken
-}
 public enum TimelaneLaneType : Swift.Int, Swift.CaseIterable {
   case subscription, event
   public typealias RawValue = Swift.Int
@@ -524,6 +541,23 @@ public enum MbarkEventType : Swift.String {
     get
   }
   public init?(rawValue: Swift.String)
+}
+public enum MbarkStepNames : Swift.String {
+  case loading
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum AuthenticationUserType : Swift.String {
+  case new
+  case existing
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
 }
 public protocol Scheduler {
   func schedule(_ action: @escaping () -> Swift.Void)
@@ -715,7 +749,7 @@ public protocol Cancellable {
   func cancel()
 }
 extension UIViewController {
-  public func setMbarkId(_ id: Swift.String?)
+  public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
 public protocol ConnectableSignalProtocol : SignalProtocol {
   func connect() -> Disposable
@@ -925,9 +959,6 @@ public func amb<A, B, C>(_ a: A, _ b: B, _ c: C) -> Signal<A.Element, A.Error> w
 public func amb<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) -> Signal<A.Element, A.Error> where A : SignalProtocol, B : SignalProtocol, C : SignalProtocol, D : SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error
 public func amb<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) -> Signal<A.Element, A.Error> where A : SignalProtocol, B : SignalProtocol, C : SignalProtocol, D : SignalProtocol, E : SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error
 public func amb<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) -> Signal<A.Element, A.Error> where A : SignalProtocol, B : SignalProtocol, C : SignalProtocol, D : SignalProtocol, E : SignalProtocol, F : SignalProtocol, A.Element == B.Element, A.Error == B.Error, B.Element == C.Element, B.Error == C.Error, C.Element == D.Element, C.Error == D.Error, D.Element == E.Element, D.Error == E.Error, E.Element == F.Element, E.Error == F.Error
-extension UITextField {
-  public func setMbarkId(_ id: Swift.String?)
-}
 public struct Signal<Element, Error> : SignalProtocol where Error : Swift.Error {
   public typealias Producer = (AtomicObserver<Element, Error>) -> Disposable
   public init(_ producer: @escaping Signal<Element, Error>.Producer)
@@ -964,42 +995,6 @@ extension UIWindow {
   }
   public static func visibleViewController(from viewController: UIKit.UIViewController?) -> UIKit.UIViewController?
 }
-extension NSObject {
-  @discardableResult
-  public func hook(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1, Arg2>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1, Arg2, Arg3>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1, Arg2, Arg3, Arg4>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1, Arg2, Arg3, Arg4, Arg5>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4, Arg5) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1, Arg2, Arg3, Arg4, Arg5, Arg6>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4, Arg5, Arg6) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public func hook<Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7) -> Swift.Void) throws -> AspectToken
-}
-extension NSObject {
-  @discardableResult
-  public class func hook(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1, Arg2>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1, Arg2, Arg3>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1, Arg2, Arg3, Arg4>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1, Arg2, Arg3, Arg4, Arg5>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4, Arg5) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1, Arg2, Arg3, Arg4, Arg5, Arg6>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4, Arg5, Arg6) -> Swift.Void) throws -> AspectToken
-  @discardableResult
-  public class func hook<Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7>(selector: ObjectiveC.Selector, strategy: AspectStrategy = .before, block: @escaping (AspectInfo, Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7) -> Swift.Void) throws -> AspectToken
-}
 public struct ExecutionContext {
   public init(_ context: @escaping (@escaping () -> Swift.Void) -> Swift.Void)
   public static var immediate: ExecutionContext {
@@ -1030,18 +1025,11 @@ extension DispatchQueue {
   public var debugDescription: Swift.String {
     get
   }
+  public func trackOnce(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
   public func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
 }
-public enum AspectError : Swift.Error {
-  case unrecognizedSelector
-  case blockSignatureNotMatch
-  case missingBlockSignature
-  case failedToAllocateClassPair
-  public static func == (a: AspectError, b: AspectError) -> Swift.Bool
-  public var hashValue: Swift.Int {
-    get
-  }
-  public func hash(into hasher: inout Swift.Hasher)
+extension MbarkInstance {
+  public func mbarkViewController(forMbarkId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> MbarkViewController?
 }
 public enum Subscribers {
   public enum Completion<Failure> where Failure : Swift.Error {
@@ -1159,7 +1147,7 @@ extension SignalProtocol where Self.Element : LoadingStateProtocol, Self.Error =
   public func reloading<V>(_ property: LoadingProperty<V, Self.LoadingError>, strategy: FlattenStrategy = .latest) -> LoadingSignal<Self.LoadingValue, Self.LoadingError>
 }
 extension UIButton {
-  public func setMbarkId(_ id: Swift.String?)
+  public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
 extension CGPoint : Swift.AdditiveArithmetic {
   public static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint
@@ -1199,9 +1187,6 @@ extension SignalProtocol {
 }
 extension SignalProtocol where Self.Error == Swift.Never {
   public func dematerialize<U, E>() -> Signal<U, E> where E : Swift.Error, Self.Element == Signal<U, E>.Event
-}
-public protocol AspectToken {
-  func remove()
 }
 public protocol SubjectProtocol : ObserverProtocol, SignalProtocol {
 }
@@ -1272,27 +1257,32 @@ extension SignalProtocol where Self.Error == Swift.Never {
   public func castError<E>() -> Signal<Self.Element, E> where E : Swift.Error
 }
 @_hasMissingDesignatedInitializers public class Mbark {
-  @discardableResult
-  public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
   public static var isActive: Swift.Bool {
     get
   }
+  @discardableResult
+  public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
   public static func setMainInstance(name: Swift.String)
   public static func removeInstance(name: Swift.String)
   public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  public static func trackOnce(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
   public static func trackFlowStart()
   public static func trackFlowEnd()
-  public static func trackStepView(_ step: Swift.String)
-  public static func trackAuthentication()
-  public static func trackAccept(step: Swift.String? = nil, component: Swift.String? = nil)
-  public static func trackReject(step: Swift.String? = nil, component: Swift.String? = nil)
+  public static func trackStepView(_ step: Swift.String, data: MbarkEventData? = nil)
+  public static func trackAuthenticationForNewUser()
+  public static func trackAuthenticationForExistingUser()
+  public static func trackAccept(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
+  public static func trackReject(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
   public static func trackTap(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil)
+  public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  public static func trackAppLoading()
+  public static func mbarkViewController(forMbarkId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> MbarkViewController?
   @objc deinit
 }
 public enum MbarkConstants {
   public static let flushInterval: Swift.Double
-  public static let baseURL: Foundation.URL
+  public static let remoteConfigFileName: Swift.String
+  public static let urlScheme: Swift.String
 }
 extension SignalProtocol {
   public func flatMap<NewElement>(_ transform: @escaping (Self.Element) -> [NewElement]) -> Signal<NewElement, Self.Error>
@@ -1301,15 +1291,17 @@ extension SignalProtocol where Self.Element : Swift.Sequence {
   public func mapElement<NewElement>(_ transform: @escaping (Self.Element.Iterator.Element) -> NewElement) -> Signal<[NewElement], Self.Error>
   public func flattenElements() -> Signal<Self.Element.Iterator.Element, Self.Error>
 }
-extension AspectStrategy : Swift.Equatable {}
-extension AspectStrategy : Swift.Hashable {}
 extension TimelaneLaneType : Swift.Equatable {}
 extension TimelaneLaneType : Swift.Hashable {}
 extension TimelaneLaneType : Swift.RawRepresentable {}
 extension MbarkEventType : Swift.Equatable {}
 extension MbarkEventType : Swift.Hashable {}
 extension MbarkEventType : Swift.RawRepresentable {}
-extension AspectError : Swift.Equatable {}
-extension AspectError : Swift.Hashable {}
+extension MbarkStepNames : Swift.Equatable {}
+extension MbarkStepNames : Swift.Hashable {}
+extension MbarkStepNames : Swift.RawRepresentable {}
+extension AuthenticationUserType : Swift.Equatable {}
+extension AuthenticationUserType : Swift.Hashable {}
+extension AuthenticationUserType : Swift.RawRepresentable {}
 extension FlattenStrategy : Swift.Equatable {}
 extension FlattenStrategy : Swift.Hashable {}

@@ -23,8 +23,5 @@ FOUNDATION_EXPORT const unsigned char mbarkVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <mbark/PublicHeader.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-extern const IMP _mbark_objc_msgForward;
-
 NS_ASSUME_NONNULL_END
 
