@@ -107,6 +107,7 @@ Mbark.initialize()
 ##### A Note On Placing the Start Call
 It is important that this call be made as soon as possible in the lifecycle of your application to ensure we can configure your complete onboarding flow. 
 
+# Analytics
 #### Marking the start of your onboarding flow
 We're ready to mark the start of your onboarding flow. Tell mbark to start tracking the flow in the `viewDidLoad()` method of the first `UIViewController` in your onboarding. Like so:
 
@@ -161,3 +162,5 @@ The mbark SDK is designed to efficiently manage and upload all onboarding analyt
 To trigger an early session upload, simply send your application to the background and then foreground it again. Typically the SDK will be given sufficient time to upload the session when it is backgrounded.
 
 Congratulations! At this point you’ve completed a basic integration of the mbark SDK. mbark is already collecting interesting data from your application. You can view this data by browsing the mbark dashboard online.
+
+# Remote configuration
