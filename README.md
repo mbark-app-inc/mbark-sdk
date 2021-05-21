@@ -188,7 +188,8 @@ The mbark SDK can create fully remote-configured `UIViewController`s.  Here's an
 
 ```swift
 self.mbarkViewController = Mbark.mbarkViewController(forMbarkId: "welcome_screen") { success in
- //...
+ // Respond to either success or failure... This closure allows us to request an mbarkViewController
+ // before the mbarkSDK is has completed initialization.
 }
 ```
 
