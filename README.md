@@ -164,6 +164,41 @@ To trigger an early session upload, simply send your application to the backgrou
 Congratulations! At this point you’ve completed a basic integration of the mbark SDK. mbark is already collecting interesting data from your application. You can view this data by browsing the mbark dashboard online.
 
 # Remote configuration
+# Remote configuration
 ### Configuring existing components
+Some iOS controls can be registered for remote configuration. This will allow you to update content through the mbark dashboard. This registration process is the same used to automatically tracking events. 
+
+```swift
+override func viewDidLoad() {
+  super.viewDidLoad()
+  signUpButton.setMbarkId("sign_up")
+  signInButton.setMbarkId("sign_in")
+ }
+```	
+
+Existing controls that can be edited include:
+- `UIButton`
+- `UIImageView`
+- `UILabel`
+- `UITextField`
+- `UITextView`
 
 ### Configurable view controllers
+The mbark SDK can create fully remote-configured `UIViewController`s.  Here's an example of a configurable view controller being instantiated:
+
+```swift
+self.mbarkViewController = Mbark.mbarkViewController(forMbarkId: "welcome_screen") { success in
+ //...
+}
+```
+
+The host iOS app can then add event tie-ins to this view controller, like so:
+```swift
+mbarkViewController.addActionHandler(MbarkActionHandler(id: Action.signInPress.rawValue, handler: { [weak self] in
+	// Respond to sign in request...
+}))
+
+mbarkViewController.addActionHandler(MbarkActionHandler(id: Action.signUpPress.rawValue, handler: { [weak self] in
+  	// Response to sign up event...
+}))
+```
