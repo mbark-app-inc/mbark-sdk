@@ -164,7 +164,6 @@ To trigger an early session upload, simply send your application to the backgrou
 Congratulations! At this point you’ve completed a basic integration of the mbark SDK. mbark is already collecting interesting data from your application. You can view this data by browsing the mbark dashboard online.
 
 # Remote configuration
-# Remote configuration
 ### Configuring existing components
 Some iOS controls can be registered for remote configuration. This will allow you to update content through the mbark dashboard. This registration process is the same used to automatically tracking events. 
 
