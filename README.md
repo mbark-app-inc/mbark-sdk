@@ -156,7 +156,7 @@ override func viewDidLoad() {
 Alright, you’re ready to build and run your application! If you encounter any errors, please get in touch with the mbark team. We can help you out.
 
 ### Trigger onboarding session uploads
-The mbark SDK is designed to efficiently manage and upload all onboarding analytics. Short collections of events are packaged up and sent to the mbark dashboard every few minutes. If a user backgrounds the app during onboarding, mbark will immediately upload any queued events. A local copy of events are also persisted to the device. In the event of an app crash, the event flow can be recreated and added to when the user relaunches and resumes onboarding.
+The mbark SDK is designed to efficiently manage and upload all onboarding analytics. Short collections of events are packaged up and sent to the mbark dashboard every few minutes. Events are also forwarded to the dashboard if a user completes an onboarding flow. If a user backgrounds the app during onboarding, mbark will also, immediately upload any queued events. A local copy of events are also persisted to the device. In the event of an app crash, the event flow can be recreated and added to when the user relaunches and resumes onboarding.
 
 To trigger an early session upload, simply send your application to the background and then foreground it again. Typically the SDK will be given sufficient time to upload the session when it is backgrounded.
 
