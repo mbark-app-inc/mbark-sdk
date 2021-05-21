@@ -83,13 +83,14 @@ Now we’re going to add a couple of new files to our project. mbark has many op
 
 Make a new file in the root of your project called `Mbark-Info.plist` and ensure that it is included in your target.
 
-For now, you can just add one entry to this file: "API_KEY". Be sure to fill in the value with the key you received from the mbark team.
+For now, you can just add two entries to this file: 
+- `API_KEY` Set the value of this property with the key you received from the mbark team.
+- `REMOTE_CONFIG_ID` Set the value of this property with the config id you've received.
 
 Make another new file in the root of your project called `Mbark.json` and ensure that it is included in your target. Using the following as a template, add the flow ID, flow name, and flow revision you received from the mbark team to this file.
 
 ```json
 {
-  "flowID": "FLOW_ID",
   "flowDevID": "FLOW_NAME",
   "flowRevision": 1,
   "enabled": false,
