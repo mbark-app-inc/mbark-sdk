@@ -202,3 +202,78 @@ mbarkViewController.addActionHandler(MbarkActionHandler(id: Action.signUpPress.r
   	// Response to sign up event...
 }))
 ```
+# Mbark API
+The following are public static methods available from the Mbark SDK.
+
+Initializing the SDK:
+```swift
+public static func initialize()
+```
+
+Tracking the start of an onboarding flow:
+```swift
+public static func trackFlowStart()
+```
+Tracking the end of an onboarding flow:
+```swift
+public static func trackFlowStart()
+```
+
+Tracking any event:
+```swift
+public static func track(eventType: MbarkEventType, step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+Tracking any event only once per onboarding session:
+```swift
+public static func trackOnce(eventType: MbarkEventType, step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+
+The following are helper methods which will format the above tracking event calls automatically:
+
+Tracking app loading:
+```swift
+public static func trackAppLoading()
+```
+
+Tracking an onboarding step view:
+```swift
+public static func trackStepView(_ step: String, data: MbarkEventData? = nil)
+```
+
+Tracking an onboarding step view only once:
+```swift
+public static func trackStepViewOnce(_ step: String, data: MbarkEventData? = nil)
+```
+
+Tracking authentication for a new user:
+```swift
+public static func trackAuthenticationForNewUser()
+```
+
+Tracking authentication for an existing user:
+```swift
+public static func trackAuthenticationForExistingUser()
+```
+
+Tracking granted system permissions:
+```swift
+public static func trackAccept(step: String? = nil, component: String? = nil, shouldTrackOnce: Bool = false)
+```
+Tracking revoked system permissions:
+```swift
+public static func trackReject(step: String? = nil, component: String? = nil, shouldTrackOnce: Bool = false)
+```
+
+Tracking taps:
+```swift
+public static func trackTap(step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+
+Tracking input field entries:
+```swift
+public static func trackInput(step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+Creating a remote configurable view controller:
+```swift
+public static func mbarkViewController(forMbarkId mbarkId: String, onLoaded: @escaping (Bool) -> Void) -> MbarkViewController?
+```
