@@ -26,7 +26,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		/TprmnrUdT80MpkURdCbVF+z0yU=
+		imduA988cmJDd/Jap3JqYU9+5VY=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		/TprmnrUdT80MpkURdCbVF+z0yU=
+		imduA988cmJDd/Jap3JqYU9+5VY=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		hjPCM71Fp2bNiht4pxUegVmwh1c=
+		CVO2aWIi5MdMktHUDXVh9kA6s/k=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		hjPCM71Fp2bNiht4pxUegVmwh1c=
+		CVO2aWIi5MdMktHUDXVh9kA6s/k=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -103,7 +103,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Ij0KYi5RTtW8aMZAjn4P+NsFVHufvAyhTBlNzCYIsCc=
+			91gAVqyseS6rhhUK7FEaZ/QuRPcedNLyEfUY0XAE690=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
@@ -124,7 +124,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Ij0KYi5RTtW8aMZAjn4P+NsFVHufvAyhTBlNzCYIsCc=
+			91gAVqyseS6rhhUK7FEaZ/QuRPcedNLyEfUY0XAE690=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -145,7 +145,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QrDf9r+vjJP956KFYSiripfu50PYo5JJHY5NgXa/6FU=
+			QyxBmagLLVRCrODRhyHJWgqEuv0uTxBKUikRUK50oPk=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
@@ -166,7 +166,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QrDf9r+vjJP956KFYSiripfu50PYo5JJHY5NgXa/6FU=
+			QyxBmagLLVRCrODRhyHJWgqEuv0uTxBKUikRUK50oPk=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
