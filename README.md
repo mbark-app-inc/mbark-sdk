@@ -83,13 +83,14 @@ Now we’re going to add a couple of new files to our project. mbark has many op
 
 Make a new file in the root of your project called `Mbark-Info.plist` and ensure that it is included in your target.
 
-For now, you can just add one entry to this file: "API_KEY". Be sure to fill in the value with the key you received from the mbark team.
+For now, you can just add two entries to this file: 
+- `API_KEY` Set the value of this property with the key you received from the mbark team.
+- `REMOTE_CONFIG_ID` Set the value of this property with the config id you've received.
 
 Make another new file in the root of your project called `Mbark.json` and ensure that it is included in your target. Using the following as a template, add the flow ID, flow name, and flow revision you received from the mbark team to this file.
 
 ```json
 {
-  "flowID": "FLOW_ID",
   "flowDevID": "FLOW_NAME",
   "flowRevision": 1,
   "enabled": false,
@@ -106,6 +107,7 @@ Mbark.initialize()
 ##### A Note On Placing the Start Call
 It is important that this call be made as soon as possible in the lifecycle of your application to ensure we can configure your complete onboarding flow. 
 
+# Analytics
 #### Marking the start of your onboarding flow
 We're ready to mark the start of your onboarding flow. Tell mbark to start tracking the flow in the `viewDidLoad()` method of the first `UIViewController` in your onboarding. Like so:
 
@@ -155,8 +157,123 @@ override func viewDidLoad() {
 Alright, you’re ready to build and run your application! If you encounter any errors, please get in touch with the mbark team. We can help you out.
 
 ### Trigger onboarding session uploads
-The mbark SDK is designed to efficiently manage and upload all onboarding analytics. Short collections of events are packaged up and sent to the mbark dashboard every few minutes. If a user backgrounds the app during onboarding, mbark will immediately upload any queued events. A local copy of events are also persisted to the device. In the event of an app crash, the event flow can be recreated and added to when the user relaunches and resumes onboarding.
+The mbark SDK is designed to efficiently manage and upload all onboarding analytics. Short collections of events are packaged up and sent to the mbark dashboard every few minutes. Events are also forwarded to the dashboard if a user completes an onboarding flow. If a user backgrounds the app during onboarding, mbark will also, immediately upload any queued events. A local copy of events are also persisted to the device. In the event of an app crash, the event flow can be recreated and added to when the user relaunches and resumes onboarding.
 
 To trigger an early session upload, simply send your application to the background and then foreground it again. Typically the SDK will be given sufficient time to upload the session when it is backgrounded.
 
 Congratulations! At this point you’ve completed a basic integration of the mbark SDK. mbark is already collecting interesting data from your application. You can view this data by browsing the mbark dashboard online.
+
+# Remote configuration
+### Configuring existing components
+Some iOS controls can be registered for remote configuration. This will allow you to update content through the mbark dashboard. This registration process is the same used to automatically tracking events. 
+
+```swift
+override func viewDidLoad() {
+  super.viewDidLoad()
+  signUpButton.setMbarkId("sign_up")
+  signInButton.setMbarkId("sign_in")
+ }
+```	
+
+Existing controls that can be edited include:
+- `UIButton`
+- `UIImageView`
+- `UILabel`
+- `UITextField`
+- `UITextView`
+
+### Configurable view controllers
+The mbark SDK can create fully remote-configured `UIViewController`s.  Here's an example of a configurable view controller being instantiated:
+
+```swift
+self.mbarkViewController = Mbark.mbarkViewController(forMbarkId: "welcome_screen") { success in
+ // Respond to either success or failure... This closure allows us to request an mbarkViewController
+ // before the mbarkSDK is has completed initialization.
+}
+```
+
+The host iOS app can then add event tie-ins to this view controller, like so:
+```swift
+mbarkViewController.addActionHandler(MbarkActionHandler(id: Action.signInPress.rawValue, handler: { [weak self] in
+	// Respond to sign in request...
+}))
+
+mbarkViewController.addActionHandler(MbarkActionHandler(id: Action.signUpPress.rawValue, handler: { [weak self] in
+  	// Response to sign up event...
+}))
+```
+# Mbark API
+The following are public static methods available from the Mbark SDK.
+
+Initializing the SDK:
+```swift
+public static func initialize()
+```
+
+Tracking the start of an onboarding flow:
+```swift
+public static func trackFlowStart()
+```
+Tracking the end of an onboarding flow:
+```swift
+public static func trackFlowStart()
+```
+
+Tracking any event:
+```swift
+public static func track(eventType: MbarkEventType, step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+Tracking any event only once per onboarding session:
+```swift
+public static func trackOnce(eventType: MbarkEventType, step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+
+The following are helper methods which will format the above tracking event calls automatically:
+
+Tracking app loading:
+```swift
+public static func trackAppLoading()
+```
+
+Tracking an onboarding step view:
+```swift
+public static func trackStepView(_ step: String, data: MbarkEventData? = nil)
+```
+
+Tracking an onboarding step view only once:
+```swift
+public static func trackStepViewOnce(_ step: String, data: MbarkEventData? = nil)
+```
+
+Tracking authentication for a new user:
+```swift
+public static func trackAuthenticationForNewUser()
+```
+
+Tracking authentication for an existing user:
+```swift
+public static func trackAuthenticationForExistingUser()
+```
+
+Tracking granted system permissions:
+```swift
+public static func trackAccept(step: String? = nil, component: String? = nil, shouldTrackOnce: Bool = false)
+```
+Tracking revoked system permissions:
+```swift
+public static func trackReject(step: String? = nil, component: String? = nil, shouldTrackOnce: Bool = false)
+```
+
+Tracking taps:
+```swift
+public static func trackTap(step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+
+Tracking input field entries:
+```swift
+public static func trackInput(step: String? = nil, component: String? = nil, data: MbarkEventData? = nil)
+```
+Creating a remote configurable view controller:
+```swift
+public static func mbarkViewController(forMbarkId mbarkId: String, onLoaded: @escaping (Bool) -> Void) -> MbarkViewController?
+```
