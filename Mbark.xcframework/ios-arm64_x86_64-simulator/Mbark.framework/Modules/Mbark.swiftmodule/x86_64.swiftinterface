@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
 // swift-module-flags: -target x86_64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
 import Combine
 import CommonCrypto
@@ -22,11 +22,11 @@ import UIKit
 import MachO.dyld
 import os
 import ObjectiveC.runtime
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publisher {
   public func toSignal() -> Signal<Self.Output, Self.Failure>
 }
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Signal {
   public struct CombinePublisher : Combine.Publisher {
     public typealias Output = Element
@@ -35,7 +35,7 @@ extension Signal {
   }
   public func toPublisher() -> Signal<Element, Error>.CombinePublisher
 }
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension SignalProtocol {
   public func toPublisher() -> Signal<Self.Element, Self.Error>.CombinePublisher
 }
@@ -191,15 +191,15 @@ final public class AnyProperty<Value> : PropertyProtocol, SignalProtocol {
     get
   }
   final public func observe(with observer: @escaping (Signal<Value, Swift.Never>.Event) -> Swift.Void) -> Disposable
-  @objc deinit
   public typealias Element = Value
   public typealias Error = Swift.Never
   public typealias ProperyElement = Value
+  @objc deinit
 }
 public struct MbarkEventData : Swift.Codable {
   public init(name: Swift.String, value: Swift.String)
-  public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
 }
 public protocol ObservableObject : AnyObject {
   associatedtype ObjectWillChangeSignal : SignalProtocol = Signal<Swift.Void, Swift.Never> where Self.ObjectWillChangeSignal.Error == Swift.Never
@@ -224,8 +224,8 @@ extension NSRecursiveLock {
   @objc override dynamic public func viewDidLayoutSubviews()
   public func addActionHandler(_ actionHandler: MbarkActionHandler)
   public func removeActionHandler(forId id: Swift.String)
-  @objc deinit
   @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc deinit
 }
 public struct Empty<Element, Error> : SignalProtocol, Swift.Equatable where Error : Swift.Error {
   public init(completeImmediately: Swift.Bool = true)
@@ -359,8 +359,8 @@ extension Result : _ResultProtocol {
   public var _unbox: Swift.Result<Success, Failure> {
     get
   }
-  public typealias Value = Success
   public typealias Error = Failure
+  public typealias Value = Success
 }
 extension UIImageView {
   @objc dynamic open func mbark_display(image: UIKit.UIImage?)
@@ -507,19 +507,19 @@ public class Configurator {
 }
 public enum TimelaneLaneType : Swift.Int, Swift.CaseIterable {
   case subscription, event
-  public typealias RawValue = Swift.Int
   public init?(rawValue: Swift.Int)
-  public var rawValue: Swift.Int {
+  public typealias AllCases = [TimelaneLaneType]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [TimelaneLaneType] {
     get
   }
-  public typealias AllCases = [TimelaneLaneType]
-  public static var allCases: [TimelaneLaneType] {
+  public var rawValue: Swift.Int {
     get
   }
 }
 extension SignalProtocol {
   public func laneIfAvailable(_ name: Swift.String, filter: Swift.Set<TimelaneLaneType> = Set(TimelaneLaneType.allCases), file: Swift.StaticString = #file, function: Swift.StaticString = #function, line: Swift.UInt = #line) -> Signal<Self.Element, Self.Error>
-  @available(OSX 10.14, iOS 12, tvOS 12, watchOS 5, *)
+  @available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
   public func lane(_ name: Swift.String, filter: Swift.Set<TimelaneLaneType> = Set(TimelaneLaneType.allCases), file: Swift.StaticString = #file, function: Swift.StaticString = #function, line: Swift.UInt = #line) -> Signal<Self.Element, Self.Error>
 }
 public enum MbarkEventType : Swift.String {
@@ -536,16 +536,16 @@ public enum MbarkEventType : Swift.String {
   case swipeRight
   case tap
   case view
+  public init?(rawValue: Swift.String)
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
   }
-  public init?(rawValue: Swift.String)
 }
 public enum MbarkStepNames : Swift.String {
   case loading
-  public typealias RawValue = Swift.String
   public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
   }
@@ -553,8 +553,8 @@ public enum MbarkStepNames : Swift.String {
 public enum AuthenticationUserType : Swift.String {
   case new
   case existing
-  public typealias RawValue = Swift.String
   public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
   }
@@ -626,8 +626,8 @@ extension SignalProtocol where Self.Element : Swift.Sequence {
 }
 @_inheritsConvenienceInitializers @available(*, deprecated, renamed: "PassthroughSubject")
 final public class PublishSubject<Element, Error> : Subject<Element, Error> where Error : Swift.Error {
-  @objc deinit
   override public init()
+  @objc deinit
 }
 @available(*, deprecated, renamed: "PassthroughSubject")
 public typealias SafePublishSubject<Element> = PublishSubject<Element, Swift.Never>
@@ -758,9 +758,9 @@ final public class ConnectableSignal<Source> : ConnectableSignalProtocol where S
   public init(source: Source, subject: Subject<Source.Element, Source.Error>)
   final public func connect() -> Disposable
   final public func observe(with observer: @escaping (Signal<Source.Element, Source.Error>.Event) -> Swift.Void) -> Disposable
-  @objc deinit
   public typealias Element = Source.Element
   public typealias Error = Source.Error
+  @objc deinit
 }
 extension ConnectableSignalProtocol {
   public func refCount(disconnectCount: Swift.Int = 0) -> Signal<Self.Element, Self.Error>
@@ -1007,7 +1007,7 @@ public struct ExecutionContext {
     get
   }
   public let context: (@escaping () -> Swift.Void) -> Swift.Void
-  @available(OSX 10.10, *)
+  @available(macOS 10.10, *)
   public static func global(qos: Dispatch.DispatchQoS.QoSClass = .default) -> ExecutionContext
   public static func nonRecursive() -> ExecutionContext
   public func execute(_ block: @escaping () -> Swift.Void)
@@ -1053,10 +1053,10 @@ public enum FlattenStrategy {
   case latest
   case merge
   public static func == (a: FlattenStrategy, b: FlattenStrategy) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
     get
   }
-  public func hash(into hasher: inout Swift.Hasher)
 }
 extension SignalProtocol where Self.Element : SignalProtocol, Self.Error == Self.Element.Error {
   public typealias InnerElement = Self.Element.Element
@@ -1081,10 +1081,10 @@ extension Subscribers {
     @available(*, unavailable, message: "Not supported yet.")
     public static func max(_ value: Swift.Int) -> Subscribers.Demand
     public static func == (a: Subscribers.Demand, b: Subscribers.Demand) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
     public var hashValue: Swift.Int {
       get
     }
-    public func hash(into hasher: inout Swift.Hasher)
   }
 }
 public typealias CGPoint = CoreGraphics.CGPoint
@@ -1135,10 +1135,10 @@ public class LoadingProperty<LoadingValue, LoadingError> : PropertyProtocol, Sig
   }
   public func reload(silently: Swift.Bool = true) -> LoadingSignal<LoadingValue, LoadingError>
   public func observe(with observer: @escaping (Signal<LoadingState<LoadingValue, LoadingError>, Swift.Never>.Event) -> Swift.Void) -> Disposable
-  @objc deinit
   public typealias Element = LoadingState<LoadingValue, LoadingError>
   public typealias Error = Swift.Never
   public typealias ProperyElement = LoadingValue?
+  @objc deinit
 }
 extension SignalProtocol {
   public func reloading<LoadingValue>(_ property: LoadingProperty<LoadingValue, Self.Error>) -> Signal<Self.Element, Self.Error>
@@ -1181,6 +1181,32 @@ extension Subscribers {
     @objc deinit
   }
 }
+public enum DeviceSize : Swift.Int, Swift.Comparable {
+  case unknownSize
+  case screen3_5Inch
+  case screen4Inch
+  case screen4_7Inch
+  case screen5_4Inch
+  case screen5_5Inch
+  case screen5_8Inch
+  case screen6_1Inch
+  case screen6_5Inch
+  case screen6_7Inch
+  case screen7_9Inch
+  case screen9_7Inch
+  case screen10_2Inch
+  case screen10_5Inch
+  case screen10_9Inch
+  case screen11Inch
+  case screen12_9Inch
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public func < (lhs: DeviceSize, rhs: DeviceSize) -> Swift.Bool
+public func == (lhs: DeviceSize, rhs: DeviceSize) -> Swift.Bool
 extension SignalProtocol {
   public func materialize() -> Signal<Signal<Self.Element, Self.Error>.Event, Swift.Never>
   public func dematerialize<U, E>() -> Signal<U, E> where E == Self.Error, Self.Element == Signal<U, E>.Event
@@ -1305,3 +1331,5 @@ extension AuthenticationUserType : Swift.Hashable {}
 extension AuthenticationUserType : Swift.RawRepresentable {}
 extension FlattenStrategy : Swift.Equatable {}
 extension FlattenStrategy : Swift.Hashable {}
+extension DeviceSize : Swift.Hashable {}
+extension DeviceSize : Swift.RawRepresentable {}
