@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		+UT4sO8aKgURt4TwBtncspbTTPc=
+		HM6IJlKLEBapTH4FHioWfBmWfas=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		imduA988cmJDd/Jap3JqYU9+5VY=
+		fotzRQVf+NRxMqeP9aZpv2FM/og=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		imduA988cmJDd/Jap3JqYU9+5VY=
+		fotzRQVf+NRxMqeP9aZpv2FM/og=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		CVO2aWIi5MdMktHUDXVh9kA6s/k=
+		yb/W3DLlyNHOmnZ5oj8J/7NNbPI=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		CVO2aWIi5MdMktHUDXVh9kA6s/k=
+		yb/W3DLlyNHOmnZ5oj8J/7NNbPI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -103,7 +103,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			91gAVqyseS6rhhUK7FEaZ/QuRPcedNLyEfUY0XAE690=
+			EEPHd9m/fnk2rk2bvVgE9hurzoVoxrHyQxxRf69UYl0=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
@@ -124,7 +124,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			91gAVqyseS6rhhUK7FEaZ/QuRPcedNLyEfUY0XAE690=
+			EEPHd9m/fnk2rk2bvVgE9hurzoVoxrHyQxxRf69UYl0=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -145,7 +145,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QyxBmagLLVRCrODRhyHJWgqEuv0uTxBKUikRUK50oPk=
+			R55/CQqN5Rv53g3J3NFp5PHCIqFhE3JmpKzrJU5KETA=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
@@ -166,7 +166,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QyxBmagLLVRCrODRhyHJWgqEuv0uTxBKUikRUK50oPk=
+			R55/CQqN5Rv53g3J3NFp5PHCIqFhE3JmpKzrJU5KETA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
