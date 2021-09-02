@@ -4,78 +4,1153 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/EffectsAlphaPremultiplicationFilter.h</key>
+		<data>
+		KEWcc5Gk9jkkduqjZ0Bl2yZEelw=
+		</data>
+		<key>Headers/EffectsAlphaType.h</key>
+		<data>
+		UioBW9R/8/+Lb3T3McMgWy1g7HQ=
+		</data>
+		<key>Headers/EffectsBlendFilter.h</key>
+		<data>
+		WF+c7BURtI2amEPNrFf/VjMsZA8=
+		</data>
+		<key>Headers/EffectsBlendFormulaSupport.h</key>
+		<data>
+		BRa28M+3lZ70KL7fEMF7eHdf1Wg=
+		</data>
+		<key>Headers/EffectsBlendModes.h</key>
+		<data>
+		INb09V/HT0MHcRIGymQvWDxdomU=
+		</data>
+		<key>Headers/EffectsBlendWithMaskFilter.h</key>
+		<data>
+		xbX00n3UTtJGJk0k1Zw86YBnu6s=
+		</data>
+		<key>Headers/EffectsBuffer.h</key>
+		<data>
+		Sj8j4rAXGtwsY/dmvdpZ9B8aUuo=
+		</data>
+		<key>Headers/EffectsBulgeDistortionFilter.h</key>
+		<data>
+		ohfH28N7IJ3dUjCsgWXyQo9OEck=
+		</data>
+		<key>Headers/EffectsCLAHEFilter.h</key>
+		<data>
+		6+Lrej6viMvBx4qEzdRvImfyCg4=
+		</data>
+		<key>Headers/EffectsCVMetalIOSurfaceBridge.h</key>
+		<data>
+		x1AHfL6OG9ploFVPS6yDy9B8MBA=
+		</data>
+		<key>Headers/EffectsCVMetalTextureBridging.h</key>
+		<data>
+		lS2C46u4XN/T+0PbqvbJqbabZLQ=
+		</data>
+		<key>Headers/EffectsCVMetalTextureCache.h</key>
+		<data>
+		uFicLH2sPmsRZ97rg/2pk5Kt7YM=
+		</data>
+		<key>Headers/EffectsCVPixelBufferPool.h</key>
+		<data>
+		O4LRNY2QM8leLwLx+Vsgut27B4g=
+		</data>
+		<key>Headers/EffectsCVPixelBufferPromise.h</key>
+		<data>
+		ZKmMrqyLjyBqtuilgAOF3X+fvoE=
+		</data>
+		<key>Headers/EffectsCVPixelBufferRendering.h</key>
+		<data>
+		mEb9qFDPbMFyyddNFGpiSWky4Aw=
+		</data>
+		<key>Headers/EffectsChromaKeyBlendFilter.h</key>
+		<data>
+		mcqtElVbaFHflf0Cw2NBqwFrCh8=
+		</data>
+		<key>Headers/EffectsColor.h</key>
+		<data>
+		jVB21ioSIo+Pk4ZXpKZncyhbXWQ=
+		</data>
+		<key>Headers/EffectsColorHalftoneFilter.h</key>
+		<data>
+		5ReaF/VYHxOyQtlaPb9gYVu/xaU=
+		</data>
+		<key>Headers/EffectsColorLookupFilter.h</key>
+		<data>
+		/Y5jmUZRre4zWoEHFUJRlLjQgXM=
+		</data>
+		<key>Headers/EffectsColorMatrix.h</key>
+		<data>
+		ujz/W4bo6O5A3M/E8u/hvw1BHuc=
+		</data>
+		<key>Headers/EffectsColorMatrixFilter.h</key>
+		<data>
+		8KZH2KWm5qpYKJpy9M7mOcCY7dA=
+		</data>
+		<key>Headers/EffectsComputePipeline.h</key>
+		<data>
+		7HK2N734uLCKxAmsxvD97l6Yej4=
+		</data>
+		<key>Headers/EffectsComputePipelineKernel.h</key>
+		<data>
+		yKOZPz5iEiocCBl9elqNYc0RzSQ=
+		</data>
+		<key>Headers/EffectsContext+Internal.h</key>
+		<data>
+		3aBJkKmmkWgcAWSBilAdmcy/WyM=
+		</data>
+		<key>Headers/EffectsContext+Rendering.h</key>
+		<data>
+		+3KGr7MfawyApiBzfWbYP91E1cs=
+		</data>
+		<key>Headers/EffectsContext.h</key>
+		<data>
+		/y2Q4xcz2YgAkwDzDC74VEsGbGs=
+		</data>
+		<key>Headers/EffectsCoreImageRendering.h</key>
+		<data>
+		PO9V/wVj8lX4uggLxUTh2GRNAog=
+		</data>
+		<key>Headers/EffectsCorner.h</key>
+		<data>
+		2DvnyVz8tT/+i2IsXyiCeYlQYcs=
+		</data>
+		<key>Headers/EffectsCropFilter.h</key>
+		<data>
+		Ytx0jTyKMRwEhjdvQ6BzecfweRA=
+		</data>
+		<key>Headers/EffectsDefer.h</key>
+		<data>
+		kBa6LvFNSnVCopYfy3z35TfZspU=
+		</data>
+		<key>Headers/EffectsDotScreenFilter.h</key>
+		<data>
+		NW3Ptv70VhMCBt3sshCB8D56WLk=
+		</data>
+		<key>Headers/EffectsDrawableRendering.h</key>
+		<data>
+		z8Y058L0IM5SUYFR3W6aex9KIF8=
+		</data>
+		<key>Headers/EffectsError.h</key>
+		<data>
+		LkLjH7tRO8ZBlOpGTbgTcSKoINM=
+		</data>
+		<key>Headers/EffectsFilter.h</key>
+		<data>
+		lHZwN8DCnJccECdCAsTisZW3E38=
+		</data>
+		<key>Headers/EffectsFunctionArgumentsEncoder.h</key>
+		<data>
+		CpkfoJuP1xaSX+7ppcwLZHK7WWk=
+		</data>
+		<key>Headers/EffectsFunctionDescriptor.h</key>
+		<data>
+		SWo9Tk5cgGBeLspPtQkhu8ONQ4Y=
+		</data>
+		<key>Headers/EffectsGeometry.h</key>
+		<data>
+		1wWOdMM3XPeD4YGV7vG6IKQNs9Y=
+		</data>
+		<key>Headers/EffectsGeometryUtilities.h</key>
+		<data>
+		dl7PbLbivfc3JbYppSch0WtKBdU=
+		</data>
+		<key>Headers/EffectsHasher.h</key>
+		<data>
+		hV7iMg0ITteDeeAbCSgwSu2/b5E=
+		</data>
+		<key>Headers/EffectsHexagonalBokehBlurFilter.h</key>
+		<data>
+		DuuF1zpMeoToKxEpT78sre42+lE=
+		</data>
+		<key>Headers/EffectsHighPassSkinSmoothingFilter.h</key>
+		<data>
+		l1RFxRIzjJhip7XwwHQ37PO4UBU=
+		</data>
+		<key>Headers/EffectsImage+Filters.h</key>
+		<data>
+		Vp350RaQL1z27wm1iRbJm3uZFGc=
+		</data>
+		<key>Headers/EffectsImage+Promise.h</key>
+		<data>
+		VL0NZg8Vw1aLOcsEEQ6jP3CpwxY=
+		</data>
+		<key>Headers/EffectsImage.h</key>
+		<data>
+		0n5GgJxrL1BHEwejqmu1zGt0kzU=
+		</data>
+		<key>Headers/EffectsImageOrientation.h</key>
+		<data>
+		qFItuzx8a8zPnBGxaADCi1bQqEY=
+		</data>
+		<key>Headers/EffectsImagePromise.h</key>
+		<data>
+		1bikvx4Ieb1aeYZiyAytrLcMwnc=
+		</data>
+		<key>Headers/EffectsImagePromiseDebug.h</key>
+		<data>
+		HRJNA4+iwo6MRY/NzwZF+4VGx6k=
+		</data>
+		<key>Headers/EffectsImageProperties.h</key>
+		<data>
+		cRBckZCuI8+mfHxXD9BONfth0AQ=
+		</data>
+		<key>Headers/EffectsImageRenderingContext+Internal.h</key>
+		<data>
+		GvLPdWGmhCVsTIH0rVW4rMQ5bUk=
+		</data>
+		<key>Headers/EffectsImageRenderingContext.h</key>
+		<data>
+		BibKS2xrC6wmzCvZyhVXyahBU0w=
+		</data>
+		<key>Headers/EffectsImageView.h</key>
+		<data>
+		y1+5/+UVP3Yqkx7zM2IwTAqDs/4=
+		</data>
+		<key>Headers/EffectsKernel.h</key>
+		<data>
+		E2DOUkEjYm9cjX9mESL+TGgbf9I=
+		</data>
+		<key>Headers/EffectsLayer.h</key>
+		<data>
+		mTh18APP12bAdZzmsMfdgNEw0PE=
+		</data>
+		<key>Headers/EffectsLibrarySource.h</key>
+		<data>
+		st4bk5j+rXgDpg9F/awU4ZR1h+o=
+		</data>
+		<key>Headers/EffectsLock.h</key>
+		<data>
+		aFHO85UctSUrM9BPjvOHOUXyOKA=
+		</data>
+		<key>Headers/EffectsMPSBoxBlurFilter.h</key>
+		<data>
+		JlOrg4OIWQ+0M38NXsOnA2fzo0A=
+		</data>
+		<key>Headers/EffectsMPSConvolutionFilter.h</key>
+		<data>
+		NPHPI9kdu/3Khuf+sWr0iD1k5h0=
+		</data>
+		<key>Headers/EffectsMPSDefinitionFilter.h</key>
+		<data>
+		7BBtG8EWcceYpDM9n+VnG2sF884=
+		</data>
+		<key>Headers/EffectsMPSGaussianBlurFilter.h</key>
+		<data>
+		Ad5kVV1lFADuoae1DqPi0LVECHc=
+		</data>
+		<key>Headers/EffectsMPSHistogramFilter.h</key>
+		<data>
+		ZHZdf2Qv1GV5Nw20m5r7dSsIeBc=
+		</data>
+		<key>Headers/EffectsMPSKernel.h</key>
+		<data>
+		/n1d1LOtzSepQ5dHykdxuyJ6h7M=
+		</data>
+		<key>Headers/EffectsMPSSobelFilter.h</key>
+		<data>
+		/miti8e0izFncJLWNdPAjhPWIQU=
+		</data>
+		<key>Headers/EffectsMPSUnsharpMaskFilter.h</key>
+		<data>
+		wIDLrf66m9+MalvxatSubuuQb+c=
+		</data>
+		<key>Headers/EffectsMask.h</key>
+		<data>
+		LNzu4mrVyDZSDt0tJqScYdMcfI4=
+		</data>
+		<key>Headers/EffectsMemoryWarningObserver.h</key>
+		<data>
+		BdFIMDAC4fWGm9qpa8WiIzQO6BA=
+		</data>
+		<key>Headers/EffectsMultilayerCompositeKernel.h</key>
+		<data>
+		HveMNcRpH9dYy1vVZ2ngMh+P/KU=
+		</data>
+		<key>Headers/EffectsMultilayerCompositingFilter.h</key>
+		<data>
+		RUCcm5kC/5bBr34Avs/P0aCCBrQ=
+		</data>
+		<key>Headers/EffectsPixelFormat.h</key>
+		<data>
+		DN4ZNvKidYkTQHpCBk+X1iZyIg8=
+		</data>
+		<key>Headers/EffectsPixellateFilter.h</key>
+		<data>
+		+egbO2oHocwlq48h+myA/JOKtfc=
+		</data>
+		<key>Headers/EffectsPrint.h</key>
+		<data>
+		WhD7V+UwStbFpYQFg9Aau5U6HAg=
+		</data>
+		<key>Headers/EffectsRGBColorSpaceConversionFilter.h</key>
+		<data>
+		tfmkProZySSc3rNVBPHa7r3wVT8=
+		</data>
+		<key>Headers/EffectsRGBToneCurveFilter.h</key>
+		<data>
+		fv4uWsXZ6br2XB8kSO8kHDAeXhU=
+		</data>
+		<key>Headers/EffectsRenderCommand.h</key>
+		<data>
+		IcOOl2y7BZHOtBPwT4V82pxrIxA=
+		</data>
+		<key>Headers/EffectsRenderGraphOptimization.h</key>
+		<data>
+		LLy2Ec0m89SMLRwFU57jWHYWoSQ=
+		</data>
+		<key>Headers/EffectsRenderPassOutputDescriptor.h</key>
+		<data>
+		MidOZ756PArAhA9obj/FQb2HLXM=
+		</data>
+		<key>Headers/EffectsRenderPipeline.h</key>
+		<data>
+		yOFbcsYi6ngy+d5xIGH7ul4iPL4=
+		</data>
+		<key>Headers/EffectsRenderPipelineKernel.h</key>
+		<data>
+		R1u02yKXfMeDD/I6NtbjIIJI6OA=
+		</data>
+		<key>Headers/EffectsRenderTask.h</key>
+		<data>
+		kxcEdB9rfITPjMjPHDBtrPjDgiE=
+		</data>
+		<key>Headers/EffectsRoundCornerFilter.h</key>
+		<data>
+		GQoO8m4nYexQEhg7DcAFenAjALE=
+		</data>
+		<key>Headers/EffectsSamplerDescriptor.h</key>
+		<data>
+		r9dHVByNnygMTDyqjYGcGHlLqTA=
+		</data>
+		<key>Headers/EffectsShaderFunctionConstants.h</key>
+		<data>
+		pHDJyNZ2Vgf8ZkpHqNeREfxeaHw=
+		</data>
+		<key>Headers/EffectsShaderLib.h</key>
+		<data>
+		8EagBzkSomll+pt58u/N41Lj3gY=
+		</data>
+		<key>Headers/EffectsTextureDescriptor.h</key>
+		<data>
+		D0sxuWzrvxfNx5yHMzEJFrqr7z8=
+		</data>
+		<key>Headers/EffectsTextureDimensions.h</key>
+		<data>
+		Lq9ZCdh9Yqcae912pD8cZNgf4X4=
+		</data>
+		<key>Headers/EffectsTextureLoader.h</key>
+		<data>
+		kzQFxP6rffp5ta9TYLzMsneWDrw=
+		</data>
+		<key>Headers/EffectsTexturePool.h</key>
+		<data>
+		/eGwBp5vk3Lu5NtY0Mgn+AwEWhs=
+		</data>
+		<key>Headers/EffectsThreadSafeImageView.h</key>
+		<data>
+		9cUxtM8I3DTve5QOPMQ+WSLSggA=
+		</data>
+		<key>Headers/EffectsTransform.h</key>
+		<data>
+		mN0JTjmZdXISctB8AP94NQ4Rf9k=
+		</data>
+		<key>Headers/EffectsTransformFilter.h</key>
+		<data>
+		p32P2OlmnMnFFSfs79R9jaVScyo=
+		</data>
+		<key>Headers/EffectsUnaryImageRenderingFilter.h</key>
+		<data>
+		ZI3TloA9XGL9zKJnuwFJkcV+D8c=
+		</data>
+		<key>Headers/EffectsVector+SIMD.h</key>
+		<data>
+		+OBt7tea6t36sRiRt3Jk5ehgLhA=
+		</data>
+		<key>Headers/EffectsVector.h</key>
+		<data>
+		etbQcyxD276trBn3dqbBf3OePak=
+		</data>
+		<key>Headers/EffectsVertex.h</key>
+		<data>
+		MdsmJ2uHf0WS4FMouncyWxEBTcI=
+		</data>
+		<key>Headers/EffectsVibranceFilter.h</key>
+		<data>
+		krud/QXG1ETyKvcsK4xt18etri8=
+		</data>
+		<key>Headers/EffectsWeakToStrongObjectsMapTable.h</key>
+		<data>
+		zXpmbjaEUr38Hhe5MxVIbjeo26o=
+		</data>
+		<key>Headers/Layout.h</key>
+		<data>
+		aDtQjQrK99Ae2sDIsLs3jsgm73o=
+		</data>
+		<key>Headers/Mbark-Bridging-Header.h</key>
+		<data>
+		Fgh7oooAKhPYAlRmtFYW1VHUFDE=
+		</data>
 		<key>Headers/Mbark-Swift.h</key>
 		<data>
-		2WipD6UQVykADr9y3bApyaD1wUE=
+		quGc40HbZi32R9P/DAmd0LeQ+04=
 		</data>
 		<key>Headers/Mbark.h</key>
 		<data>
 		N5MCBdsaCkzffl90XDINldMO4bw=
 		</data>
+		<key>Headers/NodeImpl.h</key>
+		<data>
+		l8Rgaku4ZmJmv+/EIDJDdzCOQdE=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		RKekj9/abTy0qHUjU6x8LXf6FGo=
+		TxaZ64wN2JC8HxwKESC28cO49W8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		IpBXeGnNM5bQVqCoSC2/Gc/3NS4=
+		eTdoscyPSCggg2xrSmmhKJ1tsk0=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		fi2Bieloo4mY/re2VBYLXwJYwW0=
+		t9Xee6zYUrdj7KR/Oj0HXEMYK8Q=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		8yRtqLaNUxs5e6FEFWEDpK5R8JI=
+		3acmVWc5gIGYwI8rZn011bUCMx8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		IpBXeGnNM5bQVqCoSC2/Gc/3NS4=
+		eTdoscyPSCggg2xrSmmhKJ1tsk0=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		fi2Bieloo4mY/re2VBYLXwJYwW0=
+		t9Xee6zYUrdj7KR/Oj0HXEMYK8Q=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		8yRtqLaNUxs5e6FEFWEDpK5R8JI=
+		3acmVWc5gIGYwI8rZn011bUCMx8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		iefiXTOr5GCZ/yMNHKu8p2t8Tn8=
+		Jda/cmGYpF8LygM/0tZ6rZekSqA=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		zZ0ax72D4LZJyPu+mSfJ9DpWHr0=
+		nRicHufaEbuv1B0mDbAzIZU3ERw=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		xsqq4PWFJ8JC9Lv7ykO8aT9m7ws=
+		rgNis2L+LutMCOSlFHmAzsKLSbA=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		iefiXTOr5GCZ/yMNHKu8p2t8Tn8=
+		Jda/cmGYpF8LygM/0tZ6rZekSqA=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		zZ0ax72D4LZJyPu+mSfJ9DpWHr0=
+		nRicHufaEbuv1B0mDbAzIZU3ERw=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		xsqq4PWFJ8JC9Lv7ykO8aT9m7ws=
+		rgNis2L+LutMCOSlFHmAzsKLSbA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		/mURszbM8D0itCYNb88fUIgd72Y=
+		OIaZImQ3aQP6VqNQSsCuSQOBiGg=
+		</data>
+		<key>default.metallib</key>
+		<data>
+		mxEf7PtfWYt3fyvORa3F3BcqnVk=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Headers/EffectsAlphaPremultiplicationFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			aFa/Hl1q3OtWsVfCqjc6Zq9KYHlgtnVPitYmh7J40W8=
+			</data>
+		</dict>
+		<key>Headers/EffectsAlphaType.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			H+9jCMmldOBhciKSVqexyiWVdxF2u3Al2QuAlH5ClkA=
+			</data>
+		</dict>
+		<key>Headers/EffectsBlendFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kBNeukZTs+1W84Sw1eB9XlVA2rsYa0Zu7PuEyjDJGg4=
+			</data>
+		</dict>
+		<key>Headers/EffectsBlendFormulaSupport.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			uGxM39FVNICSFDhIuSF4qnMnaeHliqfxORLcHAtrGJE=
+			</data>
+		</dict>
+		<key>Headers/EffectsBlendModes.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			A7KmcFbNMUQHcfDGlJhHsgoRKN1/pSJZ38rSJHRxWno=
+			</data>
+		</dict>
+		<key>Headers/EffectsBlendWithMaskFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			KYD2EdBzmWPvzQRfUZpwK0FlN+WLRAXSJoZzh8TEDmc=
+			</data>
+		</dict>
+		<key>Headers/EffectsBuffer.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			hn+Fh0DWtrHTdSq45BuebFEn/ZG/D1dJMDe93U+GHTY=
+			</data>
+		</dict>
+		<key>Headers/EffectsBulgeDistortionFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TZbh4n5R/NBQ6+y8ZBPp/4/MdBw34XiRZ2FfQQMoCXM=
+			</data>
+		</dict>
+		<key>Headers/EffectsCLAHEFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			XBCy0LdEd8yQKTMQPITOwPUSnnNzqPEtsJFKvGViJtA=
+			</data>
+		</dict>
+		<key>Headers/EffectsCVMetalIOSurfaceBridge.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			s4/hv6jsIXm2y1lALSiV+msJ0MTKDz+exsqbiqutpPw=
+			</data>
+		</dict>
+		<key>Headers/EffectsCVMetalTextureBridging.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			V0e1D2ztpJCpLezTFM652w2kY1i9aVWreM4dIPfc7Eo=
+			</data>
+		</dict>
+		<key>Headers/EffectsCVMetalTextureCache.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			g2Wwd/IA52QAe5ZptyG8DoLFZkgQvGnUCuk37mm/BB4=
+			</data>
+		</dict>
+		<key>Headers/EffectsCVPixelBufferPool.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			L49SVc+rSIjk2hnsq0Hg2k6qCLWhwyasTTWN1lpxKOM=
+			</data>
+		</dict>
+		<key>Headers/EffectsCVPixelBufferPromise.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			CW7XSCP6LnMjvHJqnHybFju+x8Z/QKGjPsn4In9fWY0=
+			</data>
+		</dict>
+		<key>Headers/EffectsCVPixelBufferRendering.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			4i6lMzqTqFqaSNanOj+BoSVTvzLSxDFsSzjti2vvb8A=
+			</data>
+		</dict>
+		<key>Headers/EffectsChromaKeyBlendFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			XnNbcwuHDGuQLYRqzVqCa2gtCEjJFadBj7/G7gZW9I4=
+			</data>
+		</dict>
+		<key>Headers/EffectsColor.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IhHQ5G0mttfxTN4dKjzwR8oN+OxQ/9uA7RGrcTD44HI=
+			</data>
+		</dict>
+		<key>Headers/EffectsColorHalftoneFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ZCyYb3JlY2p9uNpQzFe7fv1dMHkuY1ueRK8viBTRqkM=
+			</data>
+		</dict>
+		<key>Headers/EffectsColorLookupFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			aprXVfF1xi+cuTW1XeWVbDvvzbZQPcdr4BsPb3rhGWg=
+			</data>
+		</dict>
+		<key>Headers/EffectsColorMatrix.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			UtH6wrRRgP4RgGMXX4xRZfw4wWhP7GIDzdVRIl5Lgo4=
+			</data>
+		</dict>
+		<key>Headers/EffectsColorMatrixFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+Y/p7EIkUy1z4OnlC6XJwrtTCpUTWtc8rJbZTo3hZnY=
+			</data>
+		</dict>
+		<key>Headers/EffectsComputePipeline.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			wEEyfg7enU00ajMdqpdxT/H9r4LwJiYj6KEf0gWyHiE=
+			</data>
+		</dict>
+		<key>Headers/EffectsComputePipelineKernel.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			8IOSdD8XOuCUbbN2z1Ne67EE14YDF03bFZJcqMw9WPg=
+			</data>
+		</dict>
+		<key>Headers/EffectsContext+Internal.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IbTYVZywK9vfgaXMyC0f9/f4pEK29axXzRC07wnxvaI=
+			</data>
+		</dict>
+		<key>Headers/EffectsContext+Rendering.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Lzmu1g4JxAApAv/+HHE8qqoeIFMjDMPLU6dQNB2OJkM=
+			</data>
+		</dict>
+		<key>Headers/EffectsContext.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			nsgbMBsgIPEaSyAvXFH7WFmcV5Mfj2U9CAOWI/prknQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsCoreImageRendering.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/J0jrgAddvDki4FdNqIz6ubNz+s6LfPaV1fqpCnQhZY=
+			</data>
+		</dict>
+		<key>Headers/EffectsCorner.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			BxOwucm5TiOxQe+rS+oF0QvVrTfJzDMqcOkgx8mWPTA=
+			</data>
+		</dict>
+		<key>Headers/EffectsCropFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			U/PL09SAT8rGH9FOuM+3OHzAJZsIXa/XPYE3QDI5mnU=
+			</data>
+		</dict>
+		<key>Headers/EffectsDefer.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			4FXQElUsofLZ3m/tn2MQtg6X22H0ll9J08YvPetna6w=
+			</data>
+		</dict>
+		<key>Headers/EffectsDotScreenFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			OS24834Nx33hpxvNDW7hKW7Uo0KIvgagxtRi2VQP/uw=
+			</data>
+		</dict>
+		<key>Headers/EffectsDrawableRendering.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			uig11P/54k1GniBwbjygWwuVwOfai4rOgf+Q32cjvBQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsError.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			WiEJnqjg1X8VK206qdeovVuCprUIZoJ8F1owB4xcmeY=
+			</data>
+		</dict>
+		<key>Headers/EffectsFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			HpqKg0dHeHBhAAVAxO7cX8xRFVwfAduSO7CN/pW/bcU=
+			</data>
+		</dict>
+		<key>Headers/EffectsFunctionArgumentsEncoder.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Jib96qliVDVPHUQvuiHI9Yqnnr5N2w2npEx6FzJrAOk=
+			</data>
+		</dict>
+		<key>Headers/EffectsFunctionDescriptor.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			wQaw8wPXZp2AfoL7FCqd9dkn08TQ/IWRIfCdXFPMeWk=
+			</data>
+		</dict>
+		<key>Headers/EffectsGeometry.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			duDdq1Kfnkbv1x5fy2KMu88oGPD/raCyUr/dci15fjc=
+			</data>
+		</dict>
+		<key>Headers/EffectsGeometryUtilities.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			loLeY3VUmzKnGkNsXajtchi+ifC/lnot/mJnsSgqeWE=
+			</data>
+		</dict>
+		<key>Headers/EffectsHasher.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Tk64a+afgKgkjYkZjWI8T/koWKwv/sBRn+Ns6ADaQZQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsHexagonalBokehBlurFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6VttzwD0DS6eHppKqHG5HK6T21jaQFuD0QX1DxDbxAo=
+			</data>
+		</dict>
+		<key>Headers/EffectsHighPassSkinSmoothingFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			abtsPI9unKB5l4f/CNxrVGFG1dnM9benuzFwSGHvgpQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsImage+Filters.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			3k/j/VxJXZnC6F/uMsjhVghw7SxgGRUqGnC1nSZ+IbU=
+			</data>
+		</dict>
+		<key>Headers/EffectsImage+Promise.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			qYzSFvHig0RQwk6CvPso9NCkBlfcRJjPQdXU4AdtPeg=
+			</data>
+		</dict>
+		<key>Headers/EffectsImage.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			r2RPeStfN6dbLhNnYfz2Ens1QDqe8dvsN3hIwjRyoOM=
+			</data>
+		</dict>
+		<key>Headers/EffectsImageOrientation.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			gQfdYuqBGWxj9AsI7kGBagwnVwIosO7MvvvUXknqbyc=
+			</data>
+		</dict>
+		<key>Headers/EffectsImagePromise.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			uoHhYtEut3tGYiRD8597JmSZdrCyAStCI1CgPSdnGho=
+			</data>
+		</dict>
+		<key>Headers/EffectsImagePromiseDebug.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kYc3pw9FjtfKQmeJC3kW85Hi1UL9Jv7nEji73/pLuPs=
+			</data>
+		</dict>
+		<key>Headers/EffectsImageProperties.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			awbrGeCzbXGxCQFI2Gs35CGIEgbndIPM5uLErDqVpLY=
+			</data>
+		</dict>
+		<key>Headers/EffectsImageRenderingContext+Internal.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			54mB+v8NuCdITzTuOl59Z7v9eFmAU2fjNkQd19UOnz0=
+			</data>
+		</dict>
+		<key>Headers/EffectsImageRenderingContext.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			90C/5I1Q0NwpZQzd6jaXu6yUpfcijOc0shYPHobT3fY=
+			</data>
+		</dict>
+		<key>Headers/EffectsImageView.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			sTNSjLhs3q4rEtpqLbZU/UH0NO6+rKGDIL4TmDKit0A=
+			</data>
+		</dict>
+		<key>Headers/EffectsKernel.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			inQa2ncEkk/bhpPTIp+WtZ7tLpzvrSrmOflqg3a3QBQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsLayer.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			uwY338qqfnClwvO5nwwWl8vmYqAmvBFf9MxLAyt+6qg=
+			</data>
+		</dict>
+		<key>Headers/EffectsLibrarySource.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NviXnCcX0HNH9FGTD23SWHHYK2+F0s6wtCx/JMw1toQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsLock.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ne6iJFF0h0ZquDYLsMzGpEQVS1t7z7qgt3ST8aeiWjM=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSBoxBlurFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zAAYXS+I1bWvLx16WdCIwvZVxC+rp0yoei9ELX8aH6U=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSConvolutionFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			QbGVh2lQ6Wyz7jc21I92E5SCjUYckqP/xu56o+Fxrjo=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSDefinitionFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			57jiHw+weoqxLWLOgtHuXWOvMuqnwfhEPDYilueQdVA=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSGaussianBlurFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			vgZaYtcmRTQuHsqtcU3qMEV9hmoZ7siERlrLNWGCFSU=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSHistogramFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TRWt5scuuAZ0tXURQvh67cq1Qji0hB0r5yGOFimvgfQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSKernel.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xBe/xP3AUDpaDL02ALs7x2FjrUQPvIVMgPSr77gsuro=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSSobelFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			fh2WA0YIRd4QfnAooYXFWZJHU0EK7gdwEDlkYdLpOYo=
+			</data>
+		</dict>
+		<key>Headers/EffectsMPSUnsharpMaskFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NIWgBpwwFfVRTM4TeLgW1AryDnjpBvy3wecLb9VGd/Q=
+			</data>
+		</dict>
+		<key>Headers/EffectsMask.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ve182jAlo11injkeOdp/mCRZfXvHEzfE2z2ES14NObw=
+			</data>
+		</dict>
+		<key>Headers/EffectsMemoryWarningObserver.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			UACnmJe8tHgv6Anotvm+O9x/gD5tjSwo/qgN1I0UBkY=
+			</data>
+		</dict>
+		<key>Headers/EffectsMultilayerCompositeKernel.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			yeyWhLqLbUuDygmfrah06VrvuVL/9eUPBq5sLpuX2oM=
+			</data>
+		</dict>
+		<key>Headers/EffectsMultilayerCompositingFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			qT4+xtL77slr3QCM0EbgVTzBQzXhKmCS66QAZZGNwPA=
+			</data>
+		</dict>
+		<key>Headers/EffectsPixelFormat.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			9kCpb0Cdt8mb3l/rROUlGz5v09JTPn5gcg/iOC1jXnA=
+			</data>
+		</dict>
+		<key>Headers/EffectsPixellateFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			aMezTdevnX9v0yjmzKTVlkGzIdqpOh7pnROlhFgLIys=
+			</data>
+		</dict>
+		<key>Headers/EffectsPrint.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			KE0Hu8THP4/dH40cWQLTH6WFBcMscE6tyX+GL5cHg90=
+			</data>
+		</dict>
+		<key>Headers/EffectsRGBColorSpaceConversionFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			KJnnJP9LsNGj+0fK7015aq4U9u+OW7UaIsOCYLGdZWc=
+			</data>
+		</dict>
+		<key>Headers/EffectsRGBToneCurveFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+QE01rFF3Fg8gxZfOl1d1fa/vsStUxb5beJon0gBWK4=
+			</data>
+		</dict>
+		<key>Headers/EffectsRenderCommand.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			70yn0JdG4kwDBPL4LZcK+ppEI+/zIlLd+ayUBns94Dk=
+			</data>
+		</dict>
+		<key>Headers/EffectsRenderGraphOptimization.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			5gY/Pvej4AZijDrC2lL5bR0K2AEV8+rlCNrdU15FfjM=
+			</data>
+		</dict>
+		<key>Headers/EffectsRenderPassOutputDescriptor.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			eX0gePlcqEK2IKBIWOd7CG9kDkQVQqgGDTvZVwc8DiQ=
+			</data>
+		</dict>
+		<key>Headers/EffectsRenderPipeline.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			7pQH62H/lvI+K3y9491E6JMDBLWbLxWjuSzGvutTA88=
+			</data>
+		</dict>
+		<key>Headers/EffectsRenderPipelineKernel.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			iL7Zia19A9Irz2r9VPClremD77uGr4krgyzUyofy8fo=
+			</data>
+		</dict>
+		<key>Headers/EffectsRenderTask.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zuF7Qfxh/aZ6XYEFKoblRgCdDw4Hj87C2G2RNruhR4s=
+			</data>
+		</dict>
+		<key>Headers/EffectsRoundCornerFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			iWdtmJreSDWvhdMkFyh/IkSzA8jifze34KKXoYfAmYM=
+			</data>
+		</dict>
+		<key>Headers/EffectsSamplerDescriptor.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/6ZdpBoW2iW5438oWoFb01bDc/06nZaDkOcX437UmNo=
+			</data>
+		</dict>
+		<key>Headers/EffectsShaderFunctionConstants.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Dq4nWKXb/9PfAJJdSGP+bUII3P6eVWsfNdb2e/kHYaA=
+			</data>
+		</dict>
+		<key>Headers/EffectsShaderLib.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+C3WvHRkhMOHoPkcYaz0R2zSojUD3tg+kc7Rjg38BAg=
+			</data>
+		</dict>
+		<key>Headers/EffectsTextureDescriptor.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			GFaa3UbzIA2ygCstEHWu0t+5zyldGRzHS7jC0dESwbk=
+			</data>
+		</dict>
+		<key>Headers/EffectsTextureDimensions.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			x4yTz7wDyRBIzDHsQGwnQLRGfrn1qwYxBevkFTv0rX4=
+			</data>
+		</dict>
+		<key>Headers/EffectsTextureLoader.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			4lSn0OT0o1yR/4g4DQdHRjhrDSls6iSJ+vbqXSPjnS8=
+			</data>
+		</dict>
+		<key>Headers/EffectsTexturePool.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			1TbvfLK+gF+O1zwMFaXC6CRfj0Rk7NqyBxCzPIBLUok=
+			</data>
+		</dict>
+		<key>Headers/EffectsThreadSafeImageView.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Sv4+eFeqRUMoMP9nwEGFjj+0BpxWqrIrjrkMOw55S00=
+			</data>
+		</dict>
+		<key>Headers/EffectsTransform.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			9xFC5VRvSMwa2q5ACfO+u8A5d/pgfm6J/MiIU0UD02o=
+			</data>
+		</dict>
+		<key>Headers/EffectsTransformFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tAAYNobwcsz1QbjI6TuB6LJLss9q/v1O6NXPmGKI/O0=
+			</data>
+		</dict>
+		<key>Headers/EffectsUnaryImageRenderingFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IFIYsOIABqNSmzlYT5lWQI0wHUluPghC4YDR5RgOVlM=
+			</data>
+		</dict>
+		<key>Headers/EffectsVector+SIMD.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			v9kA31WVA/BwIW9sngXno/YFwhg59OGackyS6ml+zME=
+			</data>
+		</dict>
+		<key>Headers/EffectsVector.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			oGqCtJpFy570VAyoULiMXYMNPhpfyEJKHDCGGJXqd3k=
+			</data>
+		</dict>
+		<key>Headers/EffectsVertex.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			n+5FKaAa/iwhENYbuawIQ9xpW0qYhqG0QpL0Hr2lIKc=
+			</data>
+		</dict>
+		<key>Headers/EffectsVibranceFilter.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/R5pDM3aqrF0jFA6N8WxpYN/gMi1Qjh8+4s93o1En1M=
+			</data>
+		</dict>
+		<key>Headers/EffectsWeakToStrongObjectsMapTable.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			aKz/SXuJUN2MXccSBI78OhaEWJOeYv76bB9vW8TKuWM=
+			</data>
+		</dict>
+		<key>Headers/Layout.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Si7nFkdRnjI304Sh5h3NwZSgR5NEclPdO3FzH+W6hXE=
+			</data>
+		</dict>
+		<key>Headers/Mbark-Bridging-Header.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ZG/ghsj9FKraCRayN+VjvZ7YSs+h+C98681EdjezPPg=
+			</data>
+		</dict>
 		<key>Headers/Mbark-Swift.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ioc9+NitrLs4l6R+15YC49Wu+misKhmvSx0nR2x5mTw=
+			pT5R8E2Dl9K4Y2oCgHoiLlTXsl6F1DotM2cP83nOnNE=
 			</data>
 		</dict>
 		<key>Headers/Mbark.h</key>
@@ -85,95 +1160,109 @@
 			Ag3kWuVd/PY2uByWnwMydYfhJf2E0MxhfkxXy+o+R0M=
 			</data>
 		</dict>
+		<key>Headers/NodeImpl.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			BOxQyc5YtyH44Im8vQJ32zIPPRYoCP93yDzFVFTfscI=
+			</data>
+		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dYmraKzYWe5BTfyQ9id9QMkK9SzLynT3+gsuUV6Bs+U=
+			uM0ZTk24rJlECjY7gWJysm9POK3Frwf8HseCkBqZK3Q=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2kT1gGOguEWTWEdcee+QlAmSfgD/x9dlsInZXbtQa8w=
+			xQRM85cKE5g/mew+w/e1MdgvSqmOk+7AYD5GVD51MOI=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			u5jJxEl0NYuYb+jr6PgiVSSvIZq9HkrxmlW04McR14U=
+			lw8SMVXCC9vdToUYOGE3t2wDE5j9H2TvAnkSPF30phU=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dYmraKzYWe5BTfyQ9id9QMkK9SzLynT3+gsuUV6Bs+U=
+			uM0ZTk24rJlECjY7gWJysm9POK3Frwf8HseCkBqZK3Q=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2kT1gGOguEWTWEdcee+QlAmSfgD/x9dlsInZXbtQa8w=
+			xQRM85cKE5g/mew+w/e1MdgvSqmOk+7AYD5GVD51MOI=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			u5jJxEl0NYuYb+jr6PgiVSSvIZq9HkrxmlW04McR14U=
+			lw8SMVXCC9vdToUYOGE3t2wDE5j9H2TvAnkSPF30phU=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			NuU84X3nr5z6ZMy1nPFfDP6o4Rg01tsEhudoQrB8qcU=
+			8m/y22aiYBgaf0Gh2mcuGxZ5cdVPY4K3WjBY9weLbSQ=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BuE4u7a8ee2ISbuHPZcf4wKdTvgZ1R4KChwtgjyELPA=
+			JHjZ9hfjtY7zR6S9JG2x1HankEK90enUvtwFHm23i5g=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8rS0g4yYgdC8OyIJi+pBwLLkhPLo+tAy1B+KnztoBYM=
+			wdMgJIgsErYXq8+GXzZeothtv+qLq0qi4Htqa7AzIBY=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			NuU84X3nr5z6ZMy1nPFfDP6o4Rg01tsEhudoQrB8qcU=
+			8m/y22aiYBgaf0Gh2mcuGxZ5cdVPY4K3WjBY9weLbSQ=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BuE4u7a8ee2ISbuHPZcf4wKdTvgZ1R4KChwtgjyELPA=
+			JHjZ9hfjtY7zR6S9JG2x1HankEK90enUvtwFHm23i5g=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8rS0g4yYgdC8OyIJi+pBwLLkhPLo+tAy1B+KnztoBYM=
+			wdMgJIgsErYXq8+GXzZeothtv+qLq0qi4Htqa7AzIBY=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BG+NqNkAKTuhFKvo4HRHrpGqMLjZ4VKxYUAE6y0TIb0=
+			N2vz2pUFXzueO1KGtaUM6OXmqq1IByBK1ltZJVU9VlQ=
+			</data>
+		</dict>
+		<key>default.metallib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Il0M5PQIH/wCpg/ZG+YsZ6hGU9CJRVv+dZEzl6kBgDc=
 			</data>
 		</dict>
 	</dict>

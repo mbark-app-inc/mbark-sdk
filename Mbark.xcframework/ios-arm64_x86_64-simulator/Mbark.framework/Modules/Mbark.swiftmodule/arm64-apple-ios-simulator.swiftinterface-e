@@ -1,6 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
 // swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
+import AVFoundation
 import Combine
 import CommonCrypto
 import CoreGraphics
@@ -11,14 +12,20 @@ import Foundation
 import ImageIO
 import MachO
 @_exported import Mbark
+import Metal
+import MetalKit
 import Network
 import ObjectiveC
 import Security
+import StoreKit
 import Swift
 import SystemConfiguration
 import UIKit.UIColor
+import UIKit.UIFont
 import UIKit.UIImage
 import UIKit
+import UserNotifications
+import VideoToolbox
 import MachO.dyld
 import os
 import ObjectiveC.runtime
@@ -38,6 +45,13 @@ extension Signal {
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension SignalProtocol {
   public func toPublisher() -> Mbark.Signal<Self.Element, Self.Error>.CombinePublisher
+}
+extension MTLPixelFormat {
+  public static let unspecified: Metal.MTLPixelFormat
+  public static let yCbCr8_420_2p: Metal.MTLPixelFormat
+  public static let yCbCr8_420_2p_srgb: Metal.MTLPixelFormat
+  public static let yCbCr10_420_2p: Metal.MTLPixelFormat
+  public static let yCbCr10_420_2p_srgb: Metal.MTLPixelFormat
 }
 public struct Deferred<DeferredSignal> : Mbark.SignalProtocol where DeferredSignal : Mbark.SignalProtocol {
   public init(signalFactory: @escaping () -> DeferredSignal)
@@ -102,19 +116,128 @@ extension UIResponder {
     get
   }
 }
+extension EffectsImage {
+  public func applyingAssetTrackTransform(_ transform: CoreGraphics.CGAffineTransform) -> Mbark.EffectsImage
+}
+public protocol EffectsVideoCompositionRequest {
+  func sourceFrame(byTrackID trackID: CoreMedia.CMPersistentTrackID) -> CoreVideo.CVPixelBuffer?
+  var renderContext: AVFoundation.AVVideoCompositionRenderContext { get }
+  var compositionTime: CoreMedia.CMTime { get }
+  var isTrackTransformApplied: Swift.Bool { get }
+}
+public protocol EffectsMutableVideoCompositionRequest : Mbark.EffectsVideoCompositionRequest {
+  func finish(_ result: Swift.Result<CoreVideo.CVPixelBuffer, Swift.Error>)
+}
+public protocol EffectsTrackedVideoCompositionRequest : Mbark.EffectsVideoCompositionRequest {
+  var isCancelled: Swift.Bool { get }
+}
+extension AVAsynchronousVideoCompositionRequest : Mbark.EffectsMutableVideoCompositionRequest {
+  public var isTrackTransformApplied: Swift.Bool {
+    get
+  }
+  public func finish(_ result: Swift.Result<CoreVideo.CVPixelBuffer, Swift.Error>)
+}
+public class EffectsVideoCompositionRequestHandler {
+  public init(context: Mbark.EffectsContext, tracks: [AVFoundation.AVAssetTrack], on queue: Dispatch.DispatchQueue?, filter: @escaping (Mbark.EffectsVideoCompositionRequestHandler.Request) throws -> Mbark.EffectsImage)
+  public enum Error : Swift.Error {
+    case cannotGenerateOutputPixelBuffer
+    public static func == (a: Mbark.EffectsVideoCompositionRequestHandler.Error, b: Mbark.EffectsVideoCompositionRequestHandler.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public struct Request {
+    public let sourceImages: [CoreMedia.CMPersistentTrackID : Mbark.EffectsImage]
+    public let compositionTime: CoreMedia.CMTime
+    public let renderSize: CoreGraphics.CGSize
+    public var anySourceImage: Mbark.EffectsImage {
+      get
+    }
+  }
+  public func handle(request: Mbark.EffectsMutableVideoCompositionRequest)
+  @objc deinit
+}
+public class EffectsVideoComposition {
+  public init(asset inputAsset: AVFoundation.AVAsset, context: Mbark.EffectsContext, queue: Dispatch.DispatchQueue?, filter: @escaping (Mbark.EffectsVideoCompositionRequestHandler.Request) throws -> Mbark.EffectsImage)
+  public enum Error : Swift.Error {
+    case unsupportedInstruction
+    public static func == (a: Mbark.EffectsVideoComposition.Error, b: Mbark.EffectsVideoComposition.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let asset: AVFoundation.AVAsset
+  @available(iOS 11.0, macOS 10.13, *)
+  public var sourceTrackIDForFrameTiming: CoreMedia.CMPersistentTrackID {
+    get
+    set
+  }
+  public var frameDuration: CoreMedia.CMTime {
+    get
+    set
+  }
+  public var renderSize: CoreGraphics.CGSize {
+    get
+    set
+  }
+  @available(iOS 11, macOS 10.14, *)
+  public var renderScale: Swift.Float {
+    get
+    set
+  }
+  public func makeAVVideoComposition() -> AVFoundation.AVVideoComposition
+  @objc deinit
+}
 extension SignalProtocol {
   public func subscribe<S>(on scheduler: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.Scheduler
   public func receive<S>(on scheduler: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.Scheduler
 }
+public protocol EffectsImageViewProtocol : AnyObject {
+  var automaticallyCreatesContext: Swift.Bool { get set }
+  var colorPixelFormat: Metal.MTLPixelFormat { get set }
+  var clearColor: Metal.MTLClearColor { get set }
+  var resizingMode: Mbark.EffectsDrawableRenderingResizingMode { get set }
+  var context: Mbark.EffectsContext? { get set }
+  var image: Mbark.EffectsImage? { get set }
+}
+extension EffectsImageViewProtocol {
+  public var inputPort: Mbark.Port<Self, Mbark.EffectsImage?, Swift.ReferenceWritableKeyPath<Self, Mbark.EffectsImage?>> {
+    get
+  }
+}
+extension EffectsImageView : Mbark.EffectsImageViewProtocol {
+}
+extension EffectsThreadSafeImageView : Mbark.EffectsImageViewProtocol {
+}
+extension EffectsImageView : Mbark.InputPortProvider {
+  public typealias Port = Mbark.Port<Mbark.EffectsImageView, Mbark.EffectsImage?, Swift.ReferenceWritableKeyPath<Mbark.EffectsImageView, Mbark.EffectsImage?>>
+}
+extension EffectsThreadSafeImageView : Mbark.InputPortProvider {
+  public typealias Port = Mbark.Port<Mbark.EffectsThreadSafeImageView, Mbark.EffectsImage?, Swift.ReferenceWritableKeyPath<Mbark.EffectsThreadSafeImageView, Mbark.EffectsImage?>>
+}
+extension Mustache {
+  public static func isFoundationBaseType(value vv: Any) -> Swift.Bool
+  public static func isMustacheTrue(value v: Any?) -> Swift.Bool
+}
+extension EffectsColor : Swift.Hashable {
+  public static func == (lhs: Mbark.EffectsColor, rhs: Mbark.EffectsColor) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
 extension UITextField {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
-public class MbarkActionHandler {
-  public init(id: Swift.String, handler: @escaping () -> Swift.Void)
+public class MbarkActionHandler : Mbark.MbarkHandler {
+  public typealias Handler = () -> Swift.Void
+  public var finish: ((Swift.Bool) -> Swift.Void)?
+  public init(id: Swift.String, handler: @escaping Mbark.MbarkActionHandler.Handler)
+  final public let id: Swift.String
+  final public let handle: Mbark.MbarkActionHandler.Handler
   @objc deinit
-}
-extension MbarkActionHandler : Swift.Hashable {
-  public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
     get
   }
@@ -124,6 +247,9 @@ extension MbarkActionHandler : Swift.Equatable {
 }
 extension UITextView {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
+}
+extension EffectsComputeFunctionDispatchOptions {
+  convenience public init(_ generator: @escaping (Metal.MTLComputePipelineState) -> (threads: Metal.MTLSize, threadgroups: Metal.MTLSize, threadsPerThreadgroup: Metal.MTLSize))
 }
 extension SignalProtocol {
   public func amb<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
@@ -159,6 +285,19 @@ extension SignalProtocol where Self.Error == Swift.Never {
   public func with<O>(latestFrom other: O) -> Mbark.Signal<(Self.Element, O.Element), O.Error> where O : Mbark.SignalProtocol
   public func zip<O, U>(with other: O, combine: @escaping (Self.Element, O.Element) -> U) -> Mbark.Signal<U, O.Error> where O : Mbark.SignalProtocol
   public func zip<O>(with other: O) -> Mbark.Signal<(Self.Element, O.Element), O.Error> where O : Mbark.SignalProtocol
+}
+public struct MustacheParser {
+  public init()
+  public var openCharacter: Swift.Character {
+    get
+    set
+  }
+  public var closeCharacter: Swift.Character {
+    get
+    set
+  }
+  public mutating func parse(string s: Swift.String) -> Mbark.MustacheNode
+  public mutating func parse(cstr cs: Swift.UnsafePointer<Swift.CChar>) -> Mbark.MustacheNode
 }
 public protocol PropertyProtocol {
   associatedtype ProperyElement
@@ -196,6 +335,13 @@ final public class AnyProperty<Value> : Mbark.PropertyProtocol, Mbark.SignalProt
   public typealias ProperyElement = Value
   @objc deinit
 }
+@dynamicCallable public struct Mustache {
+  public let template: Mbark.MustacheNode
+  public init(_ template: Swift.String)
+  public static func parse(_ template: Swift.String) -> Mbark.MustacheNode
+  public func render(object: Any?) -> Swift.String
+  public func dynamicallyCall(withKeywordArguments args: Swift.KeyValuePairs<Swift.String, Any>) -> Swift.String
+}
 public struct MbarkEventData : Swift.Codable {
   public init(name: Swift.String, value: Swift.String)
   public func encode(to encoder: Swift.Encoder) throws
@@ -217,15 +363,26 @@ extension NSRecursiveLock {
   convenience public init(name: Swift.String)
 }
 @objc @_hasMissingDesignatedInitializers public class MbarkViewController : UIKit.UIViewController {
-  public var actionHandlers: Swift.Set<Mbark.MbarkActionHandler> {
-    get
-  }
   @objc override dynamic public func viewDidLoad()
   @objc override dynamic public func viewDidLayoutSubviews()
+  @available(*, deprecated, message: "Please use Mbark.addActionHandler(_:) directly")
   public func addActionHandler(_ actionHandler: Mbark.MbarkActionHandler)
+  @available(*, deprecated, message: "Please use Mbark.removeActionHandler(forId:) directly")
   public func removeActionHandler(forId id: Swift.String)
   @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
   @objc deinit
+}
+extension MbarkViewController {
+  @objc override dynamic public func motionEnded(_ motion: UIKit.UIEvent.EventSubtype, with event: UIKit.UIEvent?)
+}
+extension EffectsVector {
+  convenience public init(values: [Swift.Float])
+  convenience public init(values: [Swift.Int32])
+  convenience public init(values: [Swift.UInt32])
+  convenience public init(values: [Swift.Int16])
+  convenience public init(values: [Swift.UInt16])
+  convenience public init(values: [Swift.Int8])
+  convenience public init(values: [Swift.UInt8])
 }
 public struct Empty<Element, Error> : Mbark.SignalProtocol, Swift.Equatable where Error : Swift.Error {
   public init(completeImmediately: Swift.Bool = true)
@@ -252,6 +409,30 @@ extension SignalProtocol {
   public func feedError<S>(into listener: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SubjectProtocol, Self.Error == S.Element
   public func waitAndCollectEvents() -> [Mbark.Signal<Self.Element, Self.Error>.Event]
   public func waitAndCollectElements() -> [Self.Element]
+}
+public struct ComponentValue : Swift.Codable, Swift.Hashable, Swift.Equatable {
+  public let apiID: Swift.String?
+  public func hash(into hasher: inout Swift.Hasher)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+  public static func == (a: Mbark.ComponentValue, b: Mbark.ComponentValue) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension NSAttributedString : Mbark.KeyValueCodingType {
+}
+public struct AttributedMustacheParser {
+  public init()
+  public var openCharacter: Swift.Character {
+    get
+    set
+  }
+  public var closeCharacter: Swift.Character {
+    get
+    set
+  }
+  public mutating func parse(attributedString s: Foundation.NSAttributedString) -> Mbark.AttributedMustacheNode
 }
 @propertyWrapper public struct Published<Value> {
   public init(wrappedValue: Value)
@@ -499,11 +680,55 @@ extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol, Self.E
   public func consumeLoadingState(by listener: Mbark.BindingExecutionContextProvider & Mbark.LoadingStateListener) -> Mbark.SafeSignal<Self.LoadingValue>
   public func consumeLoadingState(by listener: Mbark.LoadingStateListener, context: Mbark.ExecutionContext) -> Mbark.SafeSignal<Self.LoadingValue>
 }
+public struct Safe<Base> : Swift.Decodable where Base : Swift.Decodable {
+  public let value: Base?
+  public init(from decoder: Swift.Decoder) throws
+}
 public class Configurator {
   public init(name: Swift.String = "")
   public var name: Swift.String
   public func configure(_ id: Swift.String? = nil)
   @objc deinit
+}
+extension UILabel {
+  @objc dynamic open func mbark_display(font: UIKit.UIFont?)
+}
+extension UITextField {
+  @objc dynamic open func mbark_display(font: UIKit.UIFont?)
+}
+public protocol MbarkHandler : AnyObject, Swift.Hashable {
+  associatedtype Handler
+  var id: Swift.String { get }
+  var handle: Self.Handler { get }
+  var finish: ((Swift.Bool) -> Swift.Void)? { get set }
+  func onFinish(_ callback: @escaping (Swift.Bool) -> Swift.Void) -> Self
+  func finish(success: Swift.Bool)
+}
+extension MbarkHandler {
+  public func hash(into hasher: inout Swift.Hasher)
+  @discardableResult
+  public func onFinish(_ callback: @escaping (Swift.Bool) -> Swift.Void) -> Self
+  public func finish(success: Swift.Bool)
+}
+extension EffectsVertex {
+  public init(position: (Swift.Float, Swift.Float, Swift.Float, Swift.Float), textureCoordinate: (Swift.Float, Swift.Float))
+}
+extension EffectsVertex : Swift.Equatable {
+  public static func == (lhs: Mbark.EffectsVertex, rhs: Mbark.EffectsVertex) -> Swift.Bool
+}
+extension EffectsVertex : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension EffectsVertices {
+  convenience public init(vertices: [Mbark.EffectsVertex], primitiveType: Metal.MTLPrimitiveType)
+  convenience public init(vertexBuffer: Mbark.EffectsDataBuffer, vertexCount: Swift.Int, indexBuffer: Mbark.EffectsDataBuffer?, indexCount: Swift.Int?, primitiveType: Metal.MTLPrimitiveType)
+}
+extension EffectsDataBuffer {
+  convenience public init?(EffectsVertices: [Mbark.EffectsVertex])
+  convenience public init?(uint32Indexes: [Swift.UInt32])
 }
 public enum TimelaneLaneType : Swift.Int, Swift.CaseIterable {
   case subscription, event
@@ -568,172 +793,41 @@ extension ExecutionContext : Mbark.Scheduler {
 extension DispatchQueue : Mbark.Scheduler {
   public func schedule(_ action: @escaping () -> Swift.Void)
 }
-@available(*, deprecated, message: "Event<Element, Error> has been renamed to Signal<Element, Error>.Event")
-public typealias Event<Element, Error> = Mbark.Signal<Element, Error>.Event where Error : Swift.Error
-@available(*, deprecated, renamed: "Never")
-public typealias NoError = Swift.Never
-@available(*, deprecated, renamed: "SafeSignal")
-public typealias Signal1<Element> = Mbark.Signal<Element, Swift.Never>
-@available(*, deprecated, renamed: "SafeObserver")
-public typealias Observer1<Element> = (Mbark.Event<Element, Swift.Never>) -> Swift.Void
-@available(*, deprecated, renamed: "SafePublishSubject")
-public typealias PublishSubject1<Element> = Mbark.PublishSubject<Element, Swift.Never>
-@available(*, deprecated, renamed: "SafeReplaySubject")
-public typealias ReplaySubject1<Element> = Mbark.ReplaySubject<Element, Swift.Never>
-@available(*, deprecated, renamed: "SafeReplayOneSubject")
-public typealias ReplayOneSubject1<Element> = Mbark.ReplayOneSubject<Element, Swift.Never>
-extension SignalProtocol {
-  @available(*, deprecated, renamed: "init(just:)")
-  public static func just(_ element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "init(sequence:)")
-  public static func sequence<S>(_ sequence: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Swift.Sequence, Self.Element == S.Element
-  @available(*, deprecated, message: "Please use Signal(sequence: 0..., interval: N) instead")
-  public static func interval(_ interval: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.reactivekit.interval")) -> Mbark.Signal<Swift.Int, Self.Error>
-  @available(*, deprecated, message: "Please use Signal(just:after:) instead")
-  public static func timer(element: Self.Element, time: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.reactivekit.timer")) -> Mbark.Signal<Self.Element, Self.Error>
-}
-@available(*, deprecated, message: "Please use Signal(flattening: signals, strategy: .merge")
-public func merge<Element, Error>(_ signals: [Mbark.Signal<Element, Error>]) -> Mbark.Signal<Element, Error> where Error : Swift.Error
-@available(*, deprecated, renamed: "Signal(combiningLatest:combine:)")
-public func combineLatest<Element, Result, Error>(_ signals: [Mbark.Signal<Element, Error>], combine: @escaping ([Element]) -> Result) -> Mbark.Signal<Result, Error> where Error : Swift.Error
-extension SignalProtocol where Self.Element : Mbark.OptionalProtocol {
-  @available(*, deprecated, renamed: "replaceNils")
-  public func replaceNil(with replacement: Self.Element.Wrapped) -> Mbark.Signal<Self.Element.Wrapped, Self.Error>
-  @available(*, deprecated, renamed: "ignoreNils")
-  public func ignoreNil() -> Mbark.Signal<Self.Element.Wrapped, Self.Error>
-}
-extension Signal where Error == Swift.Never {
-  @available(*, deprecated, message: "Replace with compactMap { $0.element }`")
-  public func elements<U, E>() -> Mbark.Signal<U, Swift.Never> where Element == Mbark.Signal<U, E>.Event, E : Swift.Error
-  @available(*, deprecated, message: "Replace with compactMap { $0.error }`")
-  public func errors<U, E>() -> Mbark.Signal<E, Swift.Never> where Element == Mbark.Signal<U, E>.Event, E : Swift.Error
-}
-extension SignalProtocol {
-  @available(*, deprecated, renamed: "debounce(interval:queue:)")
-  public func debounce(interval: Swift.Double, on queue: Dispatch.DispatchQueue) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "distinctUntilChanged")
-  public func distinct(areDistinct: @escaping (Self.Element, Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "replaceElements")
-  public func replace<T>(with element: T) -> Mbark.Signal<T, Self.Error>
-}
-extension SignalProtocol where Self.Element : Swift.Equatable {
-  @available(*, deprecated, renamed: "distinctUntilChanged")
-  public func distinct() -> Mbark.Signal<Self.Element, Self.Error>
-}
-extension SignalProtocol where Self.Element : Swift.Sequence {
-  @available(*, deprecated, renamed: "flattenElements")
-  public func unwrap() -> Mbark.Signal<Self.Element.Iterator.Element, Self.Error>
-}
-@_inheritsConvenienceInitializers @available(*, deprecated, renamed: "PassthroughSubject")
-final public class PublishSubject<Element, Error> : Mbark.Subject<Element, Error> where Error : Swift.Error {
-  override public init()
+@_inheritsConvenienceInitializers @objc(EffectsSIMDArgumentEncoder) public class EffectsSIMDArgumentEncoder : ObjectiveC.NSObject, Mbark.EffectsFunctionArgumentEncoding {
+  public enum Error : Swift.String, Swift.Error, Foundation.LocalizedError {
+    case argumentTypeMismatch
+    public var errorDescription: Swift.String? {
+      get
+    }
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  @objc public static func encodeValue(_ value: Any, argument: Metal.MTLArgument, proxy: Mbark.EffectsFunctionArgumentEncodingProxy) throws
+  @objc override dynamic public init()
   @objc deinit
 }
-@available(*, deprecated, renamed: "PassthroughSubject")
-public typealias SafePublishSubject<Element> = Mbark.PublishSubject<Element, Swift.Never>
-extension ObserverProtocol {
-  @available(*, deprecated, renamed: "receive(_:)")
-  public func next(_ element: Self.Element)
-  @available(*, deprecated, message: "Please use receive(completion: .failure(error))")
-  public func failed(_ error: Self.Error)
-  @available(*, deprecated, message: "Please use receive(completion: .finished)")
-  public func completed()
-  @available(*, deprecated, renamed: "receive(lastElement:)")
-  public func completed(with element: Self.Element)
+public protocol KeyValueCodingType {
+  func value(forKey k: Swift.String) -> Any?
 }
-extension ObserverProtocol where Self.Element == Swift.Void {
-  @available(*, deprecated, renamed: "receive")
-  public func next()
+extension KeyValueCodingType {
+  public func value(forKey k: Swift.String) -> Any?
 }
-extension SubjectProtocol {
-  @available(*, deprecated, renamed: "send(_:)")
-  public func next(_ element: Self.Element)
-  @available(*, deprecated, message: "Please use send(completion: .failure(error))")
-  public func failed(_ error: Self.Error)
-  @available(*, deprecated, message: "Please use send(completion: .finished)")
-  public func completed()
-  @available(*, deprecated, renamed: "send(lastElement:)")
-  public func completed(with element: Self.Element)
+public struct KeyValueCoding {
+  public static func value(forKeyPath p: Swift.String, inObject o: Any?) -> Any?
+  public static func value(forKey k: Swift.String, inObject o: Any?) -> Any?
+  public static func defaultValue(forKey k: Swift.String, inObject o: Any?) -> Any?
 }
-extension SubjectProtocol where Self.Element == Swift.Void {
-  @available(*, deprecated, renamed: "send")
-  public func next()
+extension KeyValueCoding {
+  public static func defaultValue(forKey k: Swift.String, inDictionary o: Any, mirror: Swift.Mirror) -> Any?
 }
-extension Subject {
-  @available(*, deprecated, renamed: "receive(event:)")
-  open func send(_ event: Mbark.Event<Element, Error>)
-}
-extension SignalProtocol {
-  @available(*, deprecated, renamed: "share(limit:)")
-  public func shareReplay(limit: Swift.Int = Int.max) -> Mbark.Signal<Self.Element, Self.Error>
-}
-extension SignalProtocol {
-  @available(*, deprecated, renamed: "subscribe(on:)")
-  public func executeIn(_ context: Mbark.ExecutionContext) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "subscribe(on:)")
-  public func executeOn(_ queue: Dispatch.DispatchQueue) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "receive(on:)")
-  public func observeIn(_ context: Mbark.ExecutionContext) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "receive(on:)")
-  public func observeOn(_ queue: Dispatch.DispatchQueue) -> Mbark.Signal<Self.Element, Self.Error>
-}
-extension SignalProtocol {
-  @available(*, deprecated, message: "Please use `removeDuplicates(by:)` instead, but note that the closure should now return `true` when the element are equal!")
-  public func distinctUntilChanged(_ areDistinct: @escaping (Self.Element, Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "debounce(for:queue:)")
-  public func debounce(interval: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.debounce")) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "output(at:)")
-  public func element(at index: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "dropFirst(_:)")
-  public func skip(first count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "dropLast(_:)")
-  public func skip(last count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "dropFirst(for:)")
-  public func skip(interval: Swift.Double) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "prefix(while:)")
-  public func take(while shouldContinue: @escaping (Self.Element) -> Swift.Bool) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "prefix(untilOutputFrom:)")
-  public func take<S>(until signal: S) -> Mbark.Signal<Self.Element, Self.Error> where S : Mbark.SignalProtocol
-  @available(*, deprecated, renamed: "prefix(maxLength:)")
-  public func take(first count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "suffix(maxLength:)")
-  public func take(last count: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "throttle(for:)")
-  public func throttle(seconds: Swift.Double) -> Mbark.Signal<Self.Element, Self.Error>
-}
-extension SignalProtocol where Self.Element : Swift.Equatable {
-  @available(*, deprecated, renamed: "removeDuplicates")
-  public func distinctUntilChanged() -> Mbark.Signal<Self.Element, Self.Error>
-}
-extension SignalProtocol {
-  @available(*, deprecated, renamed: "buffer(size:)")
-  public func buffer(ofSize size: Swift.Int) -> Mbark.Signal<[Self.Element], Self.Error>
-  @available(*, deprecated, renamed: "replaceEmpty(with:)")
-  public func defaultIfEmpty(_ element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "prepend(_:)")
-  public func start(with element: Self.Element) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "ignoreOutput")
-  public func ignoreElements() -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "replaceError(with:)")
-  public func recover(with element: Self.Element) -> Mbark.Signal<Self.Element, Swift.Never>
-  @available(*, deprecated, renamed: "retry(_:)")
-  public func retry(times: Swift.Int) -> Mbark.Signal<Self.Element, Self.Error>
-  @available(*, deprecated, renamed: "handleEvents(receiveSubscription:receiveOutput:receiveCompletion:receiveCancel:)")
-  public func doOn(next: ((Self.Element) -> Swift.Void)? = nil, start: (() -> Swift.Void)? = nil, failed: ((Self.Error) -> Swift.Void)? = nil, completed: (() -> Swift.Void)? = nil, disposed: (() -> Swift.Void)? = nil) -> Mbark.Signal<Self.Element, Self.Error>
-}
-extension SignalProtocol {
-  @available(*, deprecated, renamed: "append(_:)")
-  public func concat<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, Self.Error == O.Error
-  @available(*, deprecated, renamed: "append(_:)")
-  public func concat<O>(with other: O) -> Mbark.Signal<Self.Element, Self.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element, O.Error == Swift.Never
-}
-extension SignalProtocol where Self.Error == Swift.Never {
-  @available(*, deprecated, renamed: "append(_:)")
-  public func concat<O>(with other: O) -> Mbark.Signal<Self.Element, O.Error> where O : Mbark.SignalProtocol, Self.Element == O.Element
-}
-extension SignalProtocol {
-  @available(*, deprecated, message: "Please provide `receiveCompletion` argument when observing signals with error type other than `Never`.")
-  public func sink(receiveValue: @escaping ((Self.Element) -> Swift.Void)) -> Mbark.AnyCancellable
+@objc @_hasMissingDesignatedInitializers public class GridView : UIKit.UIView {
+  public init(frame: CoreGraphics.CGRect, columns: Swift.Int, rows: Swift.Int, padding: CoreGraphics.CGFloat)
+  @objc override dynamic public func draw(_ rect: CoreGraphics.CGRect)
+  @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @objc deinit
 }
 public protocol Subscriber {
   associatedtype Input
@@ -747,6 +841,9 @@ extension Subscriber where Self.Input == Swift.Void {
 }
 public protocol Cancellable {
   func cancel()
+}
+extension EffectsRGBColorSpaceConversionFilter {
+  public static func convert(_ image: Mbark.EffectsImage, from inputColorSpace: Mbark.EffectsRGBColorSpace, to outputColorSpace: Mbark.EffectsRGBColorSpace, alphaType: Mbark.EffectsAlphaType, pixelFormat: Metal.MTLPixelFormat = .unspecified) -> Mbark.EffectsImage
 }
 extension UIViewController {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
@@ -775,6 +872,72 @@ extension SignalProtocol {
 extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol {
   public func replayValues(limit: Swift.Int = Int.max) -> Mbark.ConnectableSignal<Mbark.Signal<Mbark.LoadingState<Self.Element.LoadingValue, Self.Element.LoadingError>, Self.Error>>
   public func shareReplayValues(limit: Swift.Int = Int.max) -> Mbark.Signal<Mbark.LoadingState<Self.Element.LoadingValue, Self.Element.LoadingError>, Self.Error>
+}
+final public class EffectsDisplacementTransition {
+  @discardableResult
+  public init(from image: Mbark.EffectsImage, to targetImage: Mbark.EffectsImage, displacementMap displacement: Mbark.EffectsImage, options: Mbark.EffectsDisplacementTransition.Options, updater: @escaping (Mbark.EffectsImage) -> Swift.Void, completion: ((Swift.Bool) -> Swift.Void)?)
+  @objc @_inheritsConvenienceInitializers final public class Filter : ObjectiveC.NSObject, Mbark.EffectsFilter {
+    @objc final public var outputPixelFormat: Metal.MTLPixelFormat
+    final public var inputImage: Mbark.EffectsImage?
+    final public var inputTargetImage: Mbark.EffectsImage?
+    final public var inputDisplacementImage: Mbark.EffectsImage?
+    final public var displacementIntensity: Swift.Float
+    final public var angle: Swift.Float
+    final public var progress: Swift.Float
+    @objc final public var outputImage: Mbark.EffectsImage? {
+      @objc get
+    }
+    @objc override dynamic public init()
+    @objc deinit
+  }
+  public struct Options {
+    public var angle: Swift.Float
+    public var displacementIntensity: Swift.Float
+    public var duration: Swift.Double
+    public var timingFunction: (Swift.Float) -> Swift.Float
+    public init()
+  }
+  final public func cancel()
+  @objc deinit
+}
+final public class CGImageDisplacementTransition {
+  @discardableResult
+  public init(from image: CoreGraphics.CGImage, to targetImage: CoreGraphics.CGImage, displacementMap displacement: CoreGraphics.CGImage, options: Mbark.EffectsDisplacementTransition.Options, updater: @escaping (CoreGraphics.CGImage) -> Swift.Void, completion: ((Swift.Bool) -> Swift.Void)?) throws
+  public enum Error : Swift.Error {
+    case noMetalDeviceFound
+    public static func == (a: Mbark.CGImageDisplacementTransition.Error, b: Mbark.CGImageDisplacementTransition.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @discardableResult
+  public static func transition(from image: CoreGraphics.CGImage, to targetImage: CoreGraphics.CGImage, displacementMap displacement: CoreGraphics.CGImage, options: Mbark.EffectsDisplacementTransition.Options, updater: @escaping (CoreGraphics.CGImage) -> Swift.Void, completion: ((Swift.Bool) -> Swift.Void)?) throws -> Mbark.CGImageDisplacementTransition
+  final public func cancel()
+  @objc deinit
+}
+@objc final public class ViewControllerDisplacementTransition : ObjectiveC.NSObject, UIKit.UIViewControllerAnimatedTransitioning {
+  public init(displacementMap displacement: CoreGraphics.CGImage, options: Mbark.EffectsDisplacementTransition.Options)
+  @objc final public func transitionDuration(using transitionContext: UIKit.UIViewControllerContextTransitioning?) -> Foundation.TimeInterval
+  @objc final public func animateTransition(using transitionContext: UIKit.UIViewControllerContextTransitioning)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension AttributedMustacheNode {
+  public func render(object o: Any?, cb: (Foundation.NSAttributedString) -> Swift.Void)
+  public func render(object o: Any?) -> Foundation.NSAttributedString
+  public func render(nodes nl: [Mbark.AttributedMustacheNode], inContext ctx: Mbark.AttributedMustacheRenderingContext)
+  public func render(inContext ctx: Mbark.AttributedMustacheRenderingContext, cb: (Foundation.NSAttributedString) -> Swift.Void)
+  public func render(inContext ctx: Mbark.AttributedMustacheRenderingContext)
+  public func render(lambda cb: (Foundation.NSAttributedString, (Foundation.NSAttributedString) -> Foundation.NSAttributedString) -> Foundation.NSAttributedString, nodes nl: [Mbark.AttributedMustacheNode], inContext ctx: Mbark.AttributedMustacheRenderingContext)
+  public func render(lambda cb: (Swift.String, (Swift.String) -> Swift.String) -> Swift.String, nodes nl: [Mbark.AttributedMustacheNode], inContext ctx: Mbark.AttributedMustacheRenderingContext)
+}
+extension AttributedMustacheNode {
+  public func render(section tag: Swift.String, nodes: [Mbark.AttributedMustacheNode], inContext ctx: Mbark.AttributedMustacheRenderingContext)
+}
+extension EffectsTextureDimensions : Swift.Equatable {
+  public init(width: Swift.Int, height: Swift.Int, depth: Swift.Int = 1)
+  public static func == (lhs: Mbark.EffectsTextureDimensions, rhs: Mbark.EffectsTextureDimensions) -> Swift.Bool
 }
 extension SignalProtocol {
   public func debounce(for seconds: Swift.Double, queue: Dispatch.DispatchQueue = DispatchQueue(label: "com.mbark.signal.debounce")) -> Mbark.Signal<Self.Element, Self.Error>
@@ -989,11 +1152,62 @@ extension Signal where Error == Swift.Error {
 public protocol Subscription : Mbark.Cancellable {
   func request(_ demand: Mbark.Subscribers.Demand)
 }
+extension MustacheNode {
+  public func render(object o: Any?, cb: (Swift.String) -> Swift.Void)
+  public func render(object o: Any?) -> Swift.String
+  public func render(nodes nl: [Mbark.MustacheNode], inContext ctx: Mbark.MustacheRenderingContext)
+  public func render(inContext ctx: Mbark.MustacheRenderingContext, cb: (Swift.String) -> Swift.Void)
+  public func render(inContext ctx: Mbark.MustacheRenderingContext)
+  public func render(lambda cb: (Swift.String, (Swift.String) -> Swift.String) -> Swift.String, nodes nl: [Mbark.MustacheNode], inContext ctx: Mbark.MustacheRenderingContext)
+}
+extension MustacheNode {
+  public func render(section tag: Swift.String, nodes: [Mbark.MustacheNode], inContext ctx: Mbark.MustacheRenderingContext)
+}
+extension EffectsCornerRadius : Swift.Equatable {
+  public static func == (lhs: Mbark.EffectsCornerRadius, rhs: Mbark.EffectsCornerRadius) -> Swift.Bool
+}
+extension EffectsCornerRadius : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class MbarkPurchaseActionHandler : Mbark.MbarkHandler {
+  public typealias Handler = (Swift.String) -> Swift.Void
+  public var finish: ((Swift.Bool) -> Swift.Void)?
+  public init(id: Swift.String, handler: @escaping Mbark.MbarkPurchaseActionHandler.Handler)
+  final public let id: Swift.String
+  final public let handle: Mbark.MbarkPurchaseActionHandler.Handler
+  @objc deinit
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension MbarkPurchaseActionHandler : Swift.Equatable {
+  public static func == (lhs: Mbark.MbarkPurchaseActionHandler, rhs: Mbark.MbarkPurchaseActionHandler) -> Swift.Bool
+}
 extension UIWindow {
   public var visibleViewController: UIKit.UIViewController? {
     get
   }
   public static func visibleViewController(from viewController: UIKit.UIViewController?) -> UIKit.UIViewController?
+}
+extension EffectsAlphaTypeHandlingRule {
+  convenience public init(acceptableAlphaTypes: [Mbark.EffectsAlphaType], outputAlphaType: Mbark.EffectsAlphaType)
+  convenience public init(acceptableAlphaTypes: [Mbark.EffectsAlphaType], _ handler: @escaping ([Mbark.EffectsAlphaType]) -> Mbark.EffectsAlphaType)
+  convenience public init(_ handler: @escaping ([Mbark.EffectsAlphaType]) -> Mbark.EffectsAlphaType)
+  public var acceptableAlphaTypes: [Mbark.EffectsAlphaType] {
+    get
+  }
+  public func outputAlphaType(forInputAlphaTypes inputAlphaTypes: [Mbark.EffectsAlphaType]) -> Mbark.EffectsAlphaType
+}
+extension EffectsAlphaType : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension MustacheRenderingContext {
+  public func escape(string s: Swift.String) -> Swift.String
 }
 public struct ExecutionContext {
   public init(_ context: @escaping (@escaping () -> Swift.Void) -> Swift.Void)
@@ -1020,22 +1234,117 @@ extension DispatchQueue {
   public func after(when interval: Swift.Double, block: @escaping () -> Swift.Void)
   public func disposableAfter(when interval: Swift.Double, block: @escaping () -> Swift.Void) -> Mbark.Disposable
 }
+extension EffectsContext {
+  public func startTaskToCreateCGImage(from image: Mbark.EffectsImage, colorSpace: CoreGraphics.CGColorSpace? = nil, completion: ((Mbark.EffectsRenderTask) -> Swift.Void)? = nil) throws -> (image: CoreGraphics.CGImage, task: Mbark.EffectsRenderTask)
+}
 @_hasMissingDesignatedInitializers public class MbarkInstance : Swift.CustomDebugStringConvertible {
   @objc deinit
+  public var actionHandlers: Swift.Set<Mbark.MbarkActionHandler> {
+    get
+  }
+  public var purchaseActionHandler: Mbark.MbarkPurchaseActionHandler? {
+    get
+  }
   public var debugDescription: Swift.String {
     get
   }
   public func trackOnce(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
   public func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
 }
-extension MbarkInstance {
-  public func mbarkViewController(forMbarkId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> Mbark.MbarkViewController?
+extension EffectsCropRegion {
+  public static func pixel(_ rect: CoreGraphics.CGRect) -> Mbark.EffectsCropRegion
+  public static func fractional(_ rect: CoreGraphics.CGRect) -> Mbark.EffectsCropRegion
+}
+public enum AttributedMustacheNode : Swift.Equatable {
+  case empty
+  case global([Mbark.AttributedMustacheNode])
+  case text(Foundation.NSAttributedString)
+  case section(Swift.String, [Mbark.AttributedMustacheNode])
+  case invertedSection(Swift.String, [Mbark.AttributedMustacheNode])
+  case tag(Foundation.NSAttributedString)
+  case unescapedTag(Foundation.NSAttributedString)
+  case partial(Swift.String)
+  public static func == (a: Mbark.AttributedMustacheNode, b: Mbark.AttributedMustacheNode) -> Swift.Bool
+}
+extension AttributedMustacheNode {
+  public var asMustacheString: Swift.String {
+    get
+  }
+  public var asMustacheAttributedString: Foundation.NSAttributedString {
+    get
+  }
+}
+extension AttributedMustacheNode {
+  public func append(toString s: inout Swift.String)
+  public func append(toAttributedString s: Foundation.NSMutableAttributedString)
+}
+extension Sequence where Self.Element == Mbark.AttributedMustacheNode {
+  public var asMustacheString: Swift.String {
+    get
+  }
+  public var asMustacheAttributedString: Foundation.NSAttributedString {
+    get
+  }
+}
+extension AttributedMustacheNode {
+  public var hasKeys: Swift.Bool {
+    get
+  }
+  public var keys: Swift.Set<Swift.String> {
+    get
+  }
+}
+extension Sequence where Self.Element == Mbark.AttributedMustacheNode {
+  public var keys: Swift.Set<Swift.String> {
+    get
+  }
+}
+extension Collection where Self.Element == Mbark.AttributedMustacheNode {
+  public var keys: Swift.Set<Swift.String> {
+    get
+  }
 }
 public enum Subscribers {
   public enum Completion<Failure> where Failure : Swift.Error {
     case finished
     case failure(Failure)
   }
+}
+extension EffectsDataBuffer {
+  convenience public init?<T>(values: [T], options: Metal.MTLResourceOptions = [])
+  public func unsafeAccess<ReturnType, BufferContentType>(_ block: (Swift.UnsafeMutableBufferPointer<BufferContentType>) throws -> ReturnType) rethrows -> ReturnType
+}
+public typealias MustacheRenderingFunction = (Swift.String, (Swift.String) -> Swift.String) -> Swift.String
+public typealias MustacheSimpleRenderingFunction = (Swift.String) -> Swift.String
+public protocol MustacheRenderingContext {
+  var string: Swift.String { get }
+  func append(string s: Swift.String)
+  var cursor: Any? { get }
+  func enter(scope ctx: Any?)
+  func leave()
+  func value(forTag tag: Swift.String) -> Any?
+  func newLambdaContext() -> Mbark.MustacheRenderingContext
+  func retrievePartial(name n: Swift.String) -> Mbark.MustacheNode?
+}
+extension MustacheRenderingContext {
+  public func value(forTag tag: Swift.String) -> Any?
+  public func retrievePartial(name n: Swift.String) -> Mbark.MustacheNode?
+}
+open class MustacheDefaultRenderingContext : Mbark.MustacheRenderingContext {
+  public var string: Swift.String
+  public var stack: [Any?]
+  public init(_ root: Any?)
+  public init(context: Mbark.MustacheDefaultRenderingContext)
+  public func append(string s: Swift.String)
+  public func enter(scope ctx: Any?)
+  public func leave()
+  public var cursor: Any? {
+    get
+  }
+  open func value(forTag tag: Swift.String) -> Any?
+  open func newLambdaContext() -> Mbark.MustacheRenderingContext
+  open func retrievePartial(name n: Swift.String) -> Mbark.MustacheNode?
+  @objc deinit
 }
 extension SignalProtocol {
   public func map<U>(_ transform: @escaping (Self.Element) -> U) -> Mbark.Signal<U, Self.Error>
@@ -1073,6 +1382,9 @@ extension SignalProtocol where Self.Error == Swift.Never {
 }
 extension SignalProtocol where Self.Element : Mbark.SignalProtocol, Self.Error == Swift.Never {
   public func flatten(_ strategy: Mbark.FlattenStrategy) -> Mbark.Signal<Self.Element.Element, Self.Element.Error>
+}
+extension EffectsColorMatrix : Swift.Equatable {
+  public static func == (lhs: Mbark.EffectsColorMatrix, rhs: Mbark.EffectsColorMatrix) -> Swift.Bool
 }
 extension Subscribers {
   public struct Demand : Swift.Equatable, Swift.Hashable {
@@ -1121,6 +1433,53 @@ extension ObserverProtocol {
 extension ObserverProtocol where Self.Element == Swift.Void {
   public func receive()
 }
+final public class EffectsCrossZoomTransition {
+  @discardableResult
+  public init(from image: Mbark.EffectsImage, to targetImage: Mbark.EffectsImage, options: Mbark.EffectsCrossZoomTransition.Options, updater: @escaping (Mbark.EffectsImage) -> Swift.Void, completion: ((Swift.Bool) -> Swift.Void)?)
+  @objc @_inheritsConvenienceInitializers final public class Filter : ObjectiveC.NSObject, Mbark.EffectsFilter {
+    @objc final public var outputPixelFormat: Metal.MTLPixelFormat
+    final public var inputImage: Mbark.EffectsImage?
+    final public var inputTargetImage: Mbark.EffectsImage?
+    final public var intensity: Swift.Float
+    final public var progress: Swift.Float
+    @objc final public var outputImage: Mbark.EffectsImage? {
+      @objc get
+    }
+    @objc override dynamic public init()
+    @objc deinit
+  }
+  public struct Options {
+    public var intensity: Swift.Float
+    public var duration: Swift.Double
+    public var timingFunction: (Swift.Float) -> Swift.Float
+    public init()
+  }
+  final public func cancel()
+  @objc deinit
+}
+final public class CGCrossZoomTransition {
+  @discardableResult
+  public init(from image: CoreGraphics.CGImage, to targetImage: CoreGraphics.CGImage, options: Mbark.EffectsCrossZoomTransition.Options, updater: @escaping (CoreGraphics.CGImage) -> Swift.Void, completion: ((Swift.Bool) -> Swift.Void)?) throws
+  public enum Error : Swift.Error {
+    case noMetalDeviceFound
+    public static func == (a: Mbark.CGCrossZoomTransition.Error, b: Mbark.CGCrossZoomTransition.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @discardableResult
+  public static func transition(from image: CoreGraphics.CGImage, to targetImage: CoreGraphics.CGImage, options: Mbark.EffectsCrossZoomTransition.Options, updater: @escaping (CoreGraphics.CGImage) -> Swift.Void, completion: ((Swift.Bool) -> Swift.Void)?) throws -> Mbark.CGCrossZoomTransition
+  final public func cancel()
+  @objc deinit
+}
+@objc final public class ViewControllerCrossZoomTransition : ObjectiveC.NSObject, UIKit.UIViewControllerAnimatedTransitioning {
+  public init(options: Mbark.EffectsCrossZoomTransition.Options)
+  @objc final public func transitionDuration(using transitionContext: UIKit.UIViewControllerContextTransitioning?) -> Foundation.TimeInterval
+  @objc final public func animateTransition(using transitionContext: UIKit.UIViewControllerContextTransitioning)
+  @objc override dynamic public init()
+  @objc deinit
+}
 public class LoadingProperty<LoadingValue, LoadingError> : Mbark.PropertyProtocol, Mbark.SignalProtocol, Mbark.DisposeBagProvider where LoadingError : Swift.Error {
   public init(_ signalProducer: @escaping () -> Mbark.LoadingSignal<LoadingValue, LoadingError>)
   public var bag: Mbark.DisposeBag {
@@ -1148,6 +1507,174 @@ extension SignalProtocol where Self.Element : Mbark.LoadingStateProtocol, Self.E
 }
 extension UIButton {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
+}
+public enum MustacheNode : Swift.Equatable {
+  case empty
+  case global([Mbark.MustacheNode])
+  case text(Swift.String)
+  case section(Swift.String, [Mbark.MustacheNode])
+  case invertedSection(Swift.String, [Mbark.MustacheNode])
+  case tag(Swift.String)
+  case unescapedTag(Swift.String)
+  case partial(Swift.String)
+  public static func == (a: Mbark.MustacheNode, b: Mbark.MustacheNode) -> Swift.Bool
+}
+extension MustacheNode {
+  public var asMustacheString: Swift.String {
+    get
+  }
+}
+extension MustacheNode {
+  public func append(toString s: inout Swift.String)
+}
+extension Sequence where Self.Element == Mbark.MustacheNode {
+  public var asMustacheString: Swift.String {
+    get
+  }
+}
+extension MustacheNode {
+  public var hasKeys: Swift.Bool {
+    get
+  }
+  public var keys: Swift.Set<Swift.String> {
+    get
+  }
+}
+extension Sequence where Self.Element == Mbark.MustacheNode {
+  public var keys: Swift.Set<Swift.String> {
+    get
+  }
+}
+extension Collection where Self.Element == Mbark.MustacheNode {
+  public var keys: Swift.Set<Swift.String> {
+    get
+  }
+}
+@available(iOS 11.0, macOS 10.13, *)
+public struct EffectsCoreImageKernel {
+  public enum Error : Swift.Error {
+    case failedToCreateCIImage
+    case nilOutput
+    public static func == (a: Mbark.EffectsCoreImageKernel.Error, b: Mbark.EffectsCoreImageKernel.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static func image(byProcessing images: [Mbark.EffectsImage], using filter: @escaping ([CoreImage.CIImage]) throws -> CoreImage.CIImage, colorSpace: CoreGraphics.CGColorSpace? = CGColorSpaceCreateDeviceRGB(), outputDimensions: Mbark.EffectsTextureDimensions, outputPixelFormat: Metal.MTLPixelFormat = .unspecified, outputAlphaType: Mbark.EffectsAlphaType = .nonPremultiplied) -> Mbark.EffectsImage
+  public static func image(byProcessing inputImage: Mbark.EffectsImage, using filter: CoreImage.CIFilter, colorSpace: CoreGraphics.CGColorSpace? = CGColorSpaceCreateDeviceRGB(), outputDimensions: Mbark.EffectsTextureDimensions, outputPixelFormat: Metal.MTLPixelFormat = .unspecified, outputAlphaType: Mbark.EffectsAlphaType = .nonPremultiplied) -> Mbark.EffectsImage
+}
+@available(iOS 11.0, macOS 10.13, *)
+final public class EffectsCoreImageUnaryFilter : Mbark.EffectsUnaryFilter {
+  public init()
+  @objc final public var outputPixelFormat: Metal.MTLPixelFormat
+  final public var colorSpace: CoreGraphics.CGColorSpace?
+  final public var filter: CoreImage.CIFilter?
+  @objc final public var inputImage: Mbark.EffectsImage?
+  final public var outputImageSize: CoreGraphics.CGSize?
+  final public var outputAlphaType: Mbark.EffectsAlphaType
+  @objc final public var outputImage: Mbark.EffectsImage? {
+    @objc get
+  }
+  @objc deinit
+}
+extension EffectsLayer.FlipOptions : Swift.Hashable {
+}
+extension EffectsLayer.LayoutUnit : Swift.Hashable {
+}
+extension EffectsLayer.LayoutUnit : Swift.CustomDebugStringConvertible, Swift.CustomStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+public class MultilayerCompositingFilter : Mbark.EffectsFilter {
+  public init()
+  public struct Layer : Swift.Hashable, Swift.Equatable {
+    public init(content: Mbark.EffectsImage)
+    public var content: Mbark.EffectsImage
+    public var contentRegion: CoreGraphics.CGRect
+    public var contentFlipOptions: Mbark.EffectsLayer.FlipOptions
+    public var mask: Mbark.EffectsMask?
+    public var compositingMask: Mbark.EffectsMask?
+    public var layoutUnit: Mbark.EffectsLayer.LayoutUnit
+    public var position: Mbark.CGPoint
+    public var size: CoreGraphics.CGSize
+    public var rotation: Swift.Float
+    public var opacity: Swift.Float
+    public var cornerRadius: Mbark.EffectsCornerRadius
+    public var cornerCurve: Mbark.EffectsCornerCurve
+    public var tintColor: Mbark.EffectsColor
+    public var blendMode: Mbark.EffectsBlendMode
+    public static func content(_ image: Mbark.EffectsImage) -> Mbark.MultilayerCompositingFilter.Layer
+    public static func content(_ image: Mbark.EffectsImage, modifier: (inout Mbark.MultilayerCompositingFilter.Layer) -> Swift.Void) -> Mbark.MultilayerCompositingFilter.Layer
+    public func hash(into hasher: inout Swift.Hasher)
+    public func opacity(_ value: Swift.Float) -> Mbark.MultilayerCompositingFilter.Layer
+    public func contentRegion(_ contentRegion: CoreGraphics.CGRect) -> Mbark.MultilayerCompositingFilter.Layer
+    public func contentFlipOptions(_ contentFlipOptions: Mbark.EffectsLayer.FlipOptions) -> Mbark.MultilayerCompositingFilter.Layer
+    public func mask(_ mask: Mbark.EffectsMask?) -> Mbark.MultilayerCompositingFilter.Layer
+    public func compositingMask(_ mask: Mbark.EffectsMask?) -> Mbark.MultilayerCompositingFilter.Layer
+    public func frame(_ rect: CoreGraphics.CGRect, layoutUnit: Mbark.EffectsLayer.LayoutUnit) -> Mbark.MultilayerCompositingFilter.Layer
+    public func frame(center: Mbark.CGPoint, size: CoreGraphics.CGSize, layoutUnit: Mbark.EffectsLayer.LayoutUnit) -> Mbark.MultilayerCompositingFilter.Layer
+    public func rotation(_ rotation: Swift.Float) -> Mbark.MultilayerCompositingFilter.Layer
+    public func tintColor(_ color: Mbark.EffectsColor?) -> Mbark.MultilayerCompositingFilter.Layer
+    public func blendMode(_ blendMode: Mbark.EffectsBlendMode) -> Mbark.MultilayerCompositingFilter.Layer
+    public func corner(radius: Mbark.EffectsCornerRadius, curve: Mbark.EffectsCornerCurve) -> Mbark.MultilayerCompositingFilter.Layer
+    public func cornerRadius(_ radius: Mbark.EffectsCornerRadius) -> Mbark.MultilayerCompositingFilter.Layer
+    public func cornerRadius(_ radius: Swift.Float) -> Mbark.MultilayerCompositingFilter.Layer
+    public func cornerCurve(_ curve: Mbark.EffectsCornerCurve) -> Mbark.MultilayerCompositingFilter.Layer
+    public static func == (a: Mbark.MultilayerCompositingFilter.Layer, b: Mbark.MultilayerCompositingFilter.Layer) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @objc public var outputPixelFormat: Metal.MTLPixelFormat {
+    @objc get
+    @objc set
+  }
+  @objc public var outputImage: Mbark.EffectsImage? {
+    @objc get
+  }
+  public var inputBackgroundImage: Mbark.EffectsImage? {
+    get
+    set
+  }
+  public var outputAlphaType: Mbark.EffectsAlphaType {
+    get
+    set
+  }
+  public var layers: [Mbark.MultilayerCompositingFilter.Layer] {
+    get
+    set
+  }
+  public var rasterSampleCount: Swift.Int {
+    get
+    set
+  }
+  @objc deinit
+}
+extension MultilayerCompositingFilter.Layer : Swift.CustomDebugStringConvertible, Swift.CustomStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+extension EffectsError : Swift.Equatable {
+}
+extension EffectsFunctionDescriptor {
+  public static let passthroughFragment: Mbark.EffectsFunctionDescriptor
+  public static let passthroughVertex: Mbark.EffectsFunctionDescriptor
+}
+extension EffectsFunctionDescriptor {
+  convenience public init(name: Swift.String, constantValues: Metal.MTLFunctionConstantValues? = nil, in bundle: Foundation.Bundle)
+}
+extension URL {
+  public static func defaultMetalLibraryURL(for bundleForClass: Swift.AnyClass) -> Foundation.URL!
+  public static func defaultMetalLibraryURL(for bundle: Foundation.Bundle) -> Foundation.URL!
 }
 extension CGPoint : Swift.AdditiveArithmetic {
   public static func + (lhs: Mbark.CGPoint, rhs: Mbark.CGPoint) -> Mbark.CGPoint
@@ -1181,32 +1708,38 @@ extension Subscribers {
     @objc deinit
   }
 }
-public enum DeviceSize : Swift.Int, Swift.Comparable {
-  case unknownSize
-  case screen3_5Inch
-  case screen4Inch
-  case screen4_7Inch
-  case screen5_4Inch
-  case screen5_5Inch
-  case screen5_8Inch
-  case screen6_1Inch
-  case screen6_5Inch
-  case screen6_7Inch
-  case screen7_9Inch
-  case screen9_7Inch
-  case screen10_2Inch
-  case screen10_5Inch
-  case screen10_9Inch
-  case screen11Inch
-  case screen12_9Inch
-  public init?(rawValue: Swift.Int)
-  public typealias RawValue = Swift.Int
-  public var rawValue: Swift.Int {
+public typealias AttribMustacheRenderingFunction = (Foundation.NSAttributedString, (Foundation.NSAttributedString) -> Foundation.NSAttributedString) -> Foundation.NSAttributedString
+public typealias AttribMustacheSimpleRenderingFunction = (Foundation.NSAttributedString) -> Foundation.NSAttributedString
+public protocol AttributedMustacheRenderingContext {
+  var attributedString: Foundation.NSMutableAttributedString { get }
+  func append(_ s: Foundation.NSAttributedString)
+  var cursor: Any? { get }
+  func enter(scope ctx: Any?)
+  func leave()
+  func value(forTag tag: Swift.String) -> Any?
+  func newLambdaContext() -> Mbark.AttributedMustacheRenderingContext
+  func retrievePartial(name n: Swift.String) -> Mbark.AttributedMustacheNode?
+}
+extension AttributedMustacheRenderingContext {
+  public func value(forTag tag: Swift.String) -> Any?
+  public func retrievePartial(name n: Swift.String) -> Mbark.MustacheNode?
+}
+open class AttribMustacheDefaultRenderingContext : Mbark.AttributedMustacheRenderingContext {
+  final public let attributedString: Foundation.NSMutableAttributedString
+  public var stack: [Any?]
+  public init(_ root: Any?)
+  public init(context: Mbark.AttribMustacheDefaultRenderingContext)
+  public func append(_ s: Foundation.NSAttributedString)
+  public func enter(scope ctx: Any?)
+  public func leave()
+  public var cursor: Any? {
     get
   }
+  open func value(forTag tag: Swift.String) -> Any?
+  open func newLambdaContext() -> Mbark.AttributedMustacheRenderingContext
+  open func retrievePartial(name n: Swift.String) -> Mbark.AttributedMustacheNode?
+  @objc deinit
 }
-public func < (lhs: Mbark.DeviceSize, rhs: Mbark.DeviceSize) -> Swift.Bool
-public func == (lhs: Mbark.DeviceSize, rhs: Mbark.DeviceSize) -> Swift.Bool
 extension SignalProtocol {
   public func materialize() -> Mbark.Signal<Mbark.Signal<Self.Element, Self.Error>.Event, Swift.Never>
   public func dematerialize<U, E>() -> Mbark.Signal<U, E> where E == Self.Error, Self.Element == Mbark.Signal<U, E>.Event
@@ -1288,6 +1821,8 @@ extension SignalProtocol where Self.Error == Swift.Never {
   }
   @discardableResult
   public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> Mbark.MbarkInstance?
+  @discardableResult
+  public static func initialize(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> Mbark.MbarkInstance?
   public static func setMainInstance(name: Swift.String)
   public static func removeInstance(name: Swift.String)
   public static func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
@@ -1302,13 +1837,193 @@ extension SignalProtocol where Self.Error == Swift.Never {
   public static func trackTap(step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
   public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
   public static func trackAppLoading()
+  public static func onboarding(startingViewId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> UIKit.UINavigationController?
   public static func mbarkViewController(forMbarkId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> Mbark.MbarkViewController?
+  public static func addActionHandler(_ actionHandler: Mbark.MbarkActionHandler)
+  public static func removeActionHandler(forId id: Swift.String)
+  public static func addPurchaseActionHandler(_ purchaseActionHandler: Mbark.MbarkPurchaseActionHandler)
+  public static func removePurchaseActionHandler(forId id: Swift.String)
   @objc deinit
 }
 public enum MbarkConstants {
   public static let flushInterval: Swift.Double
   public static let remoteConfigFileName: Swift.String
   public static let urlScheme: Swift.String
+}
+public protocol OutputPort {
+  associatedtype Object : AnyObject
+  associatedtype Value
+  var object: Self.Object { get }
+  var keyPath: Swift.KeyPath<Self.Object, Self.Value> { get }
+}
+public protocol InputPort {
+  associatedtype Object : AnyObject
+  associatedtype Value
+  var object: Self.Object { get }
+  var writableKeyPath: Swift.ReferenceWritableKeyPath<Self.Object, Self.Value> { get }
+}
+public struct Port<Object, Value, Property> where Object : AnyObject, Property : Swift.KeyPath<Object, Value> {
+  public let object: Object
+}
+extension Port : Mbark.OutputPort {
+  public var keyPath: Swift.KeyPath<Object, Value> {
+    get
+  }
+}
+extension Port : Mbark.InputPort where Property : Swift.ReferenceWritableKeyPath<Object, Value> {
+  public var writableKeyPath: Swift.ReferenceWritableKeyPath<Object, Value> {
+    get
+  }
+}
+public struct ProxyPortTarget {
+  public let object: Swift.AnyObject
+  public let keyPath: Swift.AnyKeyPath?
+  public let writableKeyPath: Swift.AnyKeyPath?
+  public init(object: Swift.AnyObject, keyPath: Swift.AnyKeyPath? = nil, writableKeyPath: Swift.AnyKeyPath? = nil)
+}
+public protocol ProxyPort {
+  var target: Mbark.ProxyPortTarget { get }
+}
+@_hasMissingDesignatedInitializers public class FilterGraph {
+  @_hasMissingDesignatedInitializers public class ImageReceiver {
+    @objc deinit
+  }
+  public typealias ImageReceiverInputPort = Mbark.Port<Mbark.FilterGraph.ImageReceiver, Mbark.EffectsImage?, Swift.ReferenceWritableKeyPath<Mbark.FilterGraph.ImageReceiver, Mbark.EffectsImage?>>
+  public static func makeImage<T>(input: T, builder: (T, Mbark.FilterGraph.ImageReceiverInputPort) -> Swift.Void) -> Mbark.EffectsImage?
+  public static func connect(builder: () -> Swift.Void)
+  public static func makeImage(builder: (Mbark.FilterGraph.ImageReceiverInputPort) -> Swift.Void) -> Mbark.EffectsImage?
+  @objc deinit
+}
+@dynamicMemberLookup public struct FilterInputPorts<Filter> where Filter : AnyObject {
+  public init(filter: Filter)
+  public typealias InputKeyPath = Swift.ReferenceWritableKeyPath<Filter, Mbark.EffectsImage?>
+  public subscript(dynamicMember keyPath: Mbark.FilterInputPorts<Filter>.InputKeyPath) -> Mbark.Port<Filter, Mbark.EffectsImage?, Mbark.FilterInputPorts<Filter>.InputKeyPath> {
+    get
+  }
+}
+extension EffectsFilter {
+  public var outputPort: Mbark.Port<Self, Mbark.EffectsImage?, Swift.KeyPath<Self, Mbark.EffectsImage?>> {
+    get
+  }
+  public var inputPorts: Mbark.FilterInputPorts<Self> {
+    get
+  }
+}
+public struct UnaryFilterIOPort<Filter> : Mbark.InputPort, Mbark.OutputPort where Filter : Mbark.EffectsUnaryFilter {
+  public let object: Filter
+  public let keyPath: Swift.KeyPath<Filter, Mbark.EffectsImage?>
+  public let writableKeyPath: Swift.ReferenceWritableKeyPath<Filter, Mbark.EffectsImage?>
+  public typealias Object = Filter
+  public typealias Value = Swift.Optional<Mbark.EffectsImage>
+}
+extension EffectsUnaryFilter {
+  public var ioPort: Mbark.UnaryFilterIOPort<Self> {
+    get
+  }
+}
+extension EffectsImage {
+  public struct Port : Mbark.OutputPort {
+    public let object: Mbark.EffectsImage
+    public let keyPath: Swift.KeyPath<Mbark.EffectsImage, Mbark.EffectsImage?>
+    public typealias Object = Mbark.EffectsImage
+    public typealias Value = Swift.Optional<Mbark.EffectsImage>
+  }
+  public var outputPort: Mbark.EffectsImage.Port {
+    get
+  }
+}
+public class PassthroughPort<Value> : Mbark.InputPort, Mbark.OutputPort {
+  public init(_ value: Value)
+  public var writableKeyPath: Swift.ReferenceWritableKeyPath<Mbark.PassthroughPort<Value>, Value>
+  public var keyPath: Swift.KeyPath<Mbark.PassthroughPort<Value>, Value>
+  public var object: Mbark.PassthroughPort<Value> {
+    get
+  }
+  public typealias Object = Mbark.PassthroughPort<Value>
+  @objc deinit
+}
+public typealias ImagePassthroughPort = Mbark.PassthroughPort<Mbark.EffectsImage?>
+extension PassthroughPort where Value == Mbark.EffectsImage? {
+  convenience public init()
+}
+public struct AnyIOPort<Value> : Mbark.InputPort, Mbark.OutputPort, Mbark.ProxyPort {
+  public init<T>(_ port: T) where Value == T.Value, T : Mbark.InputPort, T : Mbark.OutputPort
+  @_hasMissingDesignatedInitializers public class ObjectProxy {
+    @objc deinit
+  }
+  public let object: Mbark.AnyIOPort<Value>.ObjectProxy
+  public let keyPath: Swift.KeyPath<Mbark.AnyIOPort<Value>.ObjectProxy, Value>
+  public let writableKeyPath: Swift.ReferenceWritableKeyPath<Mbark.AnyIOPort<Value>.ObjectProxy, Value>
+  public let target: Mbark.ProxyPortTarget
+  public typealias Object = Mbark.AnyIOPort<Value>.ObjectProxy
+}
+extension AnyIOPort {
+  public init<T>(_ filter: T) where Value == Mbark.EffectsImage?, T : Mbark.EffectsUnaryFilter
+}
+public struct AnyInputPort<Value> : Mbark.InputPort, Mbark.ProxyPort {
+  public init<T>(_ port: T) where Value == T.Value, T : Mbark.InputPort
+  @_hasMissingDesignatedInitializers public class ObjectProxy {
+    @objc deinit
+  }
+  public let object: Mbark.AnyInputPort<Value>.ObjectProxy
+  public let writableKeyPath: Swift.ReferenceWritableKeyPath<Mbark.AnyInputPort<Value>.ObjectProxy, Value>
+  public let target: Mbark.ProxyPortTarget
+  public typealias Object = Mbark.AnyInputPort<Value>.ObjectProxy
+}
+extension AnyInputPort {
+  public init<T>(_ filter: T) where Value == Mbark.EffectsImage?, T : Mbark.EffectsUnaryFilter
+}
+public struct AnyOutputPort<Value> : Mbark.OutputPort, Mbark.ProxyPort {
+  public init<T>(_ port: T) where Value == T.Value, T : Mbark.OutputPort
+  @_hasMissingDesignatedInitializers public class ObjectProxy {
+    @objc deinit
+  }
+  public let object: Mbark.AnyOutputPort<Value>.ObjectProxy
+  public let keyPath: Swift.KeyPath<Mbark.AnyOutputPort<Value>.ObjectProxy, Value>
+  public let target: Mbark.ProxyPortTarget
+  public typealias Object = Mbark.AnyOutputPort<Value>.ObjectProxy
+}
+extension AnyOutputPort {
+  public init<T>(_ filter: T) where Value == Mbark.EffectsImage?, T : Mbark.EffectsFilter
+}
+extension AnyOutputPort where Value == Mbark.EffectsImage? {
+  public init(_ image: Mbark.EffectsImage)
+}
+public protocol OutputPortProvider {
+  associatedtype Port : Mbark.OutputPort
+  var outputPort: Self.Port { get }
+}
+public protocol InputPortProvider {
+  associatedtype Port : Mbark.InputPort
+  var inputPort: Self.Port { get }
+}
+extension EffectsImage : Mbark.OutputPortProvider {
+}
+infix operator => : AdditionPrecedence
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.OutputPort, Input : Mbark.InputPort, Output.Value == Mbark.EffectsImage?, Input.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.OutputPortProvider, Input : Mbark.InputPort, Input.Value == Mbark.EffectsImage?, Output.Port.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.OutputPortProvider, Input : Mbark.EffectsUnaryFilter, Output.Port.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.EffectsFilter, Input : Mbark.InputPort, Input.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.EffectsFilter, Input : Mbark.EffectsUnaryFilter
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.OutputPort, Input : Mbark.EffectsUnaryFilter, Output.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.EffectsFilter, Input : Mbark.InputPortProvider, Input.Port.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.OutputPort, Input : Mbark.InputPortProvider, Output.Value == Mbark.EffectsImage?, Input.Port.Value == Mbark.EffectsImage?
+@discardableResult
+public func => <Output, Input>(lhs: Output, rhs: Input) -> Input where Output : Mbark.OutputPortProvider, Input : Mbark.InputPortProvider, Output.Port.Value == Mbark.EffectsImage?, Input.Port.Value == Mbark.EffectsImage?
+@available(iOS 13.0, macOS 10.15, *)
+extension FilterGraph {
+  public static func makePublisher<T>(upstream: T, builder: @escaping (T.Output, Mbark.FilterGraph.ImageReceiverInputPort) -> Swift.Void) -> Combine.AnyPublisher<Mbark.EffectsImage?, Swift.Never> where T : Combine.Publisher, T.Failure == Swift.Never
+}
+extension Mustache {
+  public static func parse(_ template: Foundation.NSAttributedString) -> Mbark.AttributedMustacheNode
 }
 extension SignalProtocol {
   public func flatMap<NewElement>(_ transform: @escaping (Self.Element) -> [NewElement]) -> Mbark.Signal<NewElement, Self.Error>
@@ -1317,6 +2032,10 @@ extension SignalProtocol where Self.Element : Swift.Sequence {
   public func mapElement<NewElement>(_ transform: @escaping (Self.Element.Iterator.Element) -> NewElement) -> Mbark.Signal<[NewElement], Self.Error>
   public func flattenElements() -> Mbark.Signal<Self.Element.Iterator.Element, Self.Error>
 }
+extension Mbark.EffectsVideoCompositionRequestHandler.Error : Swift.Equatable {}
+extension Mbark.EffectsVideoCompositionRequestHandler.Error : Swift.Hashable {}
+extension Mbark.EffectsVideoComposition.Error : Swift.Equatable {}
+extension Mbark.EffectsVideoComposition.Error : Swift.Hashable {}
 extension Mbark.TimelaneLaneType : Swift.Equatable {}
 extension Mbark.TimelaneLaneType : Swift.Hashable {}
 extension Mbark.TimelaneLaneType : Swift.RawRepresentable {}
@@ -1329,7 +2048,16 @@ extension Mbark.MbarkStepNames : Swift.RawRepresentable {}
 extension Mbark.AuthenticationUserType : Swift.Equatable {}
 extension Mbark.AuthenticationUserType : Swift.Hashable {}
 extension Mbark.AuthenticationUserType : Swift.RawRepresentable {}
+extension Mbark.EffectsSIMDArgumentEncoder.Error : Swift.Equatable {}
+extension Mbark.EffectsSIMDArgumentEncoder.Error : Swift.Hashable {}
+extension Mbark.EffectsSIMDArgumentEncoder.Error : Swift.RawRepresentable {}
+extension Mbark.CGImageDisplacementTransition.Error : Swift.Equatable {}
+extension Mbark.CGImageDisplacementTransition.Error : Swift.Hashable {}
 extension Mbark.FlattenStrategy : Swift.Equatable {}
 extension Mbark.FlattenStrategy : Swift.Hashable {}
-extension Mbark.DeviceSize : Swift.Hashable {}
-extension Mbark.DeviceSize : Swift.RawRepresentable {}
+extension Mbark.CGCrossZoomTransition.Error : Swift.Equatable {}
+extension Mbark.CGCrossZoomTransition.Error : Swift.Hashable {}
+@available(iOS 11.0, macOS 10.13, *)
+extension Mbark.EffectsCoreImageKernel.Error : Swift.Equatable {}
+@available(iOS 11.0, macOS 10.13, *)
+extension Mbark.EffectsCoreImageKernel.Error : Swift.Hashable {}

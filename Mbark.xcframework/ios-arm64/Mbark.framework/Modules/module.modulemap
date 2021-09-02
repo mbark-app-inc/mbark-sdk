@@ -1,8 +1,10 @@
 framework module Mbark {
   umbrella header "Mbark.h"
-
   export *
-  module * { export * }
+
+  explicit module Private {
+     header "/Users/dejager/mbark-sdk-internal/mbark/Mbark/Mbark-Bridging-Header.h"
+  }
 }
 
 module Mbark.Swift {
