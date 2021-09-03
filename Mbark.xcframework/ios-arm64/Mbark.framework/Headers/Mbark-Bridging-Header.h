@@ -6,104 +6,104 @@
 //
 
 // Flexbox
-#import "NodeImpl.h"
-#import "Layout.h"
+#import <Mbark/NodeImpl.h>
+#import <Mbark/Layout.h>
 
 // Effects
-#import "EffectsContext+Internal.h"
-#import "EffectsImage+Filters.h"
-#import "EffectsImage+Promise.h"
-#import "EffectsImageRenderingContext+Internal.h"
-#import "EffectsHasher.h"
-#import "EffectsBlendFormulaSupport.h"
-#import "EffectsPrint.h"
-#import "EffectsDefer.h"
-#import "EffectsColorMatrix.h"
-#import "EffectsAlphaPremultiplicationFilter.h"
-#import "EffectsBlendFilter.h"
-#import "EffectsBlendWithMaskFilter.h"
-#import "EffectsBulgeDistortionFilter.h"
-#import "EffectsCLAHEFilter.h"
-#import "EffectsChromaKeyBlendFilter.h"
-#import "EffectsColorHalftoneFilter.h"
-#import "EffectsColorLookupFilter.h"
-#import "EffectsColorMatrixFilter.h"
-#import "EffectsCropFilter.h"
-#import "EffectsDotScreenFilter.h"
-#import "EffectsFilter.h"
-#import "EffectsHexagonalBokehBlurFilter.h"
-#import "EffectsHighPassSkinSmoothingFilter.h"
-#import "EffectsImage+Filters.h"
-#import "EffectsMPSBoxBlurFilter.h"
-#import "EffectsMPSConvolutionFilter.h"
-#import "EffectsMPSDefinitionFilter.h"
-#import "EffectsMPSGaussianBlurFilter.h"
-#import "EffectsMPSHistogramFilter.h"
-#import "EffectsMPSSobelFilter.h"
-#import "EffectsMPSUnsharpMaskFilter.h"
-#import "EffectsMultilayerCompositingFilter.h"
-#import "EffectsPixellateFilter.h"
-#import "EffectsRGBColorSpaceConversionFilter.h"
-#import "EffectsRGBToneCurveFilter.h"
-#import "EffectsRoundCornerFilter.h"
-#import "EffectsTransformFilter.h"
-#import "EffectsUnaryImageRenderingFilter.h"
-#import "EffectsVibranceFilter.h"
-#import "EffectsComputePipelineKernel.h"
-#import "EffectsKernel.h"
-#import "EffectsMPSKernel.h"
-#import "EffectsMultilayerCompositeKernel.h"
-#import "EffectsRenderCommand.h"
-#import "EffectsRenderPipelineKernel.h"
-#import "EffectsAlphaType.h"
-#import "EffectsBlendModes.h"
-#import "EffectsBuffer.h"
-#import "EffectsCVMetalIOSurfaceBridge.h"
-#import "EffectsCVMetalTextureBridging.h"
-#import "EffectsCVMetalTextureCache.h"
-#import "EffectsCVPixelBufferPool.h"
-#import "EffectsCVPixelBufferPromise.h"
-#import "EffectsCVPixelBufferRendering.h"
-#import "EffectsColor.h"
-#import "EffectsColorMatrix.h"
-#import "EffectsComputePipeline.h"
-#import "EffectsContext+Rendering.h"
-#import "EffectsContext.h"
-#import "EffectsCoreImageRendering.h"
-#import "EffectsCorner.h"
-#import "EffectsDrawableRendering.h"
-#import "EffectsError.h"
-#import "EffectsFunctionArgumentsEncoder.h"
-#import "EffectsFunctionDescriptor.h"
-#import "EffectsGeometry.h"
-#import "EffectsGeometryUtilities.h"
-#import "EffectsImage.h"
-#import "EffectsImageOrientation.h"
-#import "EffectsImagePromise.h"
-#import "EffectsImagePromiseDebug.h"
-#import "EffectsImageProperties.h"
-#import "EffectsImageRenderingContext.h"
-#import "EffectsLayer.h"
-#import "EffectsLibrarySource.h"
-#import "EffectsLock.h"
-#import "EffectsMask.h"
-#import "EffectsMemoryWarningObserver.h"
-#import "EffectsPixelFormat.h"
-#import "EffectsRenderGraphOptimization.h"
-#import "EffectsRenderPassOutputDescriptor.h"
-#import "EffectsRenderPipeline.h"
-#import "EffectsRenderTask.h"
-#import "EffectsSamplerDescriptor.h"
-#import "EffectsTextureDescriptor.h"
-#import "EffectsTextureDimensions.h"
-#import "EffectsTextureLoader.h"
-#import "EffectsTexturePool.h"
-#import "EffectsTransform.h"
-#import "EffectsVector+SIMD.h"
-#import "EffectsVector.h"
-#import "EffectsVertex.h"
-#import "EffectsWeakToStrongObjectsMapTable.h"
-#import "EffectsShaderFunctionConstants.h"
-#import "EffectsShaderLib.h"
-#import "EffectsImageView.h"
-#import "EffectsThreadSafeImageView.h"
+#import<Mbark/EffectsContext+Internal.h>
+#import<Mbark/EffectsImage+Filters.h>
+#import<Mbark/EffectsImage+Promise.h>
+#import<Mbark/EffectsImageRenderingContext+Internal.h>
+#import<Mbark/EffectsHasher.h>
+#import<Mbark/EffectsBlendFormulaSupport.h>
+#import<Mbark/EffectsPrint.h>
+#import<Mbark/EffectsDefer.h>
+#import<Mbark/EffectsColorMatrix.h>
+#import<Mbark/EffectsAlphaPremultiplicationFilter.h>
+#import<Mbark/EffectsBlendFilter.h>
+#import<Mbark/EffectsBlendWithMaskFilter.h>
+#import<Mbark/EffectsBulgeDistortionFilter.h>
+#import<Mbark/EffectsCLAHEFilter.h>
+#import<Mbark/EffectsChromaKeyBlendFilter.h>
+#import<Mbark/EffectsColorHalftoneFilter.h>
+#import<Mbark/EffectsColorLookupFilter.h>
+#import<Mbark/EffectsColorMatrixFilter.h>
+#import<Mbark/EffectsCropFilter.h>
+#import<Mbark/EffectsDotScreenFilter.h>
+#import<Mbark/EffectsFilter.h>
+#import<Mbark/EffectsHexagonalBokehBlurFilter.h>
+#import<Mbark/EffectsHighPassSkinSmoothingFilter.h>
+#import<Mbark/EffectsImage+Filters.h>
+#import<Mbark/EffectsMPSBoxBlurFilter.h>
+#import<Mbark/EffectsMPSConvolutionFilter.h>
+#import<Mbark/EffectsMPSDefinitionFilter.h>
+#import<Mbark/EffectsMPSGaussianBlurFilter.h>
+#import<Mbark/EffectsMPSHistogramFilter.h>
+#import<Mbark/EffectsMPSSobelFilter.h>
+#import<Mbark/EffectsMPSUnsharpMaskFilter.h>
+#import<Mbark/EffectsMultilayerCompositingFilter.h>
+#import<Mbark/EffectsPixellateFilter.h>
+#import<Mbark/EffectsRGBColorSpaceConversionFilter.h>
+#import<Mbark/EffectsRGBToneCurveFilter.h>
+#import<Mbark/EffectsRoundCornerFilter.h>
+#import<Mbark/EffectsTransformFilter.h>
+#import<Mbark/EffectsUnaryImageRenderingFilter.h>
+#import<Mbark/EffectsVibranceFilter.h>
+#import<Mbark/EffectsComputePipelineKernel.h>
+#import<Mbark/EffectsKernel.h>
+#import<Mbark/EffectsMPSKernel.h>
+#import<Mbark/EffectsMultilayerCompositeKernel.h>
+#import<Mbark/EffectsRenderCommand.h>
+#import<Mbark/EffectsRenderPipelineKernel.h>
+#import<Mbark/EffectsAlphaType.h>
+#import<Mbark/EffectsBlendModes.h>
+#import<Mbark/EffectsBuffer.h>
+#import<Mbark/EffectsCVMetalIOSurfaceBridge.h>
+#import<Mbark/EffectsCVMetalTextureBridging.h>
+#import<Mbark/EffectsCVMetalTextureCache.h>
+#import<Mbark/EffectsCVPixelBufferPool.h>
+#import<Mbark/EffectsCVPixelBufferPromise.h>
+#import<Mbark/EffectsCVPixelBufferRendering.h>
+#import<Mbark/EffectsColor.h>
+#import<Mbark/EffectsColorMatrix.h>
+#import<Mbark/EffectsComputePipeline.h>
+#import<Mbark/EffectsContext+Rendering.h>
+#import<Mbark/EffectsContext.h>
+#import<Mbark/EffectsCoreImageRendering.h>
+#import<Mbark/EffectsCorner.h>
+#import<Mbark/EffectsDrawableRendering.h>
+#import<Mbark/EffectsError.h>
+#import<Mbark/EffectsFunctionArgumentsEncoder.h>
+#import<Mbark/EffectsFunctionDescriptor.h>
+#import<Mbark/EffectsGeometry.h>
+#import<Mbark/EffectsGeometryUtilities.h>
+#import<Mbark/EffectsImage.h>
+#import<Mbark/EffectsImageOrientation.h>
+#import<Mbark/EffectsImagePromise.h>
+#import<Mbark/EffectsImagePromiseDebug.h>
+#import<Mbark/EffectsImageProperties.h>
+#import<Mbark/EffectsImageRenderingContext.h>
+#import<Mbark/EffectsLayer.h>
+#import<Mbark/EffectsLibrarySource.h>
+#import<Mbark/EffectsLock.h>
+#import<Mbark/EffectsMask.h>
+#import<Mbark/EffectsMemoryWarningObserver.h>
+#import<Mbark/EffectsPixelFormat.h>
+#import<Mbark/EffectsRenderGraphOptimization.h>
+#import<Mbark/EffectsRenderPassOutputDescriptor.h>
+#import<Mbark/EffectsRenderPipeline.h>
+#import<Mbark/EffectsRenderTask.h>
+#import<Mbark/EffectsSamplerDescriptor.h>
+#import<Mbark/EffectsTextureDescriptor.h>
+#import<Mbark/EffectsTextureDimensions.h>
+#import<Mbark/EffectsTextureLoader.h>
+#import<Mbark/EffectsTexturePool.h>
+#import<Mbark/EffectsTransform.h>
+#import<Mbark/EffectsVector+SIMD.h>
+#import<Mbark/EffectsVector.h>
+#import<Mbark/EffectsVertex.h>
+#import<Mbark/EffectsWeakToStrongObjectsMapTable.h>
+#import<Mbark/EffectsShaderFunctionConstants.h>
+#import<Mbark/EffectsShaderLib.h>
+#import<Mbark/EffectsImageView.h>
+#import<Mbark/EffectsThreadSafeImageView.h>
