@@ -190,13 +190,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
-@import CoreGraphics;
-@import Foundation;
 @import ObjectiveC;
 @import UIKit;
 #endif
-
-#import <Mbark/Mbark.h>
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
@@ -233,29 +229,71 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
-@class MTLArgument;
-@protocol EffectsFunctionArgumentEncodingProxy;
 
-SWIFT_CLASS_NAMED("EffectsSIMDArgumentEncoder")
-@interface EffectsSIMDArgumentEncoder : NSObject <EffectsFunctionArgumentEncoding>
-+ (BOOL)encodeValue:(id _Nonnull)value argument:(MTLArgument * _Nonnull)argument proxy:(id <EffectsFunctionArgumentEncodingProxy> _Nonnull)proxy error:(NSError * _Nullable * _Nullable)error;
+
+
+
+@class NSString;
+@class MbarkInstance;
+
+SWIFT_CLASS("_TtC5Mbark5Mbark")
+@interface Mbark : NSObject
+/// Initializes an instance of the API with the host’s ‘MbarkInfo.plist’ file..
+/// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
+/// convenient if we’d like to send data to more than one flow from a single app.
++ (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName selectedLanguage:(NSString * _Nullable)selectedLanguage;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
-
-
-
-@class NSCoder;
-
-SWIFT_CLASS("_TtC5Mbark8GridView")
-@interface GridView : UIView
-- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
-- (void)drawRect:(CGRect)rect;
-- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+SWIFT_CLASS("_TtC5Mbark18MbarkActionHandler")
+@interface MbarkActionHandler : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
-@class NSString;
+/// Event action type
+typedef SWIFT_ENUM(NSInteger, MbarkEventType, open) {
+  MbarkEventTypeAccept = 0,
+  MbarkEventTypeAuthenticate = 1,
+  MbarkEventTypeBackground = 2,
+  MbarkEventTypeForeground = 3,
+  MbarkEventTypeFlowStart = 4,
+  MbarkEventTypeFlowEnd = 5,
+  MbarkEventTypeInput = 6,
+  MbarkEventTypeLongPress = 7,
+  MbarkEventTypeReject = 8,
+  MbarkEventTypeSwipeLeft = 9,
+  MbarkEventTypeSwipeRight = 10,
+  MbarkEventTypeTap = 11,
+  MbarkEventTypeView = 12,
+};
+
+
+SWIFT_CLASS("_TtC5Mbark13MbarkInstance")
+@interface MbarkInstance : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull debugDescription;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+
+SWIFT_CLASS("_TtC5Mbark26MbarkPurchaseActionHandler")
+@interface MbarkPurchaseActionHandler : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+typedef SWIFT_ENUM(NSInteger, MbarkStepNames, open) {
+  MbarkStepNamesLoading = 0,
+};
+
+@class NSCoder;
 @class NSBundle;
 
 SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
@@ -291,33 +329,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-@class UIImage;
-
-@interface UIImageView (SWIFT_EXTENSION(Mbark))
-/// Displays an image.
-- (void)mbark_displayWithImage:(UIImage * _Nullable)image;
-@end
-
-
-
-
-@class UIFont;
-
-@interface UILabel (SWIFT_EXTENSION(Mbark))
-/// Displays an font.
-- (void)mbark_displayWithFont:(UIFont * _Nullable)font;
-@end
-
-
-
-
-
-
-
-@interface UITextField (SWIFT_EXTENSION(Mbark))
-/// Displays an font.
-- (void)mbark_displayWithFont:(UIFont * _Nullable)font;
-@end
 
 
 
@@ -331,24 +342,15 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-@protocol UIViewControllerContextTransitioning;
-
-SWIFT_CLASS("_TtC5Mbark33ViewControllerCrossZoomTransition")
-@interface ViewControllerCrossZoomTransition : NSObject <UIViewControllerAnimatedTransitioning>
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning> _Nullable)transitionContext SWIFT_WARN_UNUSED_RESULT;
-- (void)animateTransition:(id <UIViewControllerContextTransitioning> _Nonnull)transitionContext;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
 
 
-SWIFT_CLASS("_TtC5Mbark36ViewControllerDisplacementTransition")
-@interface ViewControllerDisplacementTransition : NSObject <UIViewControllerAnimatedTransitioning>
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning> _Nullable)transitionContext SWIFT_WARN_UNUSED_RESULT;
-- (void)animateTransition:(id <UIViewControllerContextTransitioning> _Nonnull)transitionContext;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
+
+
+
+
+
+
+
 
 #if __has_attribute(external_source_symbol)
 # pragma clang attribute pop
@@ -547,13 +549,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
-@import CoreGraphics;
-@import Foundation;
 @import ObjectiveC;
 @import UIKit;
 #endif
-
-#import <Mbark/Mbark.h>
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
@@ -590,29 +588,71 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
-@class MTLArgument;
-@protocol EffectsFunctionArgumentEncodingProxy;
 
-SWIFT_CLASS_NAMED("EffectsSIMDArgumentEncoder")
-@interface EffectsSIMDArgumentEncoder : NSObject <EffectsFunctionArgumentEncoding>
-+ (BOOL)encodeValue:(id _Nonnull)value argument:(MTLArgument * _Nonnull)argument proxy:(id <EffectsFunctionArgumentEncodingProxy> _Nonnull)proxy error:(NSError * _Nullable * _Nullable)error;
+
+
+
+@class NSString;
+@class MbarkInstance;
+
+SWIFT_CLASS("_TtC5Mbark5Mbark")
+@interface Mbark : NSObject
+/// Initializes an instance of the API with the host’s ‘MbarkInfo.plist’ file..
+/// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
+/// convenient if we’d like to send data to more than one flow from a single app.
++ (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName selectedLanguage:(NSString * _Nullable)selectedLanguage;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
-
-
-
-@class NSCoder;
-
-SWIFT_CLASS("_TtC5Mbark8GridView")
-@interface GridView : UIView
-- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
-- (void)drawRect:(CGRect)rect;
-- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+SWIFT_CLASS("_TtC5Mbark18MbarkActionHandler")
+@interface MbarkActionHandler : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
-@class NSString;
+/// Event action type
+typedef SWIFT_ENUM(NSInteger, MbarkEventType, open) {
+  MbarkEventTypeAccept = 0,
+  MbarkEventTypeAuthenticate = 1,
+  MbarkEventTypeBackground = 2,
+  MbarkEventTypeForeground = 3,
+  MbarkEventTypeFlowStart = 4,
+  MbarkEventTypeFlowEnd = 5,
+  MbarkEventTypeInput = 6,
+  MbarkEventTypeLongPress = 7,
+  MbarkEventTypeReject = 8,
+  MbarkEventTypeSwipeLeft = 9,
+  MbarkEventTypeSwipeRight = 10,
+  MbarkEventTypeTap = 11,
+  MbarkEventTypeView = 12,
+};
+
+
+SWIFT_CLASS("_TtC5Mbark13MbarkInstance")
+@interface MbarkInstance : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull debugDescription;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+
+SWIFT_CLASS("_TtC5Mbark26MbarkPurchaseActionHandler")
+@interface MbarkPurchaseActionHandler : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+typedef SWIFT_ENUM(NSInteger, MbarkStepNames, open) {
+  MbarkStepNamesLoading = 0,
+};
+
+@class NSCoder;
 @class NSBundle;
 
 SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
@@ -648,33 +688,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-@class UIImage;
-
-@interface UIImageView (SWIFT_EXTENSION(Mbark))
-/// Displays an image.
-- (void)mbark_displayWithImage:(UIImage * _Nullable)image;
-@end
-
-
-
-
-@class UIFont;
-
-@interface UILabel (SWIFT_EXTENSION(Mbark))
-/// Displays an font.
-- (void)mbark_displayWithFont:(UIFont * _Nullable)font;
-@end
-
-
-
-
-
-
-
-@interface UITextField (SWIFT_EXTENSION(Mbark))
-/// Displays an font.
-- (void)mbark_displayWithFont:(UIFont * _Nullable)font;
-@end
 
 
 
@@ -688,24 +701,15 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-@protocol UIViewControllerContextTransitioning;
-
-SWIFT_CLASS("_TtC5Mbark33ViewControllerCrossZoomTransition")
-@interface ViewControllerCrossZoomTransition : NSObject <UIViewControllerAnimatedTransitioning>
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning> _Nullable)transitionContext SWIFT_WARN_UNUSED_RESULT;
-- (void)animateTransition:(id <UIViewControllerContextTransitioning> _Nonnull)transitionContext;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
 
 
-SWIFT_CLASS("_TtC5Mbark36ViewControllerDisplacementTransition")
-@interface ViewControllerDisplacementTransition : NSObject <UIViewControllerAnimatedTransitioning>
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning> _Nullable)transitionContext SWIFT_WARN_UNUSED_RESULT;
-- (void)animateTransition:(id <UIViewControllerContextTransitioning> _Nonnull)transitionContext;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
+
+
+
+
+
+
+
 
 #if __has_attribute(external_source_symbol)
 # pragma clang attribute pop
