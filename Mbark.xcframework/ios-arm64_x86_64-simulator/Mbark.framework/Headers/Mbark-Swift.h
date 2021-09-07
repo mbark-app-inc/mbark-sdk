@@ -212,15 +212,68 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
+@class NSNumber;
 @class NSString;
 @class MbarkInstance;
+enum MbarkEventType : NSInteger;
+@class MbarkEventData;
+@class UINavigationController;
+@class MbarkViewController;
+@class MbarkActionHandler;
+@class MbarkPurchaseActionHandler;
 
 SWIFT_CLASS("_TtC5Mbark5Mbark")
 @interface Mbark : NSObject
+/// Tracks whether the SDK is active / enabled based on the availability of the main mbark instance
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL isActive;)
++ (BOOL)isActive SWIFT_WARN_UNUSED_RESULT;
 /// Initializes an instance of the API with the host’s ‘MbarkInfo.plist’ file..
 /// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
 /// convenient if we’d like to send data to more than one flow from a single app.
 + (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName selectedLanguage:(NSString * _Nullable)selectedLanguage;
+/// Initializes an instance of the API with manually added API info (config ID and (prod | dev) API Key).
+/// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
+/// convenient if we’d like to send data to more than one flow from a single app.
++ (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName remoteConfigId:(NSString * _Nonnull)remoteConfigId productionAPIKey:(NSString * _Nullable)productionAPIKey developmentAPIKey:(NSString * _Nullable)developmentAPIKey selectedLanguage:(NSString * _Nullable)selectedLanguage;
+/// Sets the main instance based on the instance name
+/// \param name the instance name
+///
++ (void)setMainInstanceWithName:(NSString * _Nonnull)name;
+/// Removes an unneeded Mbark instance based on its name
+/// \param name the instance name
+///
++ (void)removeInstanceWithName:(NSString * _Nonnull)name;
+/// Tracks Mbark events
++ (void)trackWithEventType:(enum MbarkEventType)eventType step:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Track singular Mbark events
++ (void)trackOnceWithEventType:(enum MbarkEventType)eventType step:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking flow starts
++ (void)trackFlowStart;
+/// Helper method used to simplify tracking flow ends
++ (void)trackFlowEnd;
+/// Helper method used to simplify tracking step views - used in cases where we can’t register the step with an mbark id
+/// for example, SSO-flows
++ (void)trackStepView:(NSString * _Nonnull)step data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking new user authentication events
++ (void)trackAuthenticationForNewUser;
+/// Helper method used to simplify tracking existing user authentication events
++ (void)trackAuthenticationForExistingUser;
+/// Helper method used to simplify tracking accept events
++ (void)trackAcceptWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component shouldTrackOnce:(BOOL)shouldTrackOnce;
+/// Helper method used to simplify tracking reject events
++ (void)trackRejectWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component shouldTrackOnce:(BOOL)shouldTrackOnce;
+/// Helper method used to simplify tracking tap events
++ (void)trackTapWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking input events
++ (void)trackInputWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking app loading
++ (void)trackAppLoading;
++ (UINavigationController * _Nullable)onboardingWithStartingViewId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nonnull)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
++ (MbarkViewController * _Nullable)mbarkViewControllerForMbarkId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nonnull)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
++ (void)addActionHandler:(MbarkActionHandler * _Nonnull)actionHandler;
++ (void)removeActionHandlerForId:(NSString * _Nonnull)id;
++ (void)addPurchaseActionHandler:(MbarkPurchaseActionHandler * _Nonnull)purchaseActionHandler;
++ (void)removePurchaseActionHandlerForId:(NSString * _Nonnull)id;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -230,6 +283,16 @@ SWIFT_CLASS("_TtC5Mbark18MbarkActionHandler")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
+
+/// Allows hosting app to add optional context to action.
+SWIFT_CLASS("_TtC5Mbark14MbarkEventData")
+@interface MbarkEventData : NSObject
+- (nonnull instancetype)initWithName:(NSString * _Nonnull)name value:(NSString * _Nonnull)value OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 
 /// Event action type
 typedef SWIFT_ENUM(NSInteger, MbarkEventType, open) {
@@ -550,15 +613,68 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
+@class NSNumber;
 @class NSString;
 @class MbarkInstance;
+enum MbarkEventType : NSInteger;
+@class MbarkEventData;
+@class UINavigationController;
+@class MbarkViewController;
+@class MbarkActionHandler;
+@class MbarkPurchaseActionHandler;
 
 SWIFT_CLASS("_TtC5Mbark5Mbark")
 @interface Mbark : NSObject
+/// Tracks whether the SDK is active / enabled based on the availability of the main mbark instance
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL isActive;)
++ (BOOL)isActive SWIFT_WARN_UNUSED_RESULT;
 /// Initializes an instance of the API with the host’s ‘MbarkInfo.plist’ file..
 /// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
 /// convenient if we’d like to send data to more than one flow from a single app.
 + (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName selectedLanguage:(NSString * _Nullable)selectedLanguage;
+/// Initializes an instance of the API with manually added API info (config ID and (prod | dev) API Key).
+/// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
+/// convenient if we’d like to send data to more than one flow from a single app.
++ (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName remoteConfigId:(NSString * _Nonnull)remoteConfigId productionAPIKey:(NSString * _Nullable)productionAPIKey developmentAPIKey:(NSString * _Nullable)developmentAPIKey selectedLanguage:(NSString * _Nullable)selectedLanguage;
+/// Sets the main instance based on the instance name
+/// \param name the instance name
+///
++ (void)setMainInstanceWithName:(NSString * _Nonnull)name;
+/// Removes an unneeded Mbark instance based on its name
+/// \param name the instance name
+///
++ (void)removeInstanceWithName:(NSString * _Nonnull)name;
+/// Tracks Mbark events
++ (void)trackWithEventType:(enum MbarkEventType)eventType step:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Track singular Mbark events
++ (void)trackOnceWithEventType:(enum MbarkEventType)eventType step:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking flow starts
++ (void)trackFlowStart;
+/// Helper method used to simplify tracking flow ends
++ (void)trackFlowEnd;
+/// Helper method used to simplify tracking step views - used in cases where we can’t register the step with an mbark id
+/// for example, SSO-flows
++ (void)trackStepView:(NSString * _Nonnull)step data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking new user authentication events
++ (void)trackAuthenticationForNewUser;
+/// Helper method used to simplify tracking existing user authentication events
++ (void)trackAuthenticationForExistingUser;
+/// Helper method used to simplify tracking accept events
++ (void)trackAcceptWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component shouldTrackOnce:(BOOL)shouldTrackOnce;
+/// Helper method used to simplify tracking reject events
++ (void)trackRejectWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component shouldTrackOnce:(BOOL)shouldTrackOnce;
+/// Helper method used to simplify tracking tap events
++ (void)trackTapWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking input events
++ (void)trackInputWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
+/// Helper method used to simplify tracking app loading
++ (void)trackAppLoading;
++ (UINavigationController * _Nullable)onboardingWithStartingViewId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nonnull)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
++ (MbarkViewController * _Nullable)mbarkViewControllerForMbarkId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nonnull)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
++ (void)addActionHandler:(MbarkActionHandler * _Nonnull)actionHandler;
++ (void)removeActionHandlerForId:(NSString * _Nonnull)id;
++ (void)addPurchaseActionHandler:(MbarkPurchaseActionHandler * _Nonnull)purchaseActionHandler;
++ (void)removePurchaseActionHandlerForId:(NSString * _Nonnull)id;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -568,6 +684,16 @@ SWIFT_CLASS("_TtC5Mbark18MbarkActionHandler")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
+
+/// Allows hosting app to add optional context to action.
+SWIFT_CLASS("_TtC5Mbark14MbarkEventData")
+@interface MbarkEventData : NSObject
+- (nonnull instancetype)initWithName:(NSString * _Nonnull)name value:(NSString * _Nonnull)value OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 
 /// Event action type
 typedef SWIFT_ENUM(NSInteger, MbarkEventType, open) {

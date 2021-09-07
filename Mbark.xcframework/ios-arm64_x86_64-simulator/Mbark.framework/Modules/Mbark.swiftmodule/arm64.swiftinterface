@@ -6,7 +6,7 @@ import CommonCrypto
 import CoreGraphics
 import CoreImage
 import CoreTelephony
-import Darwin/*.memcpy*/
+import Darwin
 import Dispatch
 import Foundation
 import ImageIO
@@ -46,10 +46,12 @@ extension UITextField {
 extension UITextView {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
-public struct MbarkEventData : Swift.Codable {
-  public init(name: Swift.String, value: Swift.String)
+@objc public class MbarkEventData : ObjectiveC.NSObject, Swift.Codable {
+  @objc public init(name: Swift.String, value: Swift.String)
+  @objc override dynamic public init()
+  @objc deinit
   public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  required public init(from decoder: Swift.Decoder) throws
 }
 @_hasMissingDesignatedInitializers @objc public class MbarkViewController : UIKit.UIViewController {
   @objc override dynamic public func viewDidLoad()
@@ -181,33 +183,33 @@ extension CGPoint : Swift.AdditiveArithmetic {
   public static func -= (lhs: inout CGPoint, rhs: CGPoint)
 }
 @_inheritsConvenienceInitializers @objc public class Mbark : ObjectiveC.NSObject {
-  public static var isActive: Swift.Bool {
-    get
+  @objc public static var isActive: Swift.Bool {
+    @objc get
   }
   @discardableResult
   @objc public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
   @discardableResult
-  public static func initialize(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
-  public static func setMainInstance(name: Swift.String)
-  public static func removeInstance(name: Swift.String)
-  public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  public static func trackOnce(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  public static func trackFlowStart()
-  public static func trackFlowEnd()
-  public static func trackStepView(_ step: Swift.String, data: MbarkEventData? = nil)
-  public static func trackAuthenticationForNewUser()
-  public static func trackAuthenticationForExistingUser()
-  public static func trackAccept(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
-  public static func trackReject(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
-  public static func trackTap(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  public static func trackAppLoading()
-  public static func onboarding(startingViewId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> UIKit.UINavigationController?
-  public static func mbarkViewController(forMbarkId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> MbarkViewController?
-  public static func addActionHandler(_ actionHandler: MbarkActionHandler)
-  public static func removeActionHandler(forId id: Swift.String)
-  public static func addPurchaseActionHandler(_ purchaseActionHandler: MbarkPurchaseActionHandler)
-  public static func removePurchaseActionHandler(forId id: Swift.String)
+  @objc public static func initialize(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
+  @objc public static func setMainInstance(name: Swift.String)
+  @objc public static func removeInstance(name: Swift.String)
+  @objc public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  @objc public static func trackOnce(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  @objc public static func trackFlowStart()
+  @objc public static func trackFlowEnd()
+  @objc public static func trackStepView(_ step: Swift.String, data: MbarkEventData? = nil)
+  @objc public static func trackAuthenticationForNewUser()
+  @objc public static func trackAuthenticationForExistingUser()
+  @objc public static func trackAccept(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
+  @objc public static func trackReject(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
+  @objc public static func trackTap(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  @objc public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  @objc public static func trackAppLoading()
+  @objc public static func onboarding(startingViewId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> UIKit.UINavigationController?
+  @objc public static func mbarkViewController(forMbarkId mbarkId: Swift.String, onLoaded: @escaping (Swift.Bool) -> Swift.Void) -> MbarkViewController?
+  @objc public static func addActionHandler(_ actionHandler: MbarkActionHandler)
+  @objc public static func removeActionHandler(forId id: Swift.String)
+  @objc public static func addPurchaseActionHandler(_ purchaseActionHandler: MbarkPurchaseActionHandler)
+  @objc public static func removePurchaseActionHandler(forId id: Swift.String)
   @objc override dynamic public init()
   @objc deinit
 }
