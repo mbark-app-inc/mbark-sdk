@@ -278,6 +278,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL isActive;)
 
 SWIFT_CLASS("_TtC5Mbark18MbarkActionHandler")
 @interface MbarkActionHandler : NSObject
+- (nonnull instancetype)initWithId:(NSString * _Nonnull)id handler:(void (^ _Nonnull)(void))handler OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+- (void)finishWithSuccess:(BOOL)success;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -325,6 +328,10 @@ SWIFT_CLASS("_TtC5Mbark13MbarkInstance")
 
 SWIFT_CLASS("_TtC5Mbark26MbarkPurchaseActionHandler")
 @interface MbarkPurchaseActionHandler : NSObject
+@property (nonatomic, copy) void (^ _Nullable finish)(BOOL);
+- (nonnull instancetype)initWithId:(NSString * _Nonnull)id handler:(void (^ _Nonnull)(NSString * _Nonnull))handler OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+- (void)finishWithSuccess:(BOOL)success;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -342,12 +349,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 - (void)viewDidLoad;
 - (void)viewDidLayoutSubviews;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
-@end
-
-@class UIEvent;
-
-@interface MbarkViewController (SWIFT_EXTENSION(Mbark))
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent * _Nullable)event;
 @end
 
 
