@@ -31,6 +31,9 @@ extension UIResponder {
     get
   }
 }
+extension UITapGestureRecognizer {
+  public func didTapAttributedTextInLabel(label: UIKit.UILabel, inRange targetRange: Foundation.NSRange) -> Swift.Bool
+}
 extension UITextField {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
