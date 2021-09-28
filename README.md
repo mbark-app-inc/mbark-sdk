@@ -277,3 +277,7 @@ Creating a remote configurable view controller:
 ```swift
 public static func mbarkViewController(forMbarkId mbarkId: String, onLoaded: @escaping (Bool) -> Void) -> MbarkViewController?
 ```
+Creating a complete, self-contained user flow:
+```swift
+public static func onboarding(startingViewId mbarkId: String, onLoaded: @escaping (Bool) -> Void)-> UINavigationController?
+```
