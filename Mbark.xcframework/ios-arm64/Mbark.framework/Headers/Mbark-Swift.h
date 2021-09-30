@@ -229,11 +229,11 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL isActive;)
 /// Initializes an instance of the API with the host’s ‘MbarkInfo.plist’ file..
 /// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
 /// convenient if we’d like to send data to more than one flow from a single app.
-+ (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName selectedLanguage:(NSString * _Nullable)selectedLanguage;
++ (MbarkInstance * _Nullable)initializeSDKWithInstanceName:(NSString * _Nonnull)instanceName selectedLanguage:(NSString * _Nullable)selectedLanguage;
 /// Initializes an instance of the API with manually added API info (config ID and (prod | dev) API Key).
 /// Returns a new Mbark instance object. This allows us to create more than one instance of the API, which is
 /// convenient if we’d like to send data to more than one flow from a single app.
-+ (MbarkInstance * _Nullable)initializeWithInstanceName:(NSString * _Nonnull)instanceName remoteConfigId:(NSString * _Nonnull)remoteConfigId productionAPIKey:(NSString * _Nullable)productionAPIKey developmentAPIKey:(NSString * _Nullable)developmentAPIKey selectedLanguage:(NSString * _Nullable)selectedLanguage;
++ (MbarkInstance * _Nullable)initializeSDKWithInstanceName:(NSString * _Nonnull)instanceName remoteConfigId:(NSString * _Nonnull)remoteConfigId productionAPIKey:(NSString * _Nullable)productionAPIKey developmentAPIKey:(NSString * _Nullable)developmentAPIKey selectedLanguage:(NSString * _Nullable)selectedLanguage;
 /// Sets the main instance based on the instance name
 /// \param name the instance name
 ///

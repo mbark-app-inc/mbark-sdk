@@ -188,9 +188,9 @@ extension CGPoint : Swift.AdditiveArithmetic {
     @objc get
   }
   @discardableResult
-  @objc public static func initialize(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
+  @objc public static func initializeSDK(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
   @discardableResult
-  @objc public static func initialize(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
+  @objc public static func initializeSDK(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
   @objc public static func setMainInstance(name: Swift.String)
   @objc public static func removeInstance(name: Swift.String)
   @objc public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
