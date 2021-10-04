@@ -267,8 +267,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL isActive;)
 + (void)trackInputWithStep:(NSString * _Nullable)step component:(NSString * _Nullable)component data:(MbarkEventData * _Nullable)data;
 /// Helper method used to simplify tracking app loading
 + (void)trackAppLoading;
-+ (UINavigationController * _Nullable)onboardingWithStartingViewId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nonnull)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
-+ (MbarkViewController * _Nullable)mbarkViewControllerForMbarkId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nonnull)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
++ (UINavigationController * _Nullable)userFlowWithStartingViewId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nullable)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
++ (MbarkViewController * _Nullable)userViewForMbarkId:(NSString * _Nonnull)mbarkId onLoaded:(void (^ _Nullable)(BOOL))onLoaded SWIFT_WARN_UNUSED_RESULT;
 + (void)addActionHandler:(MbarkActionHandler * _Nonnull)actionHandler;
 + (void)removeActionHandlerForId:(NSString * _Nonnull)id;
 + (void)addPurchaseActionHandler:(MbarkPurchaseActionHandler * _Nonnull)purchaseActionHandler;
