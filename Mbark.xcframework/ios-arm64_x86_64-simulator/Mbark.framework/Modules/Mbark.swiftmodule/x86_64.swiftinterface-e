@@ -1,6 +1,6 @@
 // swift-interface-format-version: 1.0
 // swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
-// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
+// swift-module-flags: -target x86_64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mbark
 import Combine
 import CommonCrypto
 import CoreGraphics
@@ -37,12 +37,12 @@ extension UITapGestureRecognizer {
 extension UITextField {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
-@objc public class MbarkActionHandler : ObjectiveC.NSObject, MbarkHandler {
+@objc public class MbarkActionHandler : ObjectiveC.NSObject, Mbark.MbarkHandler {
   public typealias Handler = () -> Swift.Void
   public var finish: ((Swift.Bool) -> Swift.Void)?
-  @objc public init(id: Swift.String, handler: @escaping MbarkActionHandler.Handler)
+  @objc public init(id: Swift.String, handler: @escaping Mbark.MbarkActionHandler.Handler)
   @objc final public let id: Swift.String
-  final public let handle: MbarkActionHandler.Handler
+  final public let handle: Mbark.MbarkActionHandler.Handler
   @objc public func finish(success: Swift.Bool)
   @objc override dynamic public init()
   @objc deinit
@@ -60,9 +60,9 @@ extension UITextView {
 @_hasMissingDesignatedInitializers @objc public class MbarkViewController : UIKit.UIViewController {
   @objc override dynamic public func viewDidLoad()
   @objc override dynamic public func viewDidLayoutSubviews()
-  @available(*, deprecated, message: "Please use addActionHandler(_:) directly")
-  public func addActionHandler(_ actionHandler: MbarkActionHandler)
-  @available(*, deprecated, message: "Please use removeActionHandler(forId:) directly")
+  @available(*, deprecated, message: "Please use Mbark.addActionHandler(_:) directly")
+  public func addActionHandler(_ actionHandler: Mbark.MbarkActionHandler)
+  @available(*, deprecated, message: "Please use Mbark.removeActionHandler(forId:) directly")
   public func removeActionHandler(forId id: Swift.String)
   @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
   @objc deinit
@@ -75,7 +75,7 @@ public struct ComponentValue : Swift.Codable, Swift.Hashable, Swift.Equatable {
   public func hash(into hasher: inout Swift.Hasher)
   public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
-  public static func == (a: ComponentValue, b: ComponentValue) -> Swift.Bool
+  public static func == (a: Mbark.ComponentValue, b: Mbark.ComponentValue) -> Swift.Bool
   public var hashValue: Swift.Int {
     get
   }
@@ -123,54 +123,54 @@ extension MbarkHandler {
   case tap
   case view
   public typealias RawValue = Swift.String
-  public var rawValue: MbarkEventType.RawValue {
+  public var rawValue: Mbark.MbarkEventType.RawValue {
     get
   }
-  public init?(rawValue: MbarkEventType.RawValue)
+  public init?(rawValue: Mbark.MbarkEventType.RawValue)
 }
 @objc public enum MbarkStepNames : Swift.Int, Swift.RawRepresentable {
   case loading
   public typealias RawValue = Swift.String
-  public var rawValue: MbarkStepNames.RawValue {
+  public var rawValue: Mbark.MbarkStepNames.RawValue {
     get
   }
-  public init?(rawValue: MbarkStepNames.RawValue)
+  public init?(rawValue: Mbark.MbarkStepNames.RawValue)
 }
 public enum AuthenticationUserType : Swift.Int, Swift.RawRepresentable {
   case new
   case existing
   public typealias RawValue = Swift.String
-  public var rawValue: AuthenticationUserType.RawValue {
+  public var rawValue: Mbark.AuthenticationUserType.RawValue {
     get
   }
-  public init?(rawValue: AuthenticationUserType.RawValue)
+  public init?(rawValue: Mbark.AuthenticationUserType.RawValue)
 }
 extension UIViewController {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
-@objc public class MbarkPurchaseActionHandler : ObjectiveC.NSObject, MbarkHandler {
+@objc public class MbarkPurchaseActionHandler : ObjectiveC.NSObject, Mbark.MbarkHandler {
   public typealias Handler = (Swift.String) -> Swift.Void
   @objc public var finish: ((Swift.Bool) -> Swift.Void)?
-  @objc public init(id: Swift.String, handler: @escaping MbarkPurchaseActionHandler.Handler)
+  @objc public init(id: Swift.String, handler: @escaping Mbark.MbarkPurchaseActionHandler.Handler)
   @objc final public let id: Swift.String
-  final public let handle: MbarkPurchaseActionHandler.Handler
+  final public let handle: Mbark.MbarkPurchaseActionHandler.Handler
   @objc public func finish(success: Swift.Bool)
   @objc override dynamic public init()
   @objc deinit
 }
 @_hasMissingDesignatedInitializers @objc public class MbarkInstance : ObjectiveC.NSObject {
   @objc deinit
-  public var actionHandlers: Swift.Set<MbarkActionHandler> {
+  public var actionHandlers: Swift.Set<Mbark.MbarkActionHandler> {
     get
   }
-  public var purchaseActionHandler: MbarkPurchaseActionHandler? {
+  public var purchaseActionHandler: Mbark.MbarkPurchaseActionHandler? {
     get
   }
   @objc override dynamic public var debugDescription: Swift.String {
     @objc get
   }
-  public func trackOnce(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  public func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  public func trackOnce(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
+  public func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
   @objc override dynamic public init()
 }
 public typealias CGPoint = CoreGraphics.CGPoint
@@ -178,45 +178,45 @@ extension UIButton {
   public func setMbarkId(_ id: Swift.String?, trackEvents: Swift.Bool = true)
 }
 extension CGPoint : Swift.AdditiveArithmetic {
-  public static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint
-  public static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint
-  public static func += (lhs: inout CGPoint, rhs: CGPoint)
-  public static func -= (lhs: inout CGPoint, rhs: CGPoint)
+  public static func + (lhs: Mbark.CGPoint, rhs: Mbark.CGPoint) -> Mbark.CGPoint
+  public static func - (lhs: Mbark.CGPoint, rhs: Mbark.CGPoint) -> Mbark.CGPoint
+  public static func += (lhs: inout Mbark.CGPoint, rhs: Mbark.CGPoint)
+  public static func -= (lhs: inout Mbark.CGPoint, rhs: Mbark.CGPoint)
 }
 @_inheritsConvenienceInitializers @objc public class Mbark : ObjectiveC.NSObject {
   @objc public static var isActive: Swift.Bool {
     @objc get
   }
   @discardableResult
-  @objc public static func initializeSDK(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
+  @objc public static func initializeSDK(instanceName: Swift.String = UUID().uuidString, selectedLanguage: Swift.String? = nil) -> Mbark.MbarkInstance?
   @discardableResult
-  @objc public static func initializeSDK(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> MbarkInstance?
+  @objc public static func initializeSDK(instanceName: Swift.String = UUID().uuidString, remoteConfigId: Swift.String, productionAPIKey: Swift.String? = nil, developmentAPIKey: Swift.String? = nil, selectedLanguage: Swift.String? = nil) -> Mbark.MbarkInstance?
   @objc public static func setMainInstance(name: Swift.String)
   @objc public static func removeInstance(name: Swift.String)
-  @objc public static func track(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  @objc public static func trackOnce(eventType: MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  @objc public static func track(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
+  @objc public static func trackOnce(eventType: Mbark.MbarkEventType, step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
   @objc public static func trackFlowStart()
   @objc public static func trackFlowEnd()
-  @objc public static func trackStepView(_ step: Swift.String, data: MbarkEventData? = nil)
+  @objc public static func trackStepView(_ step: Swift.String, data: Mbark.MbarkEventData? = nil)
   @objc public static func trackAuthenticationForNewUser()
   @objc public static func trackAuthenticationForExistingUser()
   @objc public static func trackAccept(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
   @objc public static func trackReject(step: Swift.String? = nil, component: Swift.String? = nil, shouldTrackOnce: Swift.Bool = false)
-  @objc public static func trackTap(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
-  @objc public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil, data: MbarkEventData? = nil)
+  @objc public static func trackTap(step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
+  @objc public static func trackInput(step: Swift.String? = nil, component: Swift.String? = nil, data: Mbark.MbarkEventData? = nil)
   @objc public static func trackAppLoading()
   @objc public static func userFlow(startingViewId mbarkId: Swift.String, onLoaded: ((Swift.Bool) -> Swift.Void)? = nil) -> UIKit.UINavigationController?
-  @objc public static func userView(forMbarkId mbarkId: Swift.String, onLoaded: ((Swift.Bool) -> Swift.Void)? = nil) -> MbarkViewController?
-  @objc public static func addActionHandler(_ actionHandler: MbarkActionHandler)
+  @objc public static func userView(forMbarkId mbarkId: Swift.String, onLoaded: ((Swift.Bool) -> Swift.Void)? = nil) -> Mbark.MbarkViewController?
+  @objc public static func addActionHandler(_ actionHandler: Mbark.MbarkActionHandler)
   @objc public static func removeActionHandler(forId id: Swift.String)
-  @objc public static func addPurchaseActionHandler(_ purchaseActionHandler: MbarkPurchaseActionHandler)
+  @objc public static func addPurchaseActionHandler(_ purchaseActionHandler: Mbark.MbarkPurchaseActionHandler)
   @objc public static func removePurchaseActionHandler(forId id: Swift.String)
   @objc override dynamic public init()
   @objc deinit
 }
-extension MbarkEventType : Swift.Equatable {}
-extension MbarkEventType : Swift.Hashable {}
-extension MbarkStepNames : Swift.Equatable {}
-extension MbarkStepNames : Swift.Hashable {}
-extension AuthenticationUserType : Swift.Equatable {}
-extension AuthenticationUserType : Swift.Hashable {}
+extension Mbark.MbarkEventType : Swift.Equatable {}
+extension Mbark.MbarkEventType : Swift.Hashable {}
+extension Mbark.MbarkStepNames : Swift.Equatable {}
+extension Mbark.MbarkStepNames : Swift.Hashable {}
+extension Mbark.AuthenticationUserType : Swift.Equatable {}
+extension Mbark.AuthenticationUserType : Swift.Hashable {}
