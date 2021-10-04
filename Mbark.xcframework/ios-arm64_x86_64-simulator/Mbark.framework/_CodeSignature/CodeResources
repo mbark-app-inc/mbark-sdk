@@ -26,7 +26,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		LKoe9ksu9apkKf3vl0e7NKtGmp8=
+		VBJZsFMedTc7qhwGsOxYzkaJBB4=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		FY1Jfb60mX/yAYocAPckMNzFa2M=
+		geH6foYScT/LKb6SyI/d224fN7A=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		FY1Jfb60mX/yAYocAPckMNzFa2M=
+		geH6foYScT/LKb6SyI/d224fN7A=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		3XJO+lRpu345ztvYSWs91j8pjPo=
+		RSDD7Qv5V4tLvL3WUaBd4nollck=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -74,7 +74,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		3XJO+lRpu345ztvYSWs91j8pjPo=
+		RSDD7Qv5V4tLvL3WUaBd4nollck=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -136,7 +136,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			hlfV/B6suivAK6aStrZyW6MNX4dV5AQb0B7LAQ+YXpU=
+			pos8UA1sexUaif+SPnY3O/RjTupXBXwA7SNO5OXVjYY=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
@@ -157,7 +157,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			hlfV/B6suivAK6aStrZyW6MNX4dV5AQb0B7LAQ+YXpU=
+			pos8UA1sexUaif+SPnY3O/RjTupXBXwA7SNO5OXVjYY=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -178,7 +178,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GAW2o4vlcBhpX4sX0z3MhzpcNO9aPRLgUV3s+biR+n0=
+			IHrxpBu7pNZUsSgJmjD+tWSCyhQb9g1TIW7VPsdTvXI=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
@@ -199,7 +199,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GAW2o4vlcBhpX4sX0z3MhzpcNO9aPRLgUV3s+biR+n0=
+			IHrxpBu7pNZUsSgJmjD+tWSCyhQb9g1TIW7VPsdTvXI=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
