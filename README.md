@@ -207,7 +207,7 @@ The following are public static methods available from the Mbark SDK.
 
 Initializing the SDK:
 ```swift
-public static func initialize()
+public static func initializeSDK()
 ```
 
 Tracking the start of an onboarding flow:
@@ -216,7 +216,7 @@ public static func trackFlowStart()
 ```
 Tracking the end of an onboarding flow:
 ```swift
-public static func trackFlowStart()
+public static func trackFlowEnd()
 ```
 
 Tracking any event:
@@ -275,9 +275,9 @@ public static func trackInput(step: String? = nil, component: String? = nil, dat
 ```
 Creating a remote configurable view controller:
 ```swift
-public static func mbarkViewController(forMbarkId mbarkId: String, onLoaded: @escaping (Bool) -> Void) -> MbarkViewController?
+public static func userView(forMbarkId mbarkId: String, onLoaded: @escaping (Bool) -> Void) -> MbarkViewController?
 ```
-Creating a complete, self-contained user flow:
+Creating a complete, self-contained user-flow:
 ```swift
-public static func onboarding(startingViewId mbarkId: String, onLoaded: @escaping (Bool) -> Void)-> UINavigationController?
+public static func userFlow(startingViewId mbarkId: String, onLoaded: @escaping (Bool) -> Void)-> UINavigationController?
 ```
