@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/Mbark-Swift.h</key>
 		<data>
-		aMZl/xzPHoGplJzp3x31Y/SvIJA=
+		E4eLerYbrAZ1b77IZgdYyNbopmw=
 		</data>
 		<key>Headers/Mbark.h</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		NzaZZ6FSLBUai2ug4Fvv+B3MNyY=
+		NWa4Le/MS+HSv1lL7NKNl9Touu0=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		4eHGu1hgAvYmTPh3P+70IQnyfUw=
+		cEnXtWIitizUbHiRWwm8qC066z8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		4eHGu1hgAvYmTPh3P+70IQnyfUw=
+		cEnXtWIitizUbHiRWwm8qC066z8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		briuK4blEdzDN+D1w2bNw//CmkY=
+		luTFOPMqN9XmyRJpC01Edpdk3uk=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -74,7 +74,7 @@
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		briuK4blEdzDN+D1w2bNw//CmkY=
+		luTFOPMqN9XmyRJpC01Edpdk3uk=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -101,7 +101,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WoszLA7WiqcYSZ0bt2yrn6yTtEVo/eotkHeKP9l1ojc=
+			h5cj1yo5Z3HDYvSz0hj0tyU3zwigu9X31Zutjnx1g+U=
 			</data>
 		</dict>
 		<key>Headers/Mbark.h</key>
@@ -136,7 +136,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SkuurIw48nefHv/bhNzmGovoFmXDoV1ias9L6/v1Fs8=
+			+x7pmELNEnY5k7BCKH9KhQ7x0ReifYwlZ+agoAzrt20=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
@@ -157,7 +157,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SkuurIw48nefHv/bhNzmGovoFmXDoV1ias9L6/v1Fs8=
+			+x7pmELNEnY5k7BCKH9KhQ7x0ReifYwlZ+agoAzrt20=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -178,7 +178,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			bayBKcsPNRMOXP92Joft19nnR/lLh5HGlEhoyoMAk18=
+			ku8pDnzjPzuou/IES3+ms5WAj22y8e6hAWy1oRPzxf8=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
@@ -199,7 +199,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			bayBKcsPNRMOXP92Joft19nnR/lLh5HGlEhoyoMAk18=
+			ku8pDnzjPzuou/IES3+ms5WAj22y8e6hAWy1oRPzxf8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

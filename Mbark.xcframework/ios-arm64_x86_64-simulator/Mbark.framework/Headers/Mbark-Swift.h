@@ -398,7 +398,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-
 #if __has_attribute(external_source_symbol)
 # pragma clang attribute pop
 #endif
@@ -759,7 +758,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 - (void)viewDidLayoutSubviews;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
-
 
 
 

@@ -396,7 +396,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-
 #if __has_attribute(external_source_symbol)
 # pragma clang attribute pop
 #endif
