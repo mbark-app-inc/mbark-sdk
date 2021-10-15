@@ -155,6 +155,13 @@ extension UIKit.UIViewController {
   @objc public func finish(success: Swift.Bool)
   @objc deinit
 }
+extension UIKit.UILabel {
+  @_Concurrency.MainActor(unsafe) public var showGrid: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+}
 @_hasMissingDesignatedInitializers @objc public class MbarkInstance : ObjectiveC.NSObject {
   @objc deinit
   public var actionHandlers: Swift.Set<MbarkActionHandler> {

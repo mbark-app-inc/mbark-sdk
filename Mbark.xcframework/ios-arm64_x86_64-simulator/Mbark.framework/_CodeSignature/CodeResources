@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/Mbark-Swift.h</key>
 		<data>
-		E4eLerYbrAZ1b77IZgdYyNbopmw=
+		w6gPjFeNn8ca2JNowq5pVfE+fBc=
 		</data>
 		<key>Headers/Mbark.h</key>
 		<data>
@@ -26,55 +26,55 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		NWa4Le/MS+HSv1lL7NKNl9Touu0=
+		36T/W41hUCrQbs+iAyuqhab5vKI=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		zcMv73S+YN4GEmmP4z4nNDz6Z4A=
+		R27GxiA+m9Vkd7W/pXskAbb7s8Y=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		BvQGvSIyPb00OPkoyzA6bTXqZQc=
+		zsJ4Epjm994YvLbx4aK4C+6xPYo=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		cEnXtWIitizUbHiRWwm8qC066z8=
+		AoY5m0TnCmJPcNeiChnywM6ZrOc=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		zcMv73S+YN4GEmmP4z4nNDz6Z4A=
+		R27GxiA+m9Vkd7W/pXskAbb7s8Y=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		BvQGvSIyPb00OPkoyzA6bTXqZQc=
+		zsJ4Epjm994YvLbx4aK4C+6xPYo=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		cEnXtWIitizUbHiRWwm8qC066z8=
+		AoY5m0TnCmJPcNeiChnywM6ZrOc=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		OoR5qhP2KgWFU2hv/OxVW/Cabw4=
+		iHz4npXP55FYDG+wzGBrF70Id/4=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		lTjXWqduv+N5iUNpAPtH0UNBtx8=
+		Li4lAf88z9U+qgRqxf1K4OaKJYE=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		luTFOPMqN9XmyRJpC01Edpdk3uk=
+		Ut8BBsGTkVhEoKHDlyYd47ZlVl4=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		OoR5qhP2KgWFU2hv/OxVW/Cabw4=
+		iHz4npXP55FYDG+wzGBrF70Id/4=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		lTjXWqduv+N5iUNpAPtH0UNBtx8=
+		Li4lAf88z9U+qgRqxf1K4OaKJYE=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		luTFOPMqN9XmyRJpC01Edpdk3uk=
+		Ut8BBsGTkVhEoKHDlyYd47ZlVl4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -101,7 +101,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			h5cj1yo5Z3HDYvSz0hj0tyU3zwigu9X31Zutjnx1g+U=
+			n44zEEXo3OG6T/UzxWnpi9K9xsQ8l8iU8nNHZ9zKnQQ=
 			</data>
 		</dict>
 		<key>Headers/Mbark.h</key>
@@ -122,84 +122,84 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			wPreMKaMxS6as0E7oI/wDcccmXjAjUA8aGndQnG5tsA=
+			IjeAXl8m7xw7KGmgQA3zui7JP6Dy91Ht9K/iFLwAjKs=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			th3fRMMY7AT2R0siACOWH6iq0ujNjiEkL3Ufvvznock=
+			M6/YxJ8W3sxwOnDI/nYxFzt2c5Bwjampl8ayfnJJFIc=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+x7pmELNEnY5k7BCKH9KhQ7x0ReifYwlZ+agoAzrt20=
+			khuIyJezL7BnDXtre0wolIwjBn6LJbfklw7ONZcwaQU=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			wPreMKaMxS6as0E7oI/wDcccmXjAjUA8aGndQnG5tsA=
+			IjeAXl8m7xw7KGmgQA3zui7JP6Dy91Ht9K/iFLwAjKs=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			th3fRMMY7AT2R0siACOWH6iq0ujNjiEkL3Ufvvznock=
+			M6/YxJ8W3sxwOnDI/nYxFzt2c5Bwjampl8ayfnJJFIc=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+x7pmELNEnY5k7BCKH9KhQ7x0ReifYwlZ+agoAzrt20=
+			khuIyJezL7BnDXtre0wolIwjBn6LJbfklw7ONZcwaQU=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			oPBld8sUu92LsbvZ5EdqmyiOqmbMt87UuUyXxengF24=
+			Bk6cqWDaeJUnwCbY1WKEfFcqxyc/8VOGLLp/Q/RCi1s=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SVysaBa4BLpRX6uvMOipuBGOuZu4PTS34qaNjezI6/c=
+			94/Sd9JRIlghmM1EViwnv6KYNHu7bc9cTyydsne7ZNo=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ku8pDnzjPzuou/IES3+ms5WAj22y8e6hAWy1oRPzxf8=
+			NmT0e4QnD5TwNZd1icQnGRUGSttu5BA7sXw4jWGhaoY=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			oPBld8sUu92LsbvZ5EdqmyiOqmbMt87UuUyXxengF24=
+			Bk6cqWDaeJUnwCbY1WKEfFcqxyc/8VOGLLp/Q/RCi1s=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SVysaBa4BLpRX6uvMOipuBGOuZu4PTS34qaNjezI6/c=
+			94/Sd9JRIlghmM1EViwnv6KYNHu7bc9cTyydsne7ZNo=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ku8pDnzjPzuou/IES3+ms5WAj22y8e6hAWy1oRPzxf8=
+			NmT0e4QnD5TwNZd1icQnGRUGSttu5BA7sXw4jWGhaoY=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
