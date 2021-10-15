@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                   = "Mbark"
-  spec.version                = "1.4.6"
+  spec.version                = "1.4.7"
   spec.summary                = "Server Driven UI."
   spec.description            = "Drag-and-Drop Flow Builder\nCompose your onboarding with an intuitive web dashboard. Customize the screens using your brand's unique design library.\n\nEasy Experimentation\nConduct tests with the flows you create. Find the flow that optimizes for key metrics like conversion, retention, and engagement.\n\nBuilt-in Funnel Analytics\nEvery flow you build ships with straightforward analytics by default. Measure the effectiveness of your onboarding at a glance."
   spec.homepage               = "https://www.mbark.co"
