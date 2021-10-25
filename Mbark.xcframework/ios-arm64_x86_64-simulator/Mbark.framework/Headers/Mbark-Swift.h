@@ -386,15 +386,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-@interface UILabel (SWIFT_EXTENSION(Mbark))
-- (void)layoutSubviews;
-@end
-
-
-
-
-
-
 
 
 
@@ -795,15 +786,6 @@ SWIFT_CLASS("_TtC5Mbark19MbarkViewController")
 
 
 
-
-
-
-
-
-
-@interface UILabel (SWIFT_EXTENSION(Mbark))
-- (void)layoutSubviews;
-@end
 
 
 
