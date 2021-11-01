@@ -4,6 +4,18 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Frameworks/MbarkAnimation.framework/Info.plist</key>
+		<data>
+		iaitfDsLOz1LdxuuDfi34BLyah8=
+		</data>
+		<key>Frameworks/MbarkAnimation.framework/MbarkAnimation</key>
+		<data>
+		XESALA52UBm4fQKwZ3A6M1aU9Yc=
+		</data>
+		<key>Frameworks/MbarkAnimation.framework/_CodeSignature/CodeResources</key>
+		<data>
+		Ea4XJRJxnbEl20GH8n0jAxXa2A4=
+		</data>
 		<key>Headers/Layout.h</key>
 		<data>
 		aDtQjQrK99Ae2sDIsLs3jsgm73o=
@@ -14,7 +26,7 @@
 		</data>
 		<key>Headers/Mbark-Swift.h</key>
 		<data>
-		aMZl/xzPHoGplJzp3x31Y/SvIJA=
+		pe6ehvEveg0w0rKH1jIr5+KPjpQ=
 		</data>
 		<key>Headers/Mbark.h</key>
 		<data>
@@ -26,55 +38,55 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		fhwMiQI9SyFcNeuDh/Sj5u9zlI4=
+		sy3SlME6knF8Z+DOx4Ajfgi+CEQ=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		R27GxiA+m9Vkd7W/pXskAbb7s8Y=
+		wHBAGZXW5ybV1EgQBgT3fk88E7I=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		NX/xiuni5AXTu8eoawkU18gtX+4=
+		+wSXfQfNRK+EwXMjU0oQMNZLfQA=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		4mzrnv/hjwUShPu69gujh5VCH1w=
+		7RX/mG1C9bhaqahvFYLzMDtoyb8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		R27GxiA+m9Vkd7W/pXskAbb7s8Y=
+		wHBAGZXW5ybV1EgQBgT3fk88E7I=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		NX/xiuni5AXTu8eoawkU18gtX+4=
+		+wSXfQfNRK+EwXMjU0oQMNZLfQA=
 		</data>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		4mzrnv/hjwUShPu69gujh5VCH1w=
+		7RX/mG1C9bhaqahvFYLzMDtoyb8=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		iHz4npXP55FYDG+wzGBrF70Id/4=
+		vv4KTNtwbnv3tYYyBBzjhOKmWAU=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		yfodIWJ4LY3JPcynKpKlGX5iXGY=
+		eLIhc2Sx+dExG983TawBeVKKQv0=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		hBMdQcQiQGGujHUKQy3SUk8uvoA=
+		nMbboxVeBtITnpYIMrdzjWIblPU=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		iHz4npXP55FYDG+wzGBrF70Id/4=
+		vv4KTNtwbnv3tYYyBBzjhOKmWAU=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		yfodIWJ4LY3JPcynKpKlGX5iXGY=
+		eLIhc2Sx+dExG983TawBeVKKQv0=
 		</data>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		hBMdQcQiQGGujHUKQy3SUk8uvoA=
+		nMbboxVeBtITnpYIMrdzjWIblPU=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -83,6 +95,27 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Frameworks/MbarkAnimation.framework/Info.plist</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			QDfiZRdY1HmEExTxKlAEvTkT5Qeh0/I2KE1zf5/2IBU=
+			</data>
+		</dict>
+		<key>Frameworks/MbarkAnimation.framework/MbarkAnimation</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			XY18b6Ab1wosCBNipUDUdNoZPDywWbnNtNWke7uclrE=
+			</data>
+		</dict>
+		<key>Frameworks/MbarkAnimation.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			4e2/K/+thdiZ9G9JNgmOee6JoTE7q1haNu8QBM35eTg=
+			</data>
+		</dict>
 		<key>Headers/Layout.h</key>
 		<dict>
 			<key>hash2</key>
@@ -101,7 +134,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WoszLA7WiqcYSZ0bt2yrn6yTtEVo/eotkHeKP9l1ojc=
+			U5ofk27pcYQNtbJrRnW1tBkfA64BY6511J8QWoOaTm4=
 			</data>
 		</dict>
 		<key>Headers/Mbark.h</key>
@@ -122,84 +155,84 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			IjeAXl8m7xw7KGmgQA3zui7JP6Dy91Ht9K/iFLwAjKs=
+			tuUaTPmRlEYs/+3wElVK04+NE6zYWPZ0adKLxA0rAXI=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			0ZymgLECe3EZAfqqxn/Ad7YBjA4fBSOvlq4ng+PMTtk=
+			DBjuIS66FEcBvOoBpxxZCMr2dCBvs0HEpMrdIj/pjNk=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			iODdECQ0s758SBPOfj3NboLkonDngT9OZHurOLxHLD0=
+			lPK1FFVLJ+bIYDNtG5jrX+vlu9fh8BzTB5TJf1hqvok=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			IjeAXl8m7xw7KGmgQA3zui7JP6Dy91Ht9K/iFLwAjKs=
+			tuUaTPmRlEYs/+3wElVK04+NE6zYWPZ0adKLxA0rAXI=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			0ZymgLECe3EZAfqqxn/Ad7YBjA4fBSOvlq4ng+PMTtk=
+			DBjuIS66FEcBvOoBpxxZCMr2dCBvs0HEpMrdIj/pjNk=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			iODdECQ0s758SBPOfj3NboLkonDngT9OZHurOLxHLD0=
+			lPK1FFVLJ+bIYDNtG5jrX+vlu9fh8BzTB5TJf1hqvok=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Bk6cqWDaeJUnwCbY1WKEfFcqxyc/8VOGLLp/Q/RCi1s=
+			xVzwXj/A+1Uzic8yKPUTgiEQiJBSGbz8eVEOTW0X9Dc=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			EUYkLjm+WoctUZ1Ku9oBH8W3kngl2iH9xu8s2TykGoE=
+			8pHx14aA/NFBWEvLD2yBvrkn+kl6bxwX/GHmuIYGcMQ=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Z0BNTvAICWbKFg+9RPc0j1wKPClGOJA7kPFNLBHXrSk=
+			Pli7PkowT+IQweCr+XZE2m+H4o/cY62Y0rNXke2lgjg=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Bk6cqWDaeJUnwCbY1WKEfFcqxyc/8VOGLLp/Q/RCi1s=
+			xVzwXj/A+1Uzic8yKPUTgiEQiJBSGbz8eVEOTW0X9Dc=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			EUYkLjm+WoctUZ1Ku9oBH8W3kngl2iH9xu8s2TykGoE=
+			8pHx14aA/NFBWEvLD2yBvrkn+kl6bxwX/GHmuIYGcMQ=
 			</data>
 		</dict>
 		<key>Modules/Mbark.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Z0BNTvAICWbKFg+9RPc0j1wKPClGOJA7kPFNLBHXrSk=
+			Pli7PkowT+IQweCr+XZE2m+H4o/cY62Y0rNXke2lgjg=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
